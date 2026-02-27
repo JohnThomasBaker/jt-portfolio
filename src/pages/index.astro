@@ -1,0 +1,127 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import FadeIn from "../components/FadeIn.astro";
+---
+
+<BaseLayout title="JT | Home" description="JT portfolio">
+  <!-- HERO (full width) -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>Welcome to Ma Shit Bitch</h1>
+    <p>you're really in for it now,,,</p>
+  </div>
+</section>
+  <!-- ABOUT -->
+  <FadeIn>
+    <section class="wrap">
+      <div class="card about">
+        <img class="avatar" src="/images/avatar.jpg" alt="JT portrait" />
+        <div>
+          <h2 class="section-title">About Me</h2>
+          <p class="muted" style="margin-top: 0.25rem">
+            Composer, percussionist, snare drummer
+          </p>
+          <p style="margin-bottom: 0;">
+            How's it going. I'm JT. I'm a percussionist turned composer currently working in Toledo Ohio. I primarily write percussion and chamber works, often towing the line between the classical/marching percussion worlds and the world of contemporary experimental music. This practice is shared by a lifelong passion for the marching arts which I've spent time as a performer, writer and teacher. 
+
+Here you can access my work, buy music, and get in contact with me. Thanks for coming
+          </p>
+
+          <div class="links">
+            <a class="pill" href="/music">My Music</a>
+            <a class="pill" href="/me">More About Me</a>
+            <a class="pill" href="/lessons">Lessons</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </FadeIn>
+
+  <!-- FEATURED -->
+  <FadeIn delay={120}>
+    <section class="wrap">
+      <div class="card">
+        <h2 class="section-title">Check This Out</h2>
+        <div class="video">
+          <iframe
+            src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
+            title="Featured video"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </section>
+  </FadeIn>
+
+  <!-- MUSIC GRID -->
+  <FadeIn delay={240} y={18}>
+    <section class="wrap">
+      <h2 class="section-title" style="margin-bottom: 0.75rem;">My Music</h2>
+
+      <div class="music-grid">
+        <a class="card card-link" href="/music">
+          <div class="thumb"></div>
+          <div class="card-body">
+            <h3 class="card-title">Piece Title 1</h3>
+            <p class="muted">for ensemble · 2025</p>
+          </div>
+        </a>
+
+        <a class="card card-link" href="/music">
+          <div class="thumb"></div>
+          <div class="card-body">
+            <h3 class="card-title">Piece Title 2</h3>
+            <p class="muted">solo · 2024</p>
+          </div>
+        </a>
+
+        <a class="card card-link" href="/music">
+          <div class="thumb"></div>
+          <div class="card-body">
+            <h3 class="card-title">Piece Title 3</h3>
+            <p class="muted">chamber · 2023</p>
+          </div>
+        </a>
+
+        <a class="card card-link" href="/music">
+          <div class="thumb"></div>
+          <div class="card-body">
+            <h3 class="card-title">Piece Title 4</h3>
+            <p class="muted">percussion · 2022</p>
+          </div>
+        </a>
+      </div>
+    </section>
+  </FadeIn>
+
+  <!-- NEWS -->
+  <FadeIn delay={360} y={18}>
+    <section class="wrap">
+      <h2 class="section-title" style="margin-bottom: 0.75rem;">JT News</h2>
+
+      <div class="news">
+        <a class="card card-link news-item" href="#">
+          <div class="news-thumb"></div>
+          <div>
+            <h3 class="card-title">Update title goes here</h3>
+            <p class="muted" style="margin: 0.25rem 0 0;">
+              A short teaser sentence. Click to read more.
+            </p>
+          </div>
+        </a>
+
+        <a class="card card-link news-item" href="#">
+          <div class="news-thumb"></div>
+          <div>
+            <h3 class="card-title">Another update</h3>
+            <p class="muted" style="margin: 0.25rem 0 0;">
+              Another teaser sentence. Click to read more.
+            </p>
+          </div>
+        </a>
+      </div>
+    </section>
+  </FadeIn>
+</BaseLayout>
