@@ -1,7 +1,7 @@
 ---
-const { delay = 0, y = 12, once = true } = Astro.props;
+const { delay = 0, y = 12, once = true, blur = 0 } = Astro.props;
 ---
 
-<div class="fadein" data-delay={delay} data-y={y} data-once={once ? "1" : "0"}>
+<div class="fadein" data-delay={delay} data-y={y} data-blur={blur} data-once={once ? "1" : "0"}>
   <slot />
 </div>

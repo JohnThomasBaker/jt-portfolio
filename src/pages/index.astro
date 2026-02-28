@@ -5,12 +5,14 @@ import FadeIn from "../components/FadeIn.astro";
 
 <BaseLayout title="JT | Home" description="JT portfolio">
   <!-- HERO (full width) -->
-<section class="hero">
-  <div class="hero-content">
-    <h1>Welcome to Ma Shit Bitch</h1>
-    <p>you're really in for it now,,,</p>
-  </div>
-</section>
+  <FadeIn blur={60} y={0} duration={1200} bg="#C0C2D1">
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Welcome to Ma Shit Bitch</h1>
+        <p>you're really in for it now,,,</p>
+      </div>
+    </section>
+  </FadeIn>
   <!-- ABOUT -->
   <FadeIn>
     <section class="wrap">

@@ -25,13 +25,13 @@ const nav = [
       body {
         margin: 0;
         background: #0a0a0a;
-        color: #f3f3f3;
+        color: #888;
         font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       }
       a { color: inherit; text-decoration: none; }
       a:hover { text-decoration: underline; }
 
-      .wrap { max-width: 980px; margin: 0 auto; padding: 24px; }
+      .wrap { max-width: 980px; /* left-align instead of center */ margin: 0 0 0 24px; padding: 24px; }
       main.wrap { padding-top: 0; }
 main.wrap > :first-child { margin-top: 0 !important; }
 
@@ -42,8 +42,11 @@ main.wrap > :first-child { margin-top: 0 !important; }
       .links a:hover { background: rgba(255,255,255,0.08); text-decoration: none; }
 
     
-      h1 { margin: 0 0 10px; font-size: 34px; }
-      p { line-height: 1.6; color: rgba(255,255,255,0.82); }
+      h1 { margin: 0 0 10px; font-size: 34px; color: #FFD600; }
+      h2 { color: #FFD600; }
+      p, .muted, .section-title, body *:not(h1):not(h2) {
+        color: #888 !important;
+      }
       .card {
        padding: 0;
        border: none;
@@ -54,19 +57,26 @@ main.wrap > :first-child { margin-top: 0 !important; }
       .muted { color: rgba(255,255,255,0.65); }
 
       .fadein {
-        opacity: 0;
+        /* start opacity can be overridden; defaults to 0 unless a bg is set */
+        opacity: var(--fade-start-opacity, 0);
         transform: translate3d(0, var(--fade-y, 12px), 0);
+        filter: blur(var(--fade-blur, 0px));
+        background-color: var(--fade-bg, transparent);
         transition:
-          opacity 650ms cubic-bezier(.2,.8,.2,1),
-          transform 650ms cubic-bezier(.2,.8,.2,1);
-        will-change: opacity, transform;
+          opacity var(--fade-dur, 1200ms) cubic-bezier(.2,.8,.2,1),
+          transform var(--fade-dur, 1200ms) cubic-bezier(.2,.8,.2,1),
+          filter var(--fade-blur-dur, var(--fade-dur, 1200ms)) ease,
+          background-color var(--fade-dur, 1200ms) ease;
+        will-change: opacity, transform, filter, background-color;
       }
       .fadein.is-in {
         opacity: 1;
         transform: translate3d(0, 0, 0);
+        filter: blur(0);
+        background-color: transparent;
       }
       @media (prefers-reduced-motion: reduce) {
-        .fadein { opacity: 1; transform: none; transition: none; }
+        .fadein { opacity: 1; transform: none; transition: none; filter: none; background-color: none; }
       }
     </style>
 
@@ -87,14 +97,26 @@ main.wrap > :first-child { margin-top: 0 !important; }
       if (el.dataset.fadeInit === "1") return; // prevent double-init
       el.dataset.fadeInit = "1";
 
-      const y = Number(el.dataset.y || 12);
+      const y = el.dataset.y || 0;
+      const blur = el.dataset.blur || 0;
+      const dur = el.dataset.dur || 650;
+      const bg = el.dataset.bg || "";
       el.style.setProperty("--fade-y", y + "px");
+      el.style.setProperty("--fade-blur", blur + "px");
+      el.style.setProperty("--fade-dur", dur + "ms");
+      // make blur finish a bit sooner than the rest
+      el.style.setProperty("--fade-blur-dur", Math.max(dur * 0.8, 0) + "ms");
+      if (bg) {
+        el.style.setProperty("--fade-bg", bg);
+        el.style.setProperty("--fade-start-opacity", 1);
+      } else {
+        el.style.setProperty("--fade-start-opacity", 0);
+      }
     });
 
     const reveal = (el) => {
-      const delay = Number(el.dataset.delay || 0);
-      const run = () => requestAnimationFrame(() => el.classList.add("is-in"));
-      delay > 0 ? setTimeout(run, delay) : setTimeout(run, 30);
+      const delay = parseInt(el.dataset.delay || 0, 10);
+      setTimeout(() => el.classList.add("is-in"), delay);
     };
 
     if (!("IntersectionObserver" in window)) {
@@ -111,6 +133,11 @@ main.wrap > :first-child { margin-top: 0 !important; }
     }, { threshold: 0.12 });
 
     els.forEach((el) => io.observe(el));
+    els.forEach((el) => {
+      if (el.getBoundingClientRect().top < window.innerHeight) {
+        reveal(el);
+      }
+    });
   };
 
   // First load
@@ -120,19 +147,19 @@ main.wrap > :first-child { margin-top: 0 !important; }
 </script>
   <body>
     <header class="nav">
-  <div class="nav-inner">
-    <div class="logo-sidebar">
-      <img src="/images/logo.png" alt="JT Logo" class="logo" />
+      <div class="nav-inner">
+        <div class="logo-sidebar">
+          <img src="/images/logo.png" alt="JT Logo" class="logo" />
 
-      <div class="sidebar" aria-label="Site navigation">
-        <a href="/">Home</a>
-        <a href="/music">Music</a>
-        <a href="/lessons">Lessons</a>
-        <a href="/me">Me</a>
+          <div class="sidebar" aria-label="Site navigation">
+            <a href="/">Home</a>
+            <a href="/music">Music</a>
+            <a href="/lessons">Lessons</a>
+            <a href="/me">Me</a>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</header>
+    </header>
 
    <main>
   <slot />
