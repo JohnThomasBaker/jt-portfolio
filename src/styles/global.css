@@ -32,21 +32,23 @@
 
 :root {
   color-scheme: light;
-  --text: #000000;
-  --text-p: #000000;
-  --text-muted: #000000;
-  --text-links: #000000;
+  --page-bg: #C0C2D1;
+  --text: #3d4556;
+  --text-p: #3d4556;
+  --text-muted: #3d4556;
+  --text-links: #3d4556;
   --nav-h: 84px;
+  --nav-height: var(--nav-h);
 }
 
 html, body {
-  background-color: #C0C2D1 !important;
+  background-color: var(--page-bg) !important;
   margin: 0;
 }
 
 body {
   color: var(--text);
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-family: "Times New Roman", Times, serif;
 }
 
 * {
@@ -110,6 +112,41 @@ main.wrap > .hero {
   padding-top: var(--nav-height);
 }
 
+/* Default page layout: centered content, clear of fixed nav/logo */
+main.page-default {
+  max-width: 980px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: calc(var(--nav-h) + 24px) 24px 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+main.page-default > :first-child {
+  margin-top: 0 !important;
+}
+
+main.page-default h1 {
+  font-size: clamp(4rem, 12vw, 6rem);
+  text-align: center;
+}
+
+main.page-default h2,
+main.page-default h3,
+main.page-default .section-title {
+  text-align: center;
+}
+
+/* Home page: each block steps a little farther right (lean-left layout) */
+main.page-home {
+  --home-step: 8vw;
+}
+main.page-home > *:nth-child(1) { margin-left: 0; }
+main.page-home > *:nth-child(2) { margin-left: var(--home-step); }
+main.page-home > *:nth-child(3) { margin-left: calc(2 * var(--home-step)); }
+main.page-home > *:nth-child(4) { margin-left: calc(3 * var(--home-step)); }
+main.page-home > *:nth-child(5) { margin-left: calc(4 * var(--home-step)); }
+
 .brand {
   font-weight: 700;
   letter-spacing: 0.2px;
@@ -125,7 +162,7 @@ main.wrap > .hero {
 
 .links a {
   padding: 6px 8px;
-  border-radius: 10px;
+  border-radius: 0;
   text-decoration: none;
 }
 
@@ -137,7 +174,7 @@ main.wrap > .hero {
 .pill {
   display: inline-block;
   padding: 0.45rem 0.7rem;
-  border-radius: 999px;
+  border-radius: 0;
   background: rgba(255,255,255,0.65);
   text-decoration: none;
   color: inherit;
@@ -149,7 +186,7 @@ main.wrap > .hero {
   background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(8px);
   padding: 1.25rem;
-  border-radius: 16px;
+  border-radius: 0;
   box-shadow: 0 6px 24px rgba(0,0,0,0.08);
   transition: transform 150ms ease, box-shadow 150ms ease;
 }
@@ -184,12 +221,12 @@ main.wrap > .hero {
   opacity: var(--fade-start-opacity, 0);
   transform: translate3d(0, var(--fade-y, 12px), 0);
   filter: blur(var(--fade-blur, 0px));
-  background-color: var(--fade-bg, transparent);
+  background-color: var(--fade-bg, var(--page-bg));
   transition:
-    opacity var(--fade-dur, 1200ms) cubic-bezier(.2,.8,.2,1),
-    transform var(--fade-dur, 1200ms) cubic-bezier(.2,.8,.2,1),
-    filter var(--fade-blur-dur, var(--fade-dur, 1200ms)) ease,
-    background-color var(--fade-dur, 1200ms) ease;
+    opacity var(--fade-dur, 2400ms) cubic-bezier(.2,.8,.2,1),
+    transform var(--fade-dur, 2400ms) cubic-bezier(.2,.8,.2,1),
+    filter var(--fade-blur-dur, var(--fade-dur, 2400ms)) ease,
+    background-color var(--fade-dur, 2400ms) ease;
   will-change: opacity, transform, filter, background-color;
 }
 
@@ -203,20 +240,26 @@ main.wrap > .hero {
 .fade-in {
   opacity: 0;
   transform: translateY(24px);
-  transition: opacity 700ms cubic-bezier(0.22, 1, 0.36, 1), transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  background-color: var(--page-bg);
+  transition:
+    opacity 1400ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1400ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 1400ms ease;
   transition-delay: var(--delay, 0ms);
-  will-change: opacity, transform;
+  will-change: opacity, transform, background-color;
 }
 
 .fade-in.is-visible {
   opacity: 1;
   transform: translateY(0);
+  background-color: transparent;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .fadein, .fade-in {
     opacity: 1;
     transform: none;
+    background-color: transparent;
     transition: none;
   }
 }
@@ -271,22 +314,34 @@ main.wrap > .hero {
 }
 
 .sidebar {
-  /* dropdown that appears to the right of the logo */
+  /* dropdown aligned with logo left edge so hover path has no gap */
   position: fixed;
   top: 18px;
-  left: 70px;              /* logo left (18px) + logo width (45px) + gap */
-  background: rgba(15, 15, 15, 0.4);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  left: 18px;
   display: flex;
   flex-direction: row;
-  gap: 16px; /* spacing between links */
-  padding: 8px 12px;
-  border-radius: 8px;
-  opacity: 0;
+  gap: 16px;
+  padding: 10px 16px;
+  background: transparent;
+  overflow: visible;
+  visibility: hidden;
   transform: translateX(-10px);
   pointer-events: none;
-  transition: opacity 160ms ease, transform 160ms ease;
+  transition: visibility 160ms ease, transform 160ms ease;
+  z-index: 1000;
+}
+
+/* Blurry blob shape: no hard edges, organic form */
+.sidebar::before {
+  content: "";
+  position: absolute;
+  inset: -28px;
+  background: #0f0f0f;
+  filter: blur(28px);
+  -webkit-filter: blur(28px);
+  /* organic blob: uneven radii so it’s not a straight polygon */
+  border-radius: 52% 48% 55% 45% / 48% 52% 46% 54%;
+  z-index: -1;
 }
 
 .sidebar a {
@@ -295,17 +350,19 @@ main.wrap > .hero {
   font-size: 0.95rem;
   letter-spacing: 0.06em;
   padding: 6px 10px;
-  border-radius: 6px;
+  border-radius: 9999px;
   white-space: nowrap;
+  position: relative;
+  z-index: 1;
 }
 
 .sidebar a:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: #2a2a2a;
 }
 
 .logo-sidebar:hover .sidebar,
 .logo-sidebar:focus-within .sidebar {
-  opacity: 1;
+  visibility: visible;
   transform: translateX(0);
   pointer-events: auto;
 }
@@ -323,7 +380,7 @@ main.wrap > .hero {
   background: rgba(15,15,15,0.95);
   backdrop-filter: blur(10px);
   padding: 16px 24px;
-  border-radius: 12px;
+  border-radius: 0;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -424,7 +481,11 @@ main.wrap > .hero {
 
 .avatar {
   width: 120px;
+  height: 120px;
+  object-fit: cover;
+  object-position: top left;
   border-radius: 0;
+  display: block;
 }
 
 /* MUSIC GRID */
@@ -445,7 +506,7 @@ main.wrap > .hero {
 
 .thumb {
   height: 140px;
-  border-radius: 10px;
+  border-radius: 0;
   background: rgba(0,0,0,0.08);
 }
 
@@ -465,7 +526,7 @@ main.wrap > .hero {
 .news-thumb {
   width: 72px;
   height: 72px;
-  border-radius: 12px;
+  border-radius: 0;
   background: rgba(0,0,0,0.08);
 }
 
@@ -478,7 +539,7 @@ main.wrap > .hero {
   width: 100%;
   aspect-ratio: 16 / 9;
   border: 0;
-  border-radius: 10px;
+  border-radius: 0;
 }
 
 /* SECTION TITLE */
@@ -491,7 +552,7 @@ main.wrap > .hero {
 @media (min-width: 640px) {
   .about {
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
   }
 
   .music-grid {
