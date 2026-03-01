@@ -8,8 +8,8 @@ import FadeIn from "../components/FadeIn.astro";
   <FadeIn blur={60} y={0} duration={1200} bg="#C0C2D1">
     <section class="hero">
       <div class="hero-content">
-        <h1>Welcome to Ma Shit Bitch</h1>
-        <p>you're really in for it now,,,</p>
+        <h1>Welcome to JT's music</h1>
+        <p>Where JT puts his music</p>
       </div>
     </section>
   </FadeIn>
@@ -17,9 +17,12 @@ import FadeIn from "../components/FadeIn.astro";
   <FadeIn>
     <section class="wrap">
       <div class="card about">
-        <img class="avatar" src="/images/avatar.jpg" alt="JT portrait" />
+        <div class="avatar-stack">
+          <img class="avatar avatar-main" src="/images/avatar.jpg" alt="JT portrait" />
+          <img class="avatar avatar-alt" src="/images/Avatar2.jpg" alt="" />
+        </div>
         <div>
-          <h2 class="section-title">About Me</h2>
+          <h2 class="section-title st-green">About JT</h2>
           <p class="muted" style="margin-top: 0.25rem">
             Composer, percussionist, snare drummer
           </p>
@@ -43,7 +46,7 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
   <FadeIn delay={120}>
     <section class="wrap">
       <div class="card">
-        <h2 class="section-title">Check This Out</h2>
+        <h2 class="section-title st-navy">Check This Out</h2>
         <div class="video">
           <iframe
             src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
@@ -60,7 +63,7 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
   <!-- MUSIC GRID -->
   <FadeIn delay={240} y={18}>
     <section class="wrap">
-      <h2 class="section-title" style="margin-bottom: 0.75rem;">My Music</h2>
+      <h2 class="section-title st-red" style="margin-bottom: 0.75rem;">My Music</h2>
 
       <div class="music-grid">
         <a class="card card-link" href="/music">

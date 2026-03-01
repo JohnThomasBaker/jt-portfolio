@@ -24,9 +24,13 @@ const nav = [
       :root { color-scheme: dark; }
       body {
         margin: 0;
-        background: #0a0a0a;
+        background: transparent;
         color: #5c6378;
         font-family: "Times New Roman", Times, serif;
+        font-size: clamp(1.08rem, 0.35vw + 1rem, 1.2rem);
+        line-height: 1.72;
+        font-weight: 580;
+        letter-spacing: 0.01em;
       }
       a { color: inherit; text-decoration: none; }
       a:hover { text-decoration: underline; }
@@ -37,16 +41,20 @@ main.wrap > :first-child { margin-top: 0 !important; }
 
     
       .brand { font-weight: 700; letter-spacing: 0.2px; }
-      .links { display:flex; gap: 14px; flex-wrap: wrap; font-size: 14px; color: rgba(255,255,255,0.85); }
+      .links { display:flex; gap: 14px; flex-wrap: wrap; font-size: 1rem; color: rgba(255,255,255,0.85); }
       .links a { padding: 6px 8px; border-radius: 0; }
       .links a:hover { background: rgba(255,255,255,0.08); text-decoration: none; }
 
     
-      h1 { margin: 0 0 10px; font-size: 34px; color: #FFD600; }
+      h1 { margin: 0 0 10px; font-size: 34px; color: #3f4d67; }
       h2 { color: #FFD600; }
       p, .muted, .section-title, body *:not(h1):not(h2) {
         color: #5c6378 !important;
       }
+      .section-title { color: #4b5e4a !important; } /* fallback */
+      .st-green { color: #2f4a37 !important; } /* muted dark forest green */
+      .st-red { color: #614445 !important; } /* muted dark red */
+      .st-navy { color: #3f4d67 !important; } /* muted navy */
       .card {
        padding: 0;
        border: none;
@@ -140,10 +148,73 @@ main.wrap > :first-child { margin-top: 0 !important; }
     });
   };
 
+  const initHeroScrollFade = () => {
+    if (window.__heroScrollCleanup) window.__heroScrollCleanup();
+
+    const hero = document.querySelector(".hero");
+    if (!hero) {
+      window.__heroScrollCleanup = null;
+      return;
+    }
+
+    const update = () => {
+      const rect = hero.getBoundingClientRect();
+      const scrolled = Math.max(0, -rect.top);
+      const fadeDistance = Math.max(hero.offsetHeight * 0.30, 1);
+      const progress = Math.min(scrolled / fadeDistance, 1);
+      const stepped = Math.round(progress * 22) / 22;
+      hero.style.setProperty("--hero-progress", stepped.toFixed(4));
+    };
+
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        update();
+      });
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    update();
+
+    window.__heroScrollCleanup = () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  };
+
+  const initSectionTitlePalette = () => {
+    const targets = Array.from(document.querySelectorAll(".section-title, main.page-home h1"));
+    if (!targets.length) return;
+
+    const classes = ["st-green", "st-red", "st-navy"];
+    // Start offset changes each load, then cycle so adjacent titles are always different.
+    const start = Math.floor(Math.random() * classes.length);
+
+    let idx = 0;
+    targets.forEach((el) => {
+      if (el.classList.contains("st-green") || el.classList.contains("st-red") || el.classList.contains("st-navy")) return;
+      el.classList.remove("st-green", "st-red", "st-navy");
+      el.classList.add(classes[(start + idx) % classes.length]);
+      idx += 1;
+    });
+  };
+
   // First load
-  document.addEventListener("DOMContentLoaded", initFade);
+  document.addEventListener("DOMContentLoaded", () => {
+    initFade();
+    initHeroScrollFade();
+    initSectionTitlePalette();
+  });
   // Astro client-side navigations / view transitions
-  document.addEventListener("astro:page-load", initFade);
+  document.addEventListener("astro:page-load", () => {
+    initFade();
+    initHeroScrollFade();
+    initSectionTitlePalette();
+  });
 </script>
   <body>
     <header class="nav">

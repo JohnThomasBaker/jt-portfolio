@@ -1,10 +1,237 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const pieces = [
+  { name: "Through the Glass", year: 2025, tag: "Marching", category: "marching", image: "/images/hero2.jpg" },
+  { name: "Still Circuit", year: 2024, tag: "Not Marching", category: "chamber", image: "/images/hero.jpg" },
+  { name: "North Lot Reverie", year: 2024, tag: "Marching", category: "marching", image: "/images/hero2.jpg" },
+  { name: "Ash Line", year: 2023, tag: "Not Marching", category: "misc", image: "/images/hero.jpg" },
+  { name: "Brasslight", year: 2022, tag: "Marching", category: "marching", image: "/images/hero2.jpg" },
+  { name: "Quiet Cadence", year: 2021, tag: "Not Marching", category: "chamber", image: "/images/hero.jpg" },
+];
 ---
 <BaseLayout title="JT | Music" description="Works and recordings">
   <h1>Music</h1>
-  <div class="card">
-    <p>Add your works list here (title, instrumentation, year, links).</p>
+  <div class="music-tabs" role="tablist" aria-label="Music categories">
+    <button class="music-tab is-active" type="button" role="tab" aria-selected="true" data-filter="all">All</button>
+    <button class="music-tab" type="button" role="tab" aria-selected="false" data-filter="chamber">Chamber</button>
+    <button class="music-tab" type="button" role="tab" aria-selected="false" data-filter="marching">Marching</button>
+    <button class="music-tab" type="button" role="tab" aria-selected="false" data-filter="misc">Misc</button>
   </div>
-</BaseLayout>
+  <div class="music-catalog">
+    {pieces.map((piece) => (
+      <article class="music-piece card" data-category={piece.category}>
+        <img src={piece.image} alt={`${piece.name} score preview`} class="score-image" />
+        <div class="piece-meta">
+          <h3>{piece.name}</h3>
+          <p class="piece-year">{piece.year}</p>
+          <span class={`piece-tag ${piece.tag === "Marching" ? "is-marching" : "is-not-marching"}`}>
+            {piece.tag}
+          </span>
+        </div>
+      </article>
+    ))}
+  </div>
 
+  <style>
+    .music-tabs {
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 0;
+      margin-top: 1.15rem;
+      margin-bottom: 0.9rem;
+      padding: 0 0.1rem;
+    }
+
+    .music-tabs::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 2px;
+      background: #000;
+    }
+
+    .music-tab {
+      appearance: none;
+      border: 2px solid #3f465e;
+      border-radius: 0;
+      --tab-fill: #b9c0d4;
+      background:
+        linear-gradient(#000, #000) left top / 12px 2px no-repeat,
+        linear-gradient(#000, #000) left top / 2px 12px no-repeat,
+        linear-gradient(#000, #000) right top / 12px 2px no-repeat,
+        linear-gradient(#000, #000) right top / 2px 12px no-repeat,
+        var(--tab-fill);
+      color: #1f2638;
+      font-family: "JTDisplay", system-ui, sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      word-spacing: 0.08em;
+      line-height: 1;
+      min-width: 9.5rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.72rem 1.2rem 0.62rem;
+      image-rendering: pixelated;
+      box-shadow:
+        inset 2px 2px 0 #e9edf8,
+        inset -2px -2px 0 #75809c,
+        0 3px 0 #3a4258;
+      cursor: pointer;
+      transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease, color 180ms ease;
+      position: relative;
+      z-index: 1;
+      margin-left: -1.9rem; /* 20% overlap of 9.5rem tab width */
+      clip-path: polygon(
+        0 100%,
+        0 30%,
+        6px 30%,
+        6px 16%,
+        12px 16%,
+        12px 0,
+        calc(100% - 12px) 0,
+        calc(100% - 12px) 16%,
+        calc(100% - 6px) 16%,
+        calc(100% - 6px) 30%,
+        100% 30%,
+        100% 100%
+      );
+    }
+
+    .music-tab:first-child {
+      margin-left: 0;
+    }
+
+    .music-tab:hover {
+      transform: translateY(-1px);
+      box-shadow:
+        inset 2px 2px 0 #f2f5ff,
+        inset -2px -2px 0 #6d7895,
+        0 4px 0 #3a4258;
+    }
+
+    .music-tab.is-active {
+      --tab-fill: #848da3;
+      color: #ffffff !important;
+      transform: translateY(-2px) scale(1.1);
+      box-shadow:
+        inset 2px 2px 0 #d9dfef,
+        inset -2px -2px 0 #62708d,
+        0 4px 0 #3a4258;
+      z-index: 20;
+    }
+
+    .music-catalog {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .music-piece {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .score-image {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      display: block;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+      filter: saturate(0.55) contrast(1.05);
+    }
+
+    .piece-meta {
+      padding: 1rem;
+    }
+
+    .piece-meta h3 {
+      margin: 0;
+      font-family: "JTDisplay", system-ui, sans-serif;
+      font-size: 1.2rem;
+      line-height: 1.2;
+    }
+
+    .piece-year {
+      margin: 0.2rem 0 0.55rem;
+      opacity: 0.8;
+    }
+
+    .piece-tag {
+      display: inline-block;
+      padding: 0.2rem 0.55rem;
+      font-size: 0.9rem;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      background: rgba(255, 255, 255, 0.6);
+    }
+
+    .piece-tag.is-marching {
+      color: #3f4d67;
+    }
+
+    .piece-tag.is-not-marching {
+      color: #614445;
+    }
+
+    @media (max-width: 960px) {
+      .music-catalog {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .music-tabs {
+        gap: 0;
+        padding-bottom: 0;
+      }
+
+      .music-tab {
+        font-size: 0.72rem;
+        min-width: 7.5rem;
+        padding: 0.58rem 0.82rem 0.52rem;
+        margin-left: -1.5rem; /* 20% overlap of 7.5rem tab width */
+      }
+
+      .music-catalog {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+  <script is:inline>
+    const initMusicTabs = () => {
+      const tabs = Array.from(document.querySelectorAll(".music-tab"));
+      const cards = Array.from(document.querySelectorAll(".music-piece"));
+      if (!tabs.length || !cards.length) return;
+
+      const applyFilter = (filter) => {
+        cards.forEach((card) => {
+          const category = card.dataset.category || "";
+          const show = filter === "all" || category === filter;
+          card.style.display = show ? "" : "none";
+        });
+
+        tabs.forEach((tab) => {
+          const active = tab.dataset.filter === filter;
+          tab.classList.toggle("is-active", active);
+          tab.setAttribute("aria-selected", active ? "true" : "false");
+        });
+      };
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => applyFilter(tab.dataset.filter || "all"));
+      });
+    };
+
+    document.addEventListener("DOMContentLoaded", initMusicTabs);
+    document.addEventListener("astro:page-load", initMusicTabs);
+  </script>
+</BaseLayout>
