@@ -29,6 +29,13 @@
   font-style: normal;
   font-display: swap;
 }
+@font-face {
+  font-family: "Jacquard24";
+  src: url("/fonts/Jacquard_24/Jacquard24-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 .wrap, main, header, footer {
   background: transparent !important;
@@ -76,7 +83,7 @@ body {
   font-family: "Times New Roman", Times, serif;
   font-size: clamp(1.08rem, 0.35vw + 1rem, 1.2rem);
   line-height: 1.72;
-  font-weight: 580;
+  font-weight: 540;
   letter-spacing: 0.01em;
 }
 
@@ -209,6 +216,64 @@ main.page-home > *:nth-child(5) { margin-left: calc(4 * var(--home-step)); }
   background: rgba(255,255,255,0.65);
   text-decoration: none;
   color: inherit;
+}
+
+.about-links {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.75rem;
+  margin-top: 1.1rem;
+  width: 100%;
+}
+
+.about-links .pill {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 0;
+  font-family: "Jacquard24", serif;
+  font-size: clamp(2.28rem, 3.38vw, 3.06rem);
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: 0.015em;
+  padding: 0.5rem 0.7rem;
+  white-space: nowrap;
+  background: transparent !important;
+}
+
+.about-links .pill::before {
+  content: none;
+}
+
+.about-links .pill::after {
+  content: none;
+}
+
+.about-links .pill.tone-green {
+  color: #6e641f !important;
+  --pill-bg: rgba(145, 130, 42, 0);
+  --pill-px-a: rgba(177, 160, 56, 0.28);
+  --pill-px-b: rgba(98, 88, 26, 0.18);
+}
+
+.about-links .pill.tone-red {
+  color: #6a3f3f !important;
+  --pill-bg: rgba(120, 73, 73, 0);
+  --pill-px-a: rgba(150, 91, 91, 0.28);
+  --pill-px-b: rgba(90, 55, 55, 0.18);
+}
+
+.about-links .pill.tone-navy {
+  color: #3c4f73 !important;
+  --pill-bg: rgba(64, 86, 125, 0);
+  --pill-px-a: rgba(86, 112, 158, 0.28);
+  --pill-px-b: rgba(45, 60, 89, 0.18);
+}
+
+.about-links .pill:hover {
+  opacity: 0.96;
 }
 
 .card {
@@ -373,7 +438,7 @@ main.page-home > *:nth-child(5) { margin-left: calc(4 * var(--home-step)); }
   content: "";
   position: absolute;
   inset: -42px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.064);
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
   filter: blur(14px);

@@ -1,6 +1,9 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import FadeIn from "../components/FadeIn.astro";
+
+const youtubeChannelId = "UCmXK2sDFnmXQu1MqqG7zrGA";
+const uploadsPlaylistId = `UU${youtubeChannelId.slice(2)}`;
 ---
 
 <BaseLayout title="JT | Home" description="JT portfolio" mainClass="page-home">
@@ -8,7 +11,7 @@ import FadeIn from "../components/FadeIn.astro";
   <FadeIn blur={60} y={0} duration={1200} bg="#C0C2D1">
     <section class="hero">
       <div class="hero-content">
-        <h1>Welcome to JT's music</h1>
+        <h1 style="color: #B8860B !important;">Welcome to JT's music</h1>
         <p>Where JT puts his music</p>
       </div>
     </section>
@@ -32,10 +35,10 @@ import FadeIn from "../components/FadeIn.astro";
 Here you can access my work, buy music, and get in contact with me. Thanks for coming
           </p>
 
-          <div class="links">
-            <a class="pill" href="/music">My Music</a>
-            <a class="pill" href="/me">More About Me</a>
-            <a class="pill" href="/lessons">Lessons</a>
+          <div class="links about-links">
+            <a class="pill tone-red" href="/music">My Music</a>
+            <a class="pill tone-navy" href="/me">More About Me</a>
+            <a class="pill tone-green" href="/lessons">Lessons</a>
           </div>
         </div>
       </div>
@@ -49,8 +52,9 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
         <h2 class="section-title st-navy">Check This Out</h2>
         <div class="video">
           <iframe
-            src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
-            title="Featured video"
+            data-channel-playlist
+            src={`https://www.youtube.com/embed?listType=playlist&list=${uploadsPlaylistId}&autoplay=1&mute=1&rel=0&modestbranding=1&enablejsapi=1`}
+            title="Featured video gallery"
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
@@ -130,3 +134,35 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
     </section>
   </FadeIn>
 </BaseLayout>
+
+<script is:inline>
+  const initFeaturedVideoGallery = () => {
+    const frame = document.querySelector("[data-channel-playlist]");
+    if (!frame) return;
+
+    const sendCommand = (func, args = []) => {
+      frame.contentWindow?.postMessage(
+        JSON.stringify({ event: "command", func, args }),
+        "*"
+      );
+    };
+
+    window.__jtVideoGalleryCleanup?.();
+
+    const startTimer = window.setTimeout(() => {
+      sendCommand("playVideo");
+    }, 1200);
+
+    const timer = window.setInterval(() => {
+      sendCommand("nextVideo");
+    }, 5000);
+
+    window.__jtVideoGalleryCleanup = () => {
+      window.clearTimeout(startTimer);
+      window.clearInterval(timer);
+    };
+  };
+
+  document.addEventListener("DOMContentLoaded", initFeaturedVideoGallery);
+  document.addEventListener("astro:page-load", initFeaturedVideoGallery);
+</script>
