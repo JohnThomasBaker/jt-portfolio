@@ -4,6 +4,8 @@ import FadeIn from "../components/FadeIn.astro";
 
 const youtubeChannelId = "UCmXK2sDFnmXQu1MqqG7zrGA";
 const uploadsPlaylistId = `UU${youtubeChannelId.slice(2)}`;
+const instagramProfileUrl = "https://www.instagram.com/johnthomasbaker/";
+const tiktokProfileUrl = "https://www.tiktok.com/@jtmusicks";
 ---
 
 <BaseLayout title="JT | Home" description="JT portfolio" mainClass="page-home">
@@ -20,7 +22,7 @@ const uploadsPlaylistId = `UU${youtubeChannelId.slice(2)}`;
   </FadeIn>
   <!-- ABOUT -->
   <FadeIn>
-    <section class="wrap">
+    <section class="wrap about-wrap">
       <div class="card about">
         <div class="avatar-stack">
           <img class="avatar avatar-main" src="/images/avatar.jpg" alt="JT portrait" />
@@ -36,12 +38,6 @@ const uploadsPlaylistId = `UU${youtubeChannelId.slice(2)}`;
 
 Here you can access my work, buy music, and get in contact with me. Thanks for coming
           </p>
-
-          <div class="links about-links">
-            <a class="pill tone-red" href="/music">My Music</a>
-            <a class="pill tone-navy" href="/me">More About Me</a>
-            <a class="pill tone-green" href="/lessons">Lessons</a>
-          </div>
         </div>
       </div>
     </section>
@@ -49,19 +45,53 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
 
   <!-- FEATURED -->
   <FadeIn delay={120}>
-    <section class="wrap">
-      <div class="card">
-        <h2 class="section-title st-navy">Check This Out</h2>
-        <div class="video">
-          <iframe
-            id="jt-featured-gallery"
-            data-channel-playlist
-            src={`https://www.youtube.com/embed?listType=playlist&list=${uploadsPlaylistId}&autoplay=1&mute=1&rel=0&modestbranding=1&enablejsapi=1`}
-            title="Featured video gallery"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-          ></iframe>
+    <section class="wrap featured-wrap">
+      <div class="card media-stack">
+        <div class="media-stack-head">
+          <h2 class="section-title st-navy">Check This Stuff Out</h2>
+          <a class="media-all-link" href="/music">
+            <span>View all Media</span>
+            <span class="media-all-arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <div class="media-pyramid">
+          <article class="media-scroll media-scroll-youtube">
+            <h3 class="media-title-youtube">YouTube</h3>
+            <div class="video">
+              <iframe
+                id="jt-featured-gallery"
+                data-channel-playlist
+                src={`https://www.youtube.com/embed/videoseries?list=${uploadsPlaylistId}&autoplay=1&mute=1&rel=0&modestbranding=1&enablejsapi=1`}
+                title="Featured video gallery"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+              ></iframe>
+            </div>
+          </article>
+
+          <article class="media-scroll media-scroll-social media-scroll-instagram">
+            <h3 class="media-title-instagram">Instagram</h3>
+            <iframe
+              src="https://www.instagram.com/johnthomasbaker/embed"
+              title="Instagram profile preview"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+            <a href={instagramProfileUrl} target="_blank" rel="noopener noreferrer">@johnthomasbaker</a>
+          </article>
+
+          <article class="media-scroll media-scroll-social media-scroll-tiktok">
+            <h3 class="media-title-tiktok">TikTok</h3>
+            <iframe
+              src="https://www.tiktok.com/@jtmusicks"
+              title="TikTok profile preview"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+            <a href={tiktokProfileUrl} target="_blank" rel="noopener noreferrer">@jtmusicks</a>
+          </article>
         </div>
       </div>
     </section>
@@ -70,7 +100,7 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
   <!-- MUSIC GRID -->
   <FadeIn delay={240} y={18}>
     <section class="wrap">
-      <h2 class="section-title st-red" style="margin-bottom: 0.75rem;">My Music</h2>
+      <h2 class="section-title st-red" style="margin-bottom: 0.75rem;">Featured Works</h2>
 
       <div class="music-grid">
         <a class="card card-link" href="/music">
@@ -215,3 +245,141 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
   document.addEventListener("DOMContentLoaded", initFeaturedVideoGallery);
   document.addEventListener("astro:page-load", initFeaturedVideoGallery);
 </script>
+
+<style>
+  .about-wrap {
+    padding-bottom: 10px;
+  }
+
+  .featured-wrap {
+    padding-top: 10px;
+  }
+
+  .media-stack {
+    padding-top: 1.1rem;
+  }
+
+  .media-stack-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.2rem;
+    width: 100%;
+  }
+
+  .media-stack-head h2 {
+    margin: 0;
+  }
+
+  .media-all-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    justify-self: end;
+    margin-right: 14px;
+    color: var(--tone-slate) !important;
+    text-decoration: none;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 1.05rem;
+    white-space: nowrap;
+  }
+
+  .media-all-link:hover {
+    color: var(--tone-slate) !important;
+    text-decoration: underline;
+  }
+
+  .media-all-arrow {
+    width: 1.45rem;
+    height: 1.45rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid currentColor;
+    line-height: 1;
+    color: var(--tone-slate) !important;
+  }
+
+  .media-pyramid {
+    display: grid;
+    gap: 0.9rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+
+  .media-scroll {
+    border: none;
+    background: transparent;
+    padding: 0.75rem;
+  }
+
+  .media-scroll h3 {
+    margin: 0 0 0.45rem;
+    font-family: "Jacquard24", serif;
+    font-size: 5.7rem;
+    color: var(--tone-heading);
+    text-align: center;
+  }
+
+  .media-scroll h3.media-title-youtube {
+    color: var(--tone-slate) !important;
+  }
+
+  .media-scroll h3.media-title-instagram {
+    color: var(--tone-plum) !important;
+  }
+
+  .media-scroll h3.media-title-tiktok {
+    color: var(--tone-teal) !important;
+  }
+
+  .media-scroll-youtube {
+    grid-column: 1 / -1;
+    width: min(100%, 520px);
+    margin: 0 auto;
+  }
+
+  .media-scroll-youtube .video {
+    min-height: 230px;
+  }
+
+  .media-scroll-youtube .video iframe {
+    display: block;
+    width: 100%;
+    aspect-ratio: auto;
+    height: 100%;
+    min-height: 230px;
+  }
+
+  .media-scroll-social iframe {
+    width: 100%;
+    height: 360px;
+    border: none;
+    background: transparent;
+  }
+
+  .media-scroll-social a {
+    margin-top: 0.45rem;
+    display: block;
+    text-align: center;
+    font-family: "JTDisplay", system-ui, sans-serif;
+    font-size: 1.05rem;
+    color: var(--tone-plum);
+    text-decoration: none;
+  }
+
+  .media-scroll-social a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 840px) {
+    .media-pyramid {
+      grid-template-columns: 1fr;
+    }
+
+    .media-scroll-youtube {
+      width: 100%;
+    }
+  }
+</style>

@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import { ViewTransitions } from "astro:transitions";
 const { title = "JT", description = "Portfolio", mainClass = "page-default" } = Astro.props;
 
 const STORE_URL = "https://jtsounds.com";
@@ -19,13 +20,14 @@ const nav = [
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <title>{title}</title>
+    <ViewTransitions />
 
     <style is:global>
       :root { color-scheme: dark; }
       body {
         margin: 0;
         background: transparent;
-        color: #5c6378;
+        color: var(--text);
         font-family: "Times New Roman", Times, serif;
         font-size: clamp(1.08rem, 0.35vw + 1rem, 1.2rem);
         line-height: 1.72;
@@ -46,15 +48,19 @@ main.wrap > :first-child { margin-top: 0 !important; }
       .links a:hover { background: rgba(255,255,255,0.08); text-decoration: none; }
 
     
-      h1 { margin: 0 0 10px; font-size: 34px; color: #3f4d67; }
-      h2 { color: #FFD600; }
-      p, .muted, .section-title, body *:not(h1):not(h2) {
-        color: #5c6378 !important;
+      h1 { margin: 0 0 10px; font-size: 34px; color: var(--tone-jacquard); }
+      h2 { color: var(--tone-heading); }
+      h3, .section-title { color: var(--tone-heading); }
+      p, .muted, body *:not(h1):not(h2):not(h3):not(.section-title) {
+        color: var(--text-muted) !important;
       }
-      .section-title { color: #4b5e4a !important; } /* fallback */
-      .st-green { color: #2f4a37 !important; } /* muted dark forest green */
-      .st-red { color: #614445 !important; } /* muted dark red */
-      .st-navy { color: #3f4d67 !important; } /* muted navy */
+      .section-title { color: var(--tone-moss) !important; } /* fallback */
+      .st-green { color: var(--tone-moss) !important; }
+      .st-red { color: var(--tone-clay) !important; }
+      .st-navy { color: var(--tone-slate) !important; }
+      .st-bronze { color: var(--tone-bronze) !important; }
+      .st-plum { color: var(--tone-plum) !important; }
+      .st-teal { color: var(--tone-teal) !important; }
       .card {
        padding: 0;
        border: none;
@@ -62,7 +68,7 @@ main.wrap > :first-child { margin-top: 0 !important; }
      }
 
       
-      .muted { color: #5c6378; }
+      .muted { color: var(--text-muted); }
 
       .fadein {
         /* start opacity can be overridden; defaults to 0 unless a bg is set */
@@ -85,6 +91,52 @@ main.wrap > :first-child { margin-top: 0 !important; }
       }
       @media (prefers-reduced-motion: reduce) {
         .fadein { opacity: 1; transform: none; transition: none; filter: none; background-color: none; }
+      }
+
+      ::view-transition-old(root),
+      ::view-transition-new(root) {
+        animation-duration: 340ms;
+        animation-timing-function: cubic-bezier(.22, .8, .2, 1);
+      }
+
+      ::view-transition-old(root) {
+        animation-name: jt-page-fade-out;
+      }
+
+      ::view-transition-new(root) {
+        animation-name: jt-page-fade-in;
+      }
+
+      @keyframes jt-page-fade-out {
+        from { opacity: 1; filter: blur(0); }
+        to { opacity: 0; filter: blur(2px); }
+      }
+
+      @keyframes jt-page-fade-in {
+        from { opacity: 0; filter: blur(2px); }
+        to { opacity: 1; filter: blur(0); }
+      }
+
+      .page-shell {
+        opacity: 0;
+        animation: jt-initial-load-fade 420ms ease forwards;
+      }
+
+      @keyframes jt-initial-load-fade {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        ::view-transition-old(root),
+        ::view-transition-new(root) {
+          animation-duration: 1ms;
+        }
+
+        .page-shell {
+          animation: none;
+          opacity: 1;
+        }
       }
     </style>
 
@@ -157,13 +209,27 @@ main.wrap > :first-child { margin-top: 0 !important; }
       return;
     }
 
+    const FAST_FADE_MULTIPLIER = 0.16;
+    const NORMAL_FADE_MULTIPLIER = 0.26;
+    const FAST_UP_VELOCITY_THRESHOLD = -1.2; // px/ms
+
+    let lastScrolled = 0;
+    let lastTime = performance.now();
+
     const update = () => {
       const rect = hero.getBoundingClientRect();
       const scrolled = Math.max(0, -rect.top);
-      const fadeDistance = Math.max(hero.offsetHeight * 0.26, 1);
+      const now = performance.now();
+      const dt = Math.max(now - lastTime, 1);
+      const velocity = (scrolled - lastScrolled) / dt;
+      const isFastUpScroll = velocity < FAST_UP_VELOCITY_THRESHOLD;
+      const fadeMultiplier = isFastUpScroll ? NORMAL_FADE_MULTIPLIER : FAST_FADE_MULTIPLIER;
+      const fadeDistance = Math.max(hero.offsetHeight * fadeMultiplier, 1);
       const progress = Math.min(scrolled / fadeDistance, 1);
       const stepped = Math.round(progress * 22) / 22;
       hero.style.setProperty("--hero-progress", stepped.toFixed(4));
+      lastScrolled = scrolled;
+      lastTime = now;
     };
 
     let ticking = false;
@@ -187,17 +253,17 @@ main.wrap > :first-child { margin-top: 0 !important; }
   };
 
   const initSectionTitlePalette = () => {
-    const targets = Array.from(document.querySelectorAll(".section-title, main.page-home h1"));
+    const targets = Array.from(document.querySelectorAll(".section-title, main.page-home h1:not(.hero-subtitle)"));
     if (!targets.length) return;
 
-    const classes = ["st-green", "st-red", "st-navy"];
+    const classes = ["st-green", "st-red", "st-navy", "st-bronze", "st-plum", "st-teal"];
     // Start offset changes each load, then cycle so adjacent titles are always different.
     const start = Math.floor(Math.random() * classes.length);
 
     let idx = 0;
     targets.forEach((el) => {
-      if (el.classList.contains("st-green") || el.classList.contains("st-red") || el.classList.contains("st-navy")) return;
-      el.classList.remove("st-green", "st-red", "st-navy");
+      if (classes.some((className) => el.classList.contains(className))) return;
+      el.classList.remove(...classes);
       el.classList.add(classes[(start + idx) % classes.length]);
       idx += 1;
     });
@@ -264,12 +330,14 @@ main.wrap > :first-child { margin-top: 0 !important; }
       </div>
     </header>
 
-   <main class={mainClass}>
-  <slot />
-</main>
+    <div class="page-shell">
+      <main class={mainClass}>
+        <slot />
+      </main>
 
-    <footer class="wrap muted" style="padding-top:0; padding-bottom:28px;">
-      <small>© {new Date().getFullYear()} JT</small>
-    </footer>
+      <footer class="wrap muted" style="padding-top:0; padding-bottom:28px;">
+        <small>© {new Date().getFullYear()} JT</small>
+      </footer>
+    </div>
   </body>
 </html>
