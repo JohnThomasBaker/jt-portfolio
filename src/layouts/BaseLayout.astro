@@ -160,7 +160,7 @@ main.wrap > :first-child { margin-top: 0 !important; }
     const update = () => {
       const rect = hero.getBoundingClientRect();
       const scrolled = Math.max(0, -rect.top);
-      const fadeDistance = Math.max(hero.offsetHeight * 0.30, 1);
+      const fadeDistance = Math.max(hero.offsetHeight * 0.26, 1);
       const progress = Math.min(scrolled / fadeDistance, 1);
       const stepped = Math.round(progress * 22) / 22;
       hero.style.setProperty("--hero-progress", stepped.toFixed(4));
@@ -203,17 +203,49 @@ main.wrap > :first-child { margin-top: 0 !important; }
     });
   };
 
+  const initNavShift = () => {
+    if (window.__navShiftCleanup) window.__navShiftCleanup();
+
+    const trigger = document.querySelector(".logo-sidebar");
+    if (!trigger) {
+      window.__navShiftCleanup = null;
+      return;
+    }
+
+    const openNav = () => document.body.classList.add("nav-open");
+    const closeNav = () => document.body.classList.remove("nav-open");
+    const onFocusOut = (e) => {
+      if (trigger.contains(e.relatedTarget)) return;
+      closeNav();
+    };
+
+    trigger.addEventListener("mouseenter", openNav);
+    trigger.addEventListener("mouseleave", closeNav);
+    trigger.addEventListener("focusin", openNav);
+    trigger.addEventListener("focusout", onFocusOut);
+
+    window.__navShiftCleanup = () => {
+      closeNav();
+      trigger.removeEventListener("mouseenter", openNav);
+      trigger.removeEventListener("mouseleave", closeNav);
+      trigger.removeEventListener("focusin", openNav);
+      trigger.removeEventListener("focusout", onFocusOut);
+    };
+  };
+
   // First load
   document.addEventListener("DOMContentLoaded", () => {
     initFade();
     initHeroScrollFade();
     initSectionTitlePalette();
+    initNavShift();
   });
   // Astro client-side navigations / view transitions
   document.addEventListener("astro:page-load", () => {
     initFade();
     initHeroScrollFade();
     initSectionTitlePalette();
+    initNavShift();
   });
 </script>
   <body>

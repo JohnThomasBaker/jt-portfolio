@@ -11,8 +11,10 @@ const uploadsPlaylistId = `UU${youtubeChannelId.slice(2)}`;
   <FadeIn blur={60} y={0} duration={1200} bg="#C0C2D1">
     <section class="hero">
       <div class="hero-content">
-        <h1 style="color: #B8860B !important;">Welcome to JT's music</h1>
-        <p>Where JT puts his music</p>
+        <div class="hero-title-row">
+          <h1 style="color: #B8860B !important;">Welcome to JT's music</h1>
+          <h1 class="hero-subtitle">Where JT puts his music</h1>
+        </div>
       </div>
     </section>
   </FadeIn>
@@ -52,6 +54,7 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
         <h2 class="section-title st-navy">Check This Out</h2>
         <div class="video">
           <iframe
+            id="jt-featured-gallery"
             data-channel-playlist
             src={`https://www.youtube.com/embed?listType=playlist&list=${uploadsPlaylistId}&autoplay=1&mute=1&rel=0&modestbranding=1&enablejsapi=1`}
             title="Featured video gallery"
@@ -136,30 +139,76 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
 </BaseLayout>
 
 <script is:inline>
+  const loadYouTubeIframeApi = () =>
+    new Promise((resolve) => {
+      if (window.YT?.Player) {
+        resolve(window.YT);
+        return;
+      }
+
+      if (!window.__jtYouTubeApiPromise) {
+        window.__jtYouTubeApiPromise = new Promise((ready) => {
+          const existing = document.querySelector('script[src="https://www.youtube.com/iframe_api"]');
+          if (!existing) {
+            const script = document.createElement("script");
+            script.src = "https://www.youtube.com/iframe_api";
+            document.head.appendChild(script);
+          }
+
+          const previous = window.onYouTubeIframeAPIReady;
+          window.onYouTubeIframeAPIReady = () => {
+            previous?.();
+            ready(window.YT);
+          };
+        });
+      }
+
+      window.__jtYouTubeApiPromise.then(resolve);
+    });
+
   const initFeaturedVideoGallery = () => {
     const frame = document.querySelector("[data-channel-playlist]");
     if (!frame) return;
 
-    const sendCommand = (func, args = []) => {
-      frame.contentWindow?.postMessage(
-        JSON.stringify({ event: "command", func, args }),
-        "*"
-      );
+    window.__jtVideoGalleryCleanup?.();
+    const pendingTimeouts = [];
+    let timer = null;
+    let player = null;
+
+    const queue = (fn, ms) => {
+      const id = window.setTimeout(fn, ms);
+      pendingTimeouts.push(id);
     };
 
-    window.__jtVideoGalleryCleanup?.();
+    const seekHalfway = () => {
+      if (!player?.getDuration) return;
+      const duration = player.getDuration();
+      if (!duration || !Number.isFinite(duration)) return;
+      player.seekTo(duration * 0.5, true);
+    };
 
-    const startTimer = window.setTimeout(() => {
-      sendCommand("playVideo");
-    }, 1200);
+    loadYouTubeIframeApi().then((YT) => {
+      if (!frame.id) frame.id = "jt-featured-gallery";
 
-    const timer = window.setInterval(() => {
-      sendCommand("nextVideo");
-    }, 5000);
+      player = new YT.Player(frame.id, {
+        events: {
+          onReady: () => {
+            player.playVideo();
+            queue(seekHalfway, 1000);
+
+            timer = window.setInterval(() => {
+              player.nextVideo();
+              queue(seekHalfway, 1200);
+            }, 15000);
+          },
+        },
+      });
+    });
 
     window.__jtVideoGalleryCleanup = () => {
-      window.clearTimeout(startTimer);
-      window.clearInterval(timer);
+      pendingTimeouts.forEach((id) => window.clearTimeout(id));
+      if (timer) window.clearInterval(timer);
+      if (player?.destroy) player.destroy();
     };
   };
 
