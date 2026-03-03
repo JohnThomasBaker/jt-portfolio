@@ -4,6 +4,7 @@ import FadeIn from "../components/FadeIn.astro";
 
 const youtubeChannelId = "UCmXK2sDFnmXQu1MqqG7zrGA";
 const uploadsPlaylistId = `UU${youtubeChannelId.slice(2)}`;
+const youtubeChannelUrl = "https://www.youtube.com/@JohnThomasBaker";
 const instagramProfileUrl = "https://www.instagram.com/johnthomasbaker/";
 const tiktokProfileUrl = "https://www.tiktok.com/@jtmusicks";
 ---
@@ -18,6 +19,23 @@ const tiktokProfileUrl = "https://www.tiktok.com/@jtmusicks";
           <h1 class="hero-subtitle">Where JT puts his music</h1>
         </div>
       </div>
+      <div class="hero-lately-wrap" aria-label="iPhone video placeholder">
+        <aside class="hero-lately-box">
+          <button class="hero-lately-trigger" type="button" aria-label="Show latest iPhone video">
+            <img src="/images/logo.png" alt="JT logo" />
+          </button>
+          <div class="hero-lately-video-panel">
+            <video controls playsinline preload="metadata">
+              <source src="/videos/lately-demo.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </aside>
+        <p class="hero-lately-caption">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus interdum magna non
+          lorem fermentum, sed faucibus ipsum facilisis.
+        </p>
+      </div>
     </section>
   </FadeIn>
   <!-- ABOUT -->
@@ -29,12 +47,12 @@ const tiktokProfileUrl = "https://www.tiktok.com/@jtmusicks";
           <img class="avatar avatar-alt" src="/images/Avatar2.jpg" alt="" />
         </div>
         <div>
-          <h2 class="section-title st-green">About JT</h2>
-          <p class="muted" style="margin-top: 0.25rem">
+          <h2 class="section-title st-red">About JT</h2>
+          <p class="muted about-role">
             Composer, percussionist, snare drummer
           </p>
           <p style="margin-bottom: 0;">
-            How's it going. I'm JT. I'm a percussionist turned composer currently working in Toledo Ohio. I primarily write percussion and chamber works, often towing the line between the classical/marching percussion worlds and the world of contemporary experimental music. This practice is shared by a lifelong passion for the marching arts which I've spent time as a performer, writer and teacher. 
+            How's it going. I'm JT. I'm a percussionist turned composer currently working in Toledo Ohio. I primarily write percussion and chamber works, often towing the line between the classical/marching percussion worlds and the world of contemporary experimental music. This practice is shared by a lifelong passion for rudimental snare drumming and the marching arts, of which I've spent time as a performer, writer and teacher. 
 
 Here you can access my work, buy music, and get in contact with me. Thanks for coming
           </p>
@@ -55,8 +73,25 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
           </a>
         </div>
 
-        <div class="media-pyramid">
-          <article class="media-scroll media-scroll-youtube">
+        <div class="media-pyramid media-stack-rotator" data-social-stack>
+          <button
+            class="media-rotate media-rotate-prev"
+            type="button"
+            aria-label="Show previous social link"
+            data-social-prev
+          >
+            &#8249;
+          </button>
+          <button
+            class="media-rotate media-rotate-next"
+            type="button"
+            aria-label="Show next social link"
+            data-social-next
+          >
+            &#8250;
+          </button>
+
+          <article class="media-scroll media-scroll-youtube is-front" data-social-card>
             <h3 class="media-title-youtube">YouTube</h3>
             <div class="video">
               <iframe
@@ -69,9 +104,10 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
                 allowfullscreen
               ></iframe>
             </div>
+            <a href={youtubeChannelUrl} target="_blank" rel="noopener noreferrer">@JohnThomasBaker</a>
           </article>
 
-          <article class="media-scroll media-scroll-social media-scroll-instagram">
+          <article class="media-scroll media-scroll-social media-scroll-instagram is-back-right" data-social-card>
             <h3 class="media-title-instagram">Instagram</h3>
             <iframe
               src="https://www.instagram.com/johnthomasbaker/embed"
@@ -82,7 +118,7 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
             <a href={instagramProfileUrl} target="_blank" rel="noopener noreferrer">@johnthomasbaker</a>
           </article>
 
-          <article class="media-scroll media-scroll-social media-scroll-tiktok">
+          <article class="media-scroll media-scroll-social media-scroll-tiktok is-back-left" data-social-card>
             <h3 class="media-title-tiktok">TikTok</h3>
             <iframe
               src="https://www.tiktok.com/@jtmusicks"
@@ -242,13 +278,177 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
     };
   };
 
+  initFeaturedVideoGallery();
   document.addEventListener("DOMContentLoaded", initFeaturedVideoGallery);
   document.addEventListener("astro:page-load", initFeaturedVideoGallery);
+
+  const initSocialStackCycle = () => {
+    const stack = document.querySelector("[data-social-stack]");
+    if (!stack) return;
+
+    const cards = Array.from(stack.querySelectorAll("[data-social-card]"));
+    if (cards.length !== 3) return;
+    const prevButton = stack.querySelector("[data-social-prev]");
+    const nextButton = stack.querySelector("[data-social-next]");
+
+    window.__jtSocialStackCleanup?.();
+
+    let frontIndex = 0;
+    let interval = null;
+
+    const updatePositions = () => {
+      cards.forEach((card, index) => {
+        const offset = (index - frontIndex + cards.length) % cards.length;
+        card.classList.remove("is-front", "is-back-left", "is-back-right");
+        if (offset === 0) card.classList.add("is-front");
+        if (offset === 1) card.classList.add("is-back-right");
+        if (offset === 2) card.classList.add("is-back-left");
+      });
+    };
+
+    const restartInterval = () => {
+      if (interval) window.clearInterval(interval);
+      interval = window.setInterval(() => {
+        frontIndex = (frontIndex + 1) % cards.length;
+        updatePositions();
+      }, 10000);
+    };
+
+    const goNext = () => {
+      frontIndex = (frontIndex + 1) % cards.length;
+      updatePositions();
+      restartInterval();
+    };
+
+    const goPrev = () => {
+      frontIndex = (frontIndex - 1 + cards.length) % cards.length;
+      updatePositions();
+      restartInterval();
+    };
+
+    prevButton?.addEventListener("click", goPrev);
+    nextButton?.addEventListener("click", goNext);
+    updatePositions();
+    restartInterval();
+
+    window.__jtSocialStackCleanup = () => {
+      if (interval) window.clearInterval(interval);
+      prevButton?.removeEventListener("click", goPrev);
+      nextButton?.removeEventListener("click", goNext);
+    };
+  };
+
+  initSocialStackCycle();
+  document.addEventListener("DOMContentLoaded", initSocialStackCycle);
+  document.addEventListener("astro:page-load", initSocialStackCycle);
 </script>
 
 <style>
   .about-wrap {
     padding-bottom: 10px;
+  }
+
+  .hero {
+    overflow: visible;
+  }
+
+  .hero-lately-wrap {
+    position: absolute;
+    right: -12rem;
+    top: calc(100% + 28px);
+    bottom: auto;
+    transform: none;
+    transform-origin: right top;
+    z-index: 3;
+    width: min(360px, 38vw);
+  }
+
+  .hero-lately-box {
+    position: relative;
+    width: fit-content;
+    overflow: visible;
+  }
+
+  .hero-lately-trigger {
+    width: 90px;
+    height: 90px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: opacity 180ms ease;
+  }
+
+  .hero-lately-trigger::before {
+    content: "";
+    position: absolute;
+    inset: -18px -28px;
+  }
+
+  .hero-lately-trigger img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+  }
+
+  .hero-lately-video-panel {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: min(150px, 18vw);
+    aspect-ratio: 9 / 16;
+    background: linear-gradient(160deg, #222735 0%, #141925 100%);
+    border: 1px solid rgba(33, 38, 52, 0.45);
+    box-shadow: 0 14px 28px rgba(20, 23, 33, 0.32);
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+    transform-origin: right bottom;
+    pointer-events: none;
+    transition: opacity 220ms ease, transform 220ms ease;
+  }
+
+  .hero-lately-video-panel video {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    background: #0f1117;
+  }
+
+  .hero-lately-wrap:hover .hero-lately-video-panel,
+  .hero-lately-wrap:focus-within .hero-lately-video-panel {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  .hero-lately-wrap:hover .hero-lately-trigger,
+  .hero-lately-wrap:focus-within .hero-lately-trigger {
+    opacity: 0;
+  }
+
+  .hero-lately-caption {
+    margin: 0.48rem 0 0;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 0.94rem;
+    line-height: 1.25;
+    color: #323c4f !important;
+    opacity: 0;
+    transform: translateY(6px);
+    pointer-events: none;
+    transition: opacity 220ms ease, transform 220ms ease;
+  }
+
+  .hero-lately-wrap:hover .hero-lately-caption,
+  .hero-lately-wrap:focus-within .hero-lately-caption {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
   }
 
   .featured-wrap {
@@ -257,6 +457,17 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
 
   .media-stack {
     padding-top: 1.1rem;
+  }
+
+  .about-role {
+    margin: -0.22rem 0 0.3rem !important;
+    font-size: clamp(1.56rem, 1.98vw, 2.04rem) !important;
+    line-height: 0.98 !important;
+    font-family: "JTDisplay", system-ui, sans-serif;
+  }
+
+  .about .section-title.st-red {
+    margin-bottom: 0 !important;
   }
 
   .media-stack-head {
@@ -302,16 +513,51 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
   }
 
   .media-pyramid {
-    display: grid;
-    gap: 0.9rem;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: start;
+    position: relative;
+    min-height: 600px;
+    width: min(100%, 620px);
+    margin: 0.5rem auto 0;
+  }
+
+  .media-rotate {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2.1rem;
+    height: 2.1rem;
+    border: 1px solid rgba(75, 91, 118, 0.45);
+    background: var(--nav-reveal-bg);
+    color: var(--tone-slate);
+    font-family: "JTDisplay", system-ui, sans-serif;
+    font-size: 1.5rem;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 4;
+    cursor: pointer;
+  }
+
+  .media-rotate:hover {
+    background: rgba(154, 165, 192, 0.88);
+  }
+
+  .media-rotate-prev {
+    left: -4.4rem;
+  }
+
+  .media-rotate-next {
+    right: -4.4rem;
   }
 
   .media-scroll {
+    position: absolute;
+    inset: 0;
     border: none;
-    background: transparent;
+    background: var(--nav-reveal-bg);
+    backdrop-filter: blur(4px);
     padding: 0.75rem;
+    transition: transform 560ms ease, opacity 560ms ease, filter 560ms ease;
   }
 
   .media-scroll h3 {
@@ -335,31 +581,30 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
   }
 
   .media-scroll-youtube {
-    grid-column: 1 / -1;
-    width: min(100%, 520px);
-    margin: 0 auto;
+    width: 100%;
   }
 
   .media-scroll-youtube .video {
-    min-height: 230px;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: rgba(75, 91, 118, 0.12);
   }
 
   .media-scroll-youtube .video iframe {
     display: block;
     width: 100%;
-    aspect-ratio: auto;
     height: 100%;
-    min-height: 230px;
+    border: 0;
   }
 
   .media-scroll-social iframe {
     width: 100%;
-    height: 360px;
+    height: 300px;
     border: none;
     background: transparent;
   }
 
-  .media-scroll-social a {
+  .media-scroll a {
     margin-top: 0.45rem;
     display: block;
     text-align: center;
@@ -369,17 +614,83 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
     text-decoration: none;
   }
 
-  .media-scroll-social a:hover {
+  .media-scroll a:hover {
     text-decoration: underline;
   }
 
+  .media-scroll.is-front {
+    z-index: 3;
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 1;
+    filter: none;
+    pointer-events: auto;
+  }
+
+  .media-scroll.is-back-left {
+    z-index: 1;
+    transform: translate3d(-16%, 8%, 0) scale(0.82);
+    opacity: 0.82;
+    filter: saturate(0.88);
+    pointer-events: none;
+  }
+
+  .media-scroll.is-back-right {
+    z-index: 2;
+    transform: translate3d(16%, 8%, 0) scale(0.82);
+    opacity: 0.82;
+    filter: saturate(0.88);
+    pointer-events: none;
+  }
+
   @media (max-width: 840px) {
+    .hero-lately-wrap {
+      width: min(260px, 48vw);
+      right: -8rem;
+      top: calc(100% + 20px);
+      bottom: auto;
+    }
+
     .media-pyramid {
-      grid-template-columns: 1fr;
+      min-height: 480px;
+      width: 100%;
     }
 
     .media-scroll-youtube {
       width: 100%;
     }
+
+    .media-scroll h3 {
+      font-size: 4.1rem;
+    }
+
+    .media-scroll-social iframe {
+      height: 250px;
+    }
+
+    .media-rotate-prev {
+      left: -2.6rem;
+    }
+
+    .media-rotate-next {
+      right: -2.6rem;
+    }
+
+    .media-scroll.is-back-left {
+      transform: translate3d(-8%, 7%, 0) scale(0.85);
+    }
+
+    .media-scroll.is-back-right {
+      transform: translate3d(8%, 7%, 0) scale(0.85);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero-lately-wrap {
+      width: min(220px, 52vw);
+      right: -5rem;
+      top: calc(100% + 16px);
+      bottom: auto;
+    }
+
   }
 </style>

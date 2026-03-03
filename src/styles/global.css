@@ -36,6 +36,16 @@
   font-style: normal;
   font-display: swap;
 }
+@font-face {
+  font-family: "GoudyBookletter1911";
+  src:
+    url("/fonts/goudy-bookletter-1911/goudy_bookletter_1911-webfont.woff") format("woff"),
+    url("/fonts/goudy-bookletter-1911/goudy_bookletter_1911-webfont.ttf") format("truetype"),
+    url("/fonts/goudy-bookletter-1911/GoudyBookletter1911.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 .wrap, main, header, footer {
   background: transparent !important;
@@ -92,7 +102,7 @@ html, body {
 body {
   position: relative;
   color: var(--text);
-  font-family: "Times New Roman", Times, serif;
+  font-family: "GoudyBookletter1911", serif;
   font-size: clamp(1.08rem, 0.35vw + 1rem, 1.2rem);
   line-height: 1.72;
   font-weight: 540;
@@ -505,7 +515,6 @@ body.nav-open .page-shell {
   position: relative;
   z-index: 1;
   transform-origin: center;
-  transition: transform 120ms linear, color 120ms linear;
 }
 
 .sidebar a:hover {
