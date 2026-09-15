@@ -2,20 +2,20 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const pieces = [
-  { name: "Through the Glass", year: 2025, tag: "Marching", category: "marching", image: "/images/hero2.jpg" },
-  { name: "Still Circuit", year: 2024, tag: "Not Marching", category: "chamber", image: "/images/hero.jpg" },
-  { name: "North Lot Reverie", year: 2024, tag: "Marching", category: "marching", image: "/images/hero2.jpg" },
-  { name: "Ash Line", year: 2023, tag: "Not Marching", category: "misc", image: "/images/hero.jpg" },
-  { name: "Brasslight", year: 2022, tag: "Marching", category: "marching", image: "/images/hero2.jpg" },
-  { name: "Quiet Cadence", year: 2021, tag: "Not Marching", category: "chamber", image: "/images/hero.jpg" },
+  { name: "Through the Glass", year: 2025, tag: "Composition", category: "compositions", image: "/images/hero2.jpg" },
+  { name: "Still Circuit", year: 2024, tag: "Composition", category: "compositions", image: "/images/hero.jpg" },
+  { name: "North Lot Reverie", year: 2024, tag: "Composition", category: "compositions", image: "/images/hero2.jpg" },
+  { name: "Ash Line", year: 2023, tag: "Composition", category: "compositions", image: "/images/hero.jpg" },
+  { name: "Brasslight", year: 2022, tag: "Composition", category: "compositions", image: "/images/hero2.jpg" },
+  { name: "Quiet Cadence", year: 2021, tag: "Composition", category: "compositions", image: "/images/hero.jpg" },
 ];
 ---
 <BaseLayout title="JT | Music" description="Works and recordings">
   <h1>Music</h1>
   <div class="music-tabs" role="tablist" aria-label="Music categories">
     <button class="music-tab is-active" type="button" role="tab" aria-selected="true" data-filter="all">All</button>
-    <button class="music-tab" type="button" role="tab" aria-selected="false" data-filter="chamber">Chamber</button>
-    <button class="music-tab" type="button" role="tab" aria-selected="false" data-filter="marching">Marching</button>
+    <button class="music-tab" type="button" role="tab" aria-selected="false" data-filter="compositions">Compositions</button>
+    <button class="music-tab" type="button" role="tab" aria-selected="false" data-filter="arrangements">Arrangements</button>
     <button class="music-tab" type="button" role="tab" aria-selected="false" data-filter="misc">Misc</button>
   </div>
   <div class="music-catalog">
@@ -25,7 +25,7 @@ const pieces = [
         <div class="piece-meta">
           <h3>{piece.name}</h3>
           <p class="piece-year">{piece.year}</p>
-          <span class={`piece-tag ${piece.tag === "Marching" ? "is-marching" : "is-not-marching"}`}>
+          <span class={`piece-tag ${piece.category === "arrangements" ? "is-arrangement" : "is-composition"}`}>
             {piece.tag}
           </span>
         </div>
@@ -35,97 +35,62 @@ const pieces = [
 
   <style>
     .music-tabs {
-      position: relative;
       display: flex;
-      align-items: flex-end;
       flex-wrap: wrap;
-      gap: 0;
-      margin-top: 1.15rem;
-      margin-bottom: 0.9rem;
-      padding: 0 0.1rem;
-    }
-
-    .music-tabs::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 2px;
-      background: #000;
+      gap: 0.85rem;
+      width: fit-content;
+      max-width: 100%;
+      margin: 1.5rem 0 1.75rem;
+      padding: 0.75rem;
+      border: 1px solid rgba(63, 70, 94, 0.2);
+      border-radius: 12px;
+      background: rgba(233, 237, 248, 0.45);
     }
 
     .music-tab {
       appearance: none;
-      border: 2px solid #3f465e;
-      border-radius: 0;
-      --tab-fill: #b9c0d4;
-      background:
-        linear-gradient(#000, #000) left top / 12px 2px no-repeat,
-        linear-gradient(#000, #000) left top / 2px 12px no-repeat,
-        linear-gradient(#000, #000) right top / 12px 2px no-repeat,
-        linear-gradient(#000, #000) right top / 2px 12px no-repeat,
-        var(--tab-fill);
-      color: #1f2638;
-      font-family: "JTDisplay", system-ui, sans-serif;
-      font-size: 0.82rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      word-spacing: 0.08em;
-      line-height: 1;
-      min-width: 9.5rem;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 0.72rem 1.2rem 0.62rem;
-      image-rendering: pixelated;
-      box-shadow:
-        inset 2px 2px 0 #e9edf8,
-        inset -2px -2px 0 #75809c,
-        0 3px 0 #3a4258;
-      cursor: pointer;
-      transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease, color 180ms ease;
       position: relative;
-      z-index: 1;
-      margin-left: -1.9rem; /* 20% overlap of 9.5rem tab width */
-      clip-path: polygon(
-        0 100%,
-        0 30%,
-        6px 30%,
-        6px 16%,
-        12px 16%,
-        12px 0,
-        calc(100% - 12px) 0,
-        calc(100% - 12px) 16%,
-        calc(100% - 6px) 16%,
-        calc(100% - 6px) 30%,
-        100% 30%,
-        100% 100%
-      );
-    }
-
-    .music-tab:first-child {
-      margin-left: 0;
+      min-height: 54px;
+      padding: 0.75rem 1.25rem;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      background: transparent;
+      color: #3f465e !important;
+      font-family: "JTDisplay", system-ui, sans-serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      line-height: 1.2;
+      letter-spacing: 0.015em;
+      cursor: pointer;
+      transition: transform 180ms ease, background-color 160ms ease, color 160ms ease, box-shadow 160ms ease;
     }
 
     .music-tab:hover {
-      transform: translateY(-1px);
-      box-shadow:
-        inset 2px 2px 0 #f2f5ff,
-        inset -2px -2px 0 #6d7895,
-        0 4px 0 #3a4258;
+      background: rgba(63, 70, 94, 0.09);
+      color: #20283c !important;
     }
 
     .music-tab.is-active {
-      --tab-fill: #848da3;
-      color: #ffffff !important;
-      transform: translateY(-2px) scale(1.1);
-      box-shadow:
-        inset 2px 2px 0 #d9dfef,
-        inset -2px -2px 0 #62708d,
-        0 4px 0 #3a4258;
-      z-index: 20;
+      border-color: #3f465e;
+      background: #3f465e;
+      color: #c7951f !important;
+      transform: translateY(-2px) scale(1.08);
+      z-index: 1;
+      box-shadow: 0 2px 5px rgba(31, 38, 56, 0.16);
+    }
+
+    .music-tab:focus-visible {
+      outline: 2px solid #614445;
+      outline-offset: 3px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .music-tab {
+        transition: none;
+      }
     }
 
     .music-catalog {
@@ -173,11 +138,11 @@ const pieces = [
       background: rgba(255, 255, 255, 0.6);
     }
 
-    .piece-tag.is-marching {
+    .piece-tag.is-composition {
       color: #3f4d67;
     }
 
-    .piece-tag.is-not-marching {
+    .piece-tag.is-arrangement {
       color: #614445;
     }
 
@@ -189,15 +154,16 @@ const pieces = [
 
     @media (max-width: 640px) {
       .music-tabs {
-        gap: 0;
-        padding-bottom: 0;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        width: 100%;
+        box-sizing: border-box;
       }
 
       .music-tab {
-        font-size: 0.72rem;
-        min-width: 7.5rem;
-        padding: 0.58rem 0.82rem 0.52rem;
-        margin-left: -1.5rem; /* 20% overlap of 7.5rem tab width */
+        min-width: 0;
+        padding: 0.75rem 0.5rem;
+        font-size: 1.2rem;
       }
 
       .music-catalog {

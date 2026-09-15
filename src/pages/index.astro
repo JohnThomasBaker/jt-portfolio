@@ -121,8 +121,10 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
           <article class="media-scroll media-scroll-social media-scroll-tiktok is-back-left" data-social-card>
             <h3 class="media-title-tiktok">TikTok</h3>
             <iframe
-              src="https://www.tiktok.com/@jtmusicks"
-              title="TikTok profile preview"
+              src="https://www.tiktok.com/player/v1/7669427958070758670?autoplay=0&controls=1&description=1"
+              title="Featured TikTok video by @jtmusicks"
+              allow="fullscreen"
+              allowfullscreen
               loading="lazy"
               referrerpolicy="no-referrer-when-downgrade"
             ></iframe>
@@ -350,6 +352,12 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
 
   .hero {
     overflow: visible;
+  }
+
+  .hero-content {
+    padding-top: 0;
+    padding-bottom: 0;
+    justify-content: center;
   }
 
   .hero-lately-wrap {
@@ -604,6 +612,15 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
     background: transparent;
   }
 
+  .media-scroll-tiktok iframe {
+    display: block;
+    width: min(100%, 236.25px);
+    height: 420px;
+    margin-inline: auto;
+    border-radius: 8px;
+    background: #000;
+  }
+
   .media-scroll a {
     margin-top: 0.45rem;
     display: block;
@@ -642,6 +659,58 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
     pointer-events: none;
   }
 
+  /* Desktop proportions: keep the display type, with a clearer size hierarchy. */
+  @media (min-width: 1024px) {
+    .hero-content h1:not(.hero-subtitle) {
+      font-size: clamp(3.75rem, 5.3vw, 4.75rem);
+      line-height: 1.12;
+    }
+
+    .hero-title-row {
+      gap: 0.85rem;
+    }
+
+    .hero-content h1.hero-subtitle {
+      font-size: clamp(2rem, 2.8vw, 2.5rem) !important;
+      line-height: 1.15;
+    }
+
+    .about-wrap {
+      padding-top: 44px;
+      padding-bottom: 24px;
+    }
+
+    .about {
+      grid-template-columns: 144px minmax(0, 1fr);
+      gap: 1.75rem;
+    }
+
+    .avatar-stack,
+    .avatar {
+      width: 144px;
+      height: 144px;
+    }
+
+    .about-role {
+      font-size: clamp(1.5rem, 1.8vw, 1.8rem) !important;
+      line-height: 1.15 !important;
+    }
+
+    .featured-wrap {
+      padding-top: 20px;
+    }
+
+    .media-stack-head {
+      margin-bottom: 1rem;
+    }
+
+    .media-scroll h3 {
+      font-size: 4.75rem;
+      line-height: 1.15;
+      margin-bottom: 0.75rem;
+    }
+  }
+
   @media (max-width: 840px) {
     .hero-lately-wrap {
       width: min(260px, 48vw);
@@ -665,6 +734,11 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
 
     .media-scroll-social iframe {
       height: 250px;
+    }
+
+    .media-scroll-tiktok iframe {
+      width: min(100%, 191.25px);
+      height: 340px;
     }
 
     .media-rotate-prev {
