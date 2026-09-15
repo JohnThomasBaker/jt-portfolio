@@ -9,6 +9,7 @@ const nav = [
   { href: "/", label: "Home" },
   { href: "/music", label: "Music" },
   { href: "/lessons", label: "Lessons" },
+  { href: "/news", label: "News" },
   { href: "/me", label: "Me" },
   { href: STORE_URL, label: "Store", external: true },
 ];
@@ -253,7 +254,7 @@ main.wrap > :first-child { margin-top: 0 !important; }
   };
 
   const initSectionTitlePalette = () => {
-    const targets = Array.from(document.querySelectorAll(".section-title, main.page-home h1:not(.hero-subtitle)"));
+    const targets = Array.from(document.querySelectorAll(".section-title, main.page-home h1:not(.hero-subtitle), main.page-music .music-piece h3"));
     if (!targets.length) return;
 
     const classes = ["st-green", "st-red", "st-navy", "st-bronze", "st-plum", "st-teal"];
@@ -324,6 +325,7 @@ main.wrap > :first-child { margin-top: 0 !important; }
             <a href="/">Home</a>
             <a href="/music">Music</a>
             <a href="/lessons">Lessons</a>
+            <a href="/news">News</a>
             <a href="/me">Me</a>
           </div>
         </div>

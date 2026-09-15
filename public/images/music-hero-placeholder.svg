@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="900" viewBox="0 0 1920 900" fill="none">
+<defs>
+  <linearGradient id="bg" x2="1920" y2="900" gradientUnits="userSpaceOnUse"><stop stop-color="#4b555f"/><stop offset=".5" stop-color="#303542"/><stop offset="1" stop-color="#635751"/></linearGradient>
+  <radialGradient id="light"><stop stop-color="#bea57c" stop-opacity=".25"/><stop offset="1" stop-color="#bea57c" stop-opacity="0"/></radialGradient>
+  <pattern id="grain" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M0 1h5" stroke="#fff" stroke-opacity=".025"/></pattern>
+</defs>
+<path fill="url(#bg)" d="M0 0h1920v900H0z"/>
+<ellipse cx="1500" cy="180" rx="700" ry="650" fill="url(#light)"/>
+<g stroke="#c9bc9f" stroke-opacity=".16" stroke-width="2">
+<path d="M-100 590C400 110 1120 1080 2020 200"/>
+<path d="M-100 618C400 138 1120 1108 2020 228"/>
+<path d="M-100 646C400 166 1120 1136 2020 256"/>
+<path d="M-100 674C400 194 1120 1164 2020 284"/>
+<path d="M-100 702C400 222 1120 1192 2020 312"/>
+</g>
+<path fill="url(#grain)" d="M0 0h1920v900H0z"/>
+</svg>

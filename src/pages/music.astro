@@ -1,17 +1,31 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 
+// Replace this path with your chosen hero photo in public/images.
+const musicHeroImage = "/images/Desk.jpeg";
+
 const pieces = [
-  { name: "Through the Glass", year: 2025, tag: "Composition", category: "compositions", image: "/images/hero2.jpg" },
-  { name: "Still Circuit", year: 2024, tag: "Composition", category: "compositions", image: "/images/hero.jpg" },
-  { name: "North Lot Reverie", year: 2024, tag: "Composition", category: "compositions", image: "/images/hero2.jpg" },
-  { name: "Ash Line", year: 2023, tag: "Composition", category: "compositions", image: "/images/hero.jpg" },
-  { name: "Brasslight", year: 2022, tag: "Composition", category: "compositions", image: "/images/hero2.jpg" },
-  { name: "Quiet Cadence", year: 2021, tag: "Composition", category: "compositions", image: "/images/hero.jpg" },
+  { name: "Through the Glass", year: 2025, tag: "Composition", category: "compositions", image: "/images/work-placeholder.svg" },
+  { name: "Still Circuit", year: 2024, tag: "Composition", category: "compositions", image: "/images/work-placeholder.svg" },
+  { name: "North Lot Reverie", year: 2024, tag: "Composition", category: "compositions", image: "/images/work-placeholder.svg" },
+  { name: "Ash Line", year: 2023, tag: "Composition", category: "compositions", image: "/images/work-placeholder.svg" },
+  { name: "Brasslight", year: 2022, tag: "Composition", category: "compositions", image: "/images/work-placeholder.svg" },
+  { name: "Quiet Cadence", year: 2021, tag: "Composition", category: "compositions", image: "/images/work-placeholder.svg" },
 ];
 ---
-<BaseLayout title="JT | Music" description="Works and recordings">
-  <h1>Music</h1>
+<BaseLayout title="JT | Music" description="Works and recordings" mainClass="page-music">
+  <section class="music-hero" aria-labelledby="music-title">
+    <img class="music-hero-image" src={musicHeroImage} alt="" fetchpriority="high" />
+    <div class="music-hero-copy">
+      <h1 id="music-title">Music</h1>
+   
+    </div>
+  </section>
+  <section class="music-library" aria-label="Browse music">
+    <div class="music-library-intro">
+      <h1>My Stuff</h1>
+      <p>Original compositions, arrangements, and experiments along the way. All original pieces and scores are available for purchase in pdf format or bound score. All arrangements, Exercises, and miscellaneous materials are available 100% free in PDF format. </p>
+    </div>
   <div class="music-tabs" role="tablist" aria-label="Music categories">
     <button class="music-tab is-active" type="button" role="tab" aria-selected="true" data-filter="all">All</button>
     <button class="music-tab" type="button" role="tab" aria-selected="false" data-filter="compositions">Compositions</button>
@@ -33,7 +47,123 @@ const pieces = [
     ))}
   </div>
 
+  </section>
+
   <style>
+    .music-hero {
+      position: relative;
+      isolation: isolate;
+      display: grid;
+      place-items: center;
+      height: 60vh;
+      min-height: 360px;
+      padding: 0 24px;
+      overflow: hidden;
+      background: #252a35;
+    }
+
+    .music-hero-image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      z-index: 1;
+    }
+
+    @media (min-width: 1024px) {
+      .music-hero-image {
+        object-position: center 68%;
+      }
+    }
+
+    .music-hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .music-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0.5;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 180px 180px;
+    }
+
+    .music-hero-copy {
+      position: relative;
+      z-index: 3;
+      max-width: 760px;
+      text-align: center;
+    }
+
+    .music-hero-copy h1 {
+      margin: 0;
+      font-family: "Jacquard24", serif !important;
+      font-size: clamp(5.4rem, 14.4vw, 10.8rem);
+      font-weight: 400;
+      line-height: 1;
+      color: #c7951f;
+      text-shadow: 0 4px 24px rgba(0, 0, 0, 0.9), 0 2px 6px rgba(0, 0, 0, 0.8), 0 1px 1px rgba(0, 0, 0, 0.7);
+    }
+
+    @media (min-width: 1024px) {
+      .music-hero-copy h1 {
+        font-size: clamp(5.4rem, 14.4vw, 10.8rem) !important;
+        line-height: 1.12;
+      }
+    }
+
+    .music-hero-copy p {
+      margin: 40px 0 0;
+      color: #e2d7bf !important;
+      font-family: "JTDisplay", serif;
+      font-size: clamp(1.1rem, 2vw, 1.65rem);
+      line-height: 1.35;
+      text-wrap: balance;
+    }
+
+    .music-library {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px 24px 64px;
+    }
+
+    .music-library-intro {
+      max-width: 660px;
+      margin: 20px auto 28px;
+      text-align: center;
+    }
+    .music-library-intro h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      line-height: 1.2;
+    }
+    .music-library-intro p {
+      margin: 0;
+      font-size: 1.15rem;
+      line-height: 1.6;
+      text-wrap: balance;
+    }
+    .music-library .music-tabs { margin-inline: auto; }
+    .piece-meta { text-align: center; }
+
+    @media (max-width: 640px) {
+      .music-hero { min-height: 360px; height: 60vh; padding: 0 24px; }
+      .music-library { padding: 16px 20px 40px; }
+    }
+
+
     .music-tabs {
       display: flex;
       flex-wrap: wrap;
@@ -95,27 +225,34 @@ const pieces = [
 
     .music-catalog {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1rem;
+      grid-template-columns: 1fr;
+      gap: 0;
       margin-top: 1rem;
+      border-top: 1px solid rgba(63, 70, 94, 0.2);
     }
 
     .music-piece {
-      padding: 0;
-      overflow: hidden;
+      display: grid;
+      grid-template-columns: 132px minmax(0, 1fr);
+      align-items: center;
+      gap: 1.25rem;
+      padding: 0.9rem 0;
+      border-bottom: 1px solid rgba(63, 70, 94, 0.2);
     }
 
     .score-image {
-      width: 100%;
-      aspect-ratio: 4 / 3;
+      width: 132px;
+      height: 88px;
       object-fit: cover;
       display: block;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-      filter: saturate(0.55) contrast(1.05);
+      background: #fff;
+      border: 1px solid rgba(63, 70, 94, 0.12);
+      filter: none;
     }
 
     .piece-meta {
-      padding: 1rem;
+      padding: 0;
+      text-align: left;
     }
 
     .piece-meta h3 {
@@ -146,12 +283,6 @@ const pieces = [
       color: #614445;
     }
 
-    @media (max-width: 960px) {
-      .music-catalog {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
     @media (max-width: 640px) {
       .music-tabs {
         display: grid;
@@ -166,8 +297,13 @@ const pieces = [
         font-size: 1.2rem;
       }
 
-      .music-catalog {
-        grid-template-columns: 1fr;
+      .music-piece {
+        grid-template-columns: 88px minmax(0, 1fr);
+        gap: 0.85rem;
+      }
+      .score-image {
+        width: 88px;
+        height: 64px;
       }
     }
   </style>
