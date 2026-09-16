@@ -1,0 +1,73 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { pieces } from "../../data/music";
+
+export function getStaticPaths() {
+  return pieces.map((piece) => ({ params: { slug: piece.slug }, props: { piece } }));
+}
+
+const { piece } = Astro.props;
+---
+
+<BaseLayout title={`JT | ${piece.name}`} description={`${piece.name} by JT`} mainClass="page-music-piece">
+  <article class="music-piece-page">
+    <a class="back-link" href="/music">← All music</a>
+
+    <header class="piece-header">
+      <div>
+        <h1>{piece.name}</h1>
+        <p class="piece-year">{piece.year}</p>
+        <p class="piece-instrumentation">{piece.instrumentation}</p>
+      </div>
+    </header>
+
+    <section class="piece-section" aria-labelledby="about-heading">
+      <h2 id="about-heading">About the piece</h2>
+      {piece.description.map((paragraph) => <p>{paragraph}</p>)}
+    </section>
+
+    {piece.media.length > 0 && (
+      <section class="piece-section" aria-labelledby="media-heading">
+        <h2 id="media-heading">Watch & listen</h2>
+        <div class="media-grid">
+          {piece.media.map((media) => (
+            <figure>
+              <iframe src={media.embedUrl} title={media.title} loading="lazy" allowfullscreen></iframe>
+              <figcaption>{media.title}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="piece-section purchase-section" aria-labelledby="purchase-heading">
+      <h2 id="purchase-heading">Score</h2>
+      {piece.gumroadUrl ? (
+        <a class="gumroad-link" href={piece.gumroadUrl} target="_blank" rel="noreferrer">Buy on Gumroad ↗</a>
+      ) : (
+        <p class="purchase-note">The Gumroad link for this piece is coming soon.</p>
+      )}
+    </section>
+  </article>
+
+  <style>
+    .music-piece-page { max-width: 880px; margin: 0 auto; padding: calc(var(--nav-h) + 24px) 24px 64px; }
+    .back-link { display: inline-block; margin-bottom: 1.25rem; color: var(--tone-slate) !important; }
+    .piece-header { max-width: 720px; }
+    .piece-year { margin: 0 0 .35rem; color: var(--tone-slate) !important; font-family: "JTDisplay", system-ui, sans-serif; }
+    .piece-header h1 { margin: 0; font-size: clamp(1.56rem, 4.2vw, 3.12rem); text-align: left; }
+    .piece-instrumentation { margin: .5rem 0 0; color: var(--tone-slate) !important; font-style: italic; }
+    .piece-section { margin-top: 3rem; }
+    .piece-section h2 { margin: 0 0 .75rem; text-align: left; }
+    .media-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
+    .media-grid figure { margin: 0; }
+    .media-grid iframe { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; }
+    .media-grid figcaption { margin-top: .4rem; }
+    .purchase-section { padding-top: 1.5rem; border-top: 1px solid rgba(63, 70, 94, .2); }
+    .gumroad-link { display: inline-block; padding: .7rem 1rem; color: var(--tone-slate) !important; border: 1px solid currentColor; font-family: "JTDisplay", system-ui, sans-serif; }
+    .purchase-note { margin: 0; }
+    @media (max-width: 640px) {
+      .music-piece-page { padding: calc(var(--nav-h) + 16px) 20px 48px; }
+    }
+  </style>
+</BaseLayout>

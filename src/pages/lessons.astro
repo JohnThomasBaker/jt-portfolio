@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
-<BaseLayout title="JT | Lessons" description="Lesson info">
+<BaseLayout title="JT | Lessons" description="Lesson info" mainClass="page-default page-lessons">
   <section class="lessons-page">
     <header class="lessons-header">
       <div class="lessons-header-copy">
@@ -158,6 +158,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 </script>
 
 <style>
+  :global(main.page-lessons) {
+    padding-top: 48px;
+  }
+
   .lessons-page {
     display: grid;
     gap: 1.25rem;
@@ -184,15 +188,20 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   }
 
   .lessons-photo-box {
+    --collage-x: 2rem;
+    --collage-y: 5.25rem;
     position: relative;
     z-index: 1;
     margin: 0;
-    width: 80%;
+    width: 100%;
+    max-width: 26rem;
+    height: 18rem;
     justify-self: end;
-    min-height: 250px;
+    align-self: center;
     border: 1px solid rgba(72, 85, 110, 0.18);
     background: rgba(255, 255, 255, 0.38);
     overflow: visible;
+    transform: translate(var(--collage-x), var(--collage-y));
   }
 
   .lessons-photo-box img {
@@ -221,15 +230,17 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   }
 
   .lessons-photo-two {
-    top: -4%;
-    left: -12%;
+    right: -16%;
+    bottom: -8%;
     transform: none;
   }
 
   .lessons-photo-three {
-    bottom: -12%;
+    top: -12%;
     left: -14%;
-    transform: scale(1.2);
+    width: 40%;
+    transform: scale(1.56);
+    transform-origin: top left;
   }
 
   .lessons-photo-four {
@@ -377,7 +388,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     }
 
     .lessons-photo-box {
-      min-height: 150px;
+      height: 15rem;
+      --collage-x: 0px;
+      --collage-y: 0px;
     }
 
     .lesson-grid {

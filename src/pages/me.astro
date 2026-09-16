@@ -3,7 +3,30 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 <BaseLayout title="JT | Me" description="About JT">
   <h1>Me</h1>
-  <div class="card">
-    <p>Short bio + contact info.</p>
+  <div class="card me-content">
+    <p>this is a picture of me, JT.</p>
+    <img src="/images/Birthday%20Picture.jpeg" alt="JT at a birthday celebration" />
   </div>
+
+  <style>
+    .me-content {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(220px, 36%);
+      align-items: start;
+      gap: 2rem;
+    }
+
+    .me-content p { margin: 0; }
+
+    .me-content img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    @media (max-width: 640px) {
+      .me-content { grid-template-columns: 1fr; }
+    }
+  </style>
 </BaseLayout>

@@ -204,8 +204,10 @@ main.wrap > :first-child { margin-top: 0 !important; }
   const initHeroScrollFade = () => {
     if (window.__heroScrollCleanup) window.__heroScrollCleanup();
 
-    const hero = document.querySelector(".hero");
+    // Every image hero uses this shared overlap state for the nav signature.
+    const hero = document.querySelector(".hero, .music-hero, .news-hero");
     if (!hero) {
+      document.body.classList.remove("nav-over-hero");
       window.__heroScrollCleanup = null;
       return;
     }
@@ -229,6 +231,7 @@ main.wrap > :first-child { margin-top: 0 !important; }
       const progress = Math.min(scrolled / fadeDistance, 1);
       const stepped = Math.round(progress * 22) / 22;
       hero.style.setProperty("--hero-progress", stepped.toFixed(4));
+      document.body.classList.toggle("nav-over-hero", rect.top <= 18 && rect.bottom >= 131);
       lastScrolled = scrolled;
       lastTime = now;
     };
@@ -250,6 +253,7 @@ main.wrap > :first-child { margin-top: 0 !important; }
     window.__heroScrollCleanup = () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
+      document.body.classList.remove("nav-over-hero");
     };
   };
 
@@ -300,12 +304,29 @@ main.wrap > :first-child { margin-top: 0 !important; }
     };
   };
 
+  const initTrackpadBoundary = () => {
+    if (window.__trackpadBoundaryCleanup) window.__trackpadBoundaryCleanup();
+
+    const onWheel = (event) => {
+      if (event.ctrlKey) return;
+
+      const isHorizontalGesture = Math.abs(event.deltaX) > Math.abs(event.deltaY);
+      const isOverscrollingAboveTop = window.scrollY <= 0 && event.deltaY < 0;
+
+      if (isHorizontalGesture || isOverscrollingAboveTop) event.preventDefault();
+    };
+
+    window.addEventListener("wheel", onWheel, { passive: false });
+    window.__trackpadBoundaryCleanup = () => window.removeEventListener("wheel", onWheel);
+  };
+
   // First load
   document.addEventListener("DOMContentLoaded", () => {
     initFade();
     initHeroScrollFade();
     initSectionTitlePalette();
     initNavShift();
+    initTrackpadBoundary();
   });
   // Astro client-side navigations / view transitions
   document.addEventListener("astro:page-load", () => {
@@ -313,13 +334,14 @@ main.wrap > :first-child { margin-top: 0 !important; }
     initHeroScrollFade();
     initSectionTitlePalette();
     initNavShift();
+    initTrackpadBoundary();
   });
 </script>
   <body>
     <header class="nav">
       <div class="nav-inner">
         <div class="logo-sidebar">
-          <img src="/images/logo.png" alt="JT Logo" class="logo" />
+          <span class="logo" role="img" aria-label="JT Logo"></span>
 
           <div class="sidebar" aria-label="Site navigation">
             <a href="/">Home</a>
@@ -338,7 +360,7 @@ main.wrap > :first-child { margin-top: 0 !important; }
       </main>
 
       <footer class="wrap muted" style="padding-top:0; padding-bottom:28px;">
-        <small>© {new Date().getFullYear()} JT</small>
+        <small>© {new Date().getFullYear()} <span class="footer-signature" role="img" aria-label="JT signature"></span></small>
       </footer>
     </div>
   </body>

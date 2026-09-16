@@ -1,17 +1,10 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { pieces } from "../data/music";
 
 // Replace this path with your chosen hero photo in public/images.
-const musicHeroImage = "/images/Desk.jpeg";
+const musicHeroImage = "/images/JT and Maddie.png";
 
-const pieces = [
-  { name: "Through the Glass", year: 2025, tag: "Composition", category: "compositions", image: "/images/work-placeholder.svg" },
-  { name: "Still Circuit", year: 2024, tag: "Composition", category: "compositions", image: "/images/work-placeholder.svg" },
-  { name: "North Lot Reverie", year: 2024, tag: "Composition", category: "compositions", image: "/images/work-placeholder.svg" },
-  { name: "Ash Line", year: 2023, tag: "Composition", category: "compositions", image: "/images/work-placeholder.svg" },
-  { name: "Brasslight", year: 2022, tag: "Composition", category: "compositions", image: "/images/work-placeholder.svg" },
-  { name: "Quiet Cadence", year: 2021, tag: "Composition", category: "compositions", image: "/images/work-placeholder.svg" },
-];
 ---
 <BaseLayout title="JT | Music" description="Works and recordings" mainClass="page-music">
   <section class="music-hero" aria-labelledby="music-title">
@@ -23,7 +16,7 @@ const pieces = [
   </section>
   <section class="music-library" aria-label="Browse music">
     <div class="music-library-intro">
-      <h1>My Stuff</h1>
+      <h1>My Scores</h1>
       <p>Original compositions, arrangements, and experiments along the way. All original pieces and scores are available for purchase in pdf format or bound score. All arrangements, Exercises, and miscellaneous materials are available 100% free in PDF format. </p>
     </div>
   <div class="music-tabs" role="tablist" aria-label="Music categories">
@@ -34,16 +27,15 @@ const pieces = [
   </div>
   <div class="music-catalog">
     {pieces.map((piece) => (
-      <article class="music-piece card" data-category={piece.category}>
-        <img src={piece.image} alt={`${piece.name} score preview`} class="score-image" />
-        <div class="piece-meta">
-          <h3>{piece.name}</h3>
-          <p class="piece-year">{piece.year}</p>
-          <span class={`piece-tag ${piece.category === "arrangements" ? "is-arrangement" : "is-composition"}`}>
-            {piece.tag}
-          </span>
-        </div>
-      </article>
+      <a class="music-piece-link" href={`/music/${piece.slug}`}>
+        <article class="music-piece card" data-category={piece.category}>
+          <div class="piece-meta">
+            <h3>{piece.name}</h3>
+            <p class="piece-year">{piece.year}</p>
+            <p class="piece-instrumentation">{piece.instrumentation}</p>
+          </div>
+        </article>
+      </a>
     ))}
   </div>
 
@@ -74,7 +66,7 @@ const pieces = [
 
     @media (min-width: 1024px) {
       .music-hero-image {
-        object-position: center 68%;
+        object-position: center 52%;
       }
     }
 
@@ -84,7 +76,7 @@ const pieces = [
       inset: 0;
       z-index: 2;
       pointer-events: none;
-      background: rgba(0, 0, 0, 0.2);
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.55));
     }
 
     .music-hero::before {
@@ -136,17 +128,17 @@ const pieces = [
       width: 100%;
       max-width: 1100px;
       margin: 0 auto;
-      padding: 24px 24px 64px;
+      padding: 12px 24px 64px;
     }
 
     .music-library-intro {
       max-width: 660px;
-      margin: 20px auto 28px;
+      margin: 8px auto 28px;
       text-align: center;
     }
-    .music-library-intro h2 {
+    .music-library-intro h1 {
       margin: 0 0 12px;
-      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-size: clamp(1.976rem, 5.928vw, 2.964rem);
       line-height: 1.2;
     }
     .music-library-intro p {
@@ -172,9 +164,9 @@ const pieces = [
       max-width: 100%;
       margin: 1.5rem 0 1.75rem;
       padding: 0.75rem;
-      border: 1px solid rgba(63, 70, 94, 0.2);
+      border: none;
       border-radius: 12px;
-      background: rgba(233, 237, 248, 0.45);
+      background: transparent;
     }
 
     .music-tab {
@@ -227,27 +219,19 @@ const pieces = [
       display: grid;
       grid-template-columns: 1fr;
       gap: 0;
-      margin-top: 1rem;
+      /* Keep the score list clear of the fixed navigation mark. */
+      margin: 1rem 0 0 104px;
       border-top: 1px solid rgba(63, 70, 94, 0.2);
     }
 
+    .music-piece-link { display: block; color: inherit; text-decoration: none; }
+    .music-piece-link:hover h3 { text-decoration: underline; }
+
     .music-piece {
       display: grid;
-      grid-template-columns: 132px minmax(0, 1fr);
       align-items: center;
-      gap: 1.25rem;
       padding: 0.9rem 0;
       border-bottom: 1px solid rgba(63, 70, 94, 0.2);
-    }
-
-    .score-image {
-      width: 132px;
-      height: 88px;
-      object-fit: cover;
-      display: block;
-      background: #fff;
-      border: 1px solid rgba(63, 70, 94, 0.12);
-      filter: none;
     }
 
     .piece-meta {
@@ -262,26 +246,16 @@ const pieces = [
       line-height: 1.2;
     }
 
+    @media (min-width: 641px) {
+      .piece-meta h3 { white-space: nowrap; }
+    }
+
     .piece-year {
       margin: 0.2rem 0 0.55rem;
       opacity: 0.8;
     }
 
-    .piece-tag {
-      display: inline-block;
-      padding: 0.2rem 0.55rem;
-      font-size: 0.9rem;
-      border: 1px solid rgba(0, 0, 0, 0.2);
-      background: rgba(255, 255, 255, 0.6);
-    }
-
-    .piece-tag.is-composition {
-      color: #3f4d67;
-    }
-
-    .piece-tag.is-arrangement {
-      color: #614445;
-    }
+    .piece-instrumentation { margin: 0; color: var(--tone-slate) !important; font-style: italic; }
 
     @media (max-width: 640px) {
       .music-tabs {
@@ -298,13 +272,10 @@ const pieces = [
       }
 
       .music-piece {
-        grid-template-columns: 88px minmax(0, 1fr);
-        gap: 0.85rem;
+        grid-template-columns: 1fr;
       }
-      .score-image {
-        width: 88px;
-        height: 64px;
-      }
+
+      .music-catalog { margin-left: 0; }
     }
   </style>
 

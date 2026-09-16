@@ -79,6 +79,12 @@
   --nav-reveal-bg: #9aa5c0;
 }
 
+html {
+  /* Slightly reduce the site-wide typographic scale without changing hierarchy. */
+  font-size: 95%;
+  overscroll-behavior: none;
+}
+
 html, body {
   background-color: var(--page-bg) !important;
   background-image:
@@ -222,6 +228,9 @@ main.page-default .section-title {
 main.page-home {
   --home-step: 8vw;
 }
+main.page-home > .fadein:first-child {
+  overflow-x: clip;
+}
 main.page-home > *:nth-child(1) { margin-left: 0; }
 main.page-home > *:nth-child(2) { margin-left: var(--home-step); }
 main.page-home > *:nth-child(3) { margin-left: calc(2 * var(--home-step)); }
@@ -231,6 +240,17 @@ main.page-home > *:nth-child(5) { margin-left: calc(4 * var(--home-step)); }
 .brand {
   font-weight: 700;
   letter-spacing: 0.2px;
+}
+
+.footer-signature {
+  display: inline-block;
+  width: 2.1em;
+  height: 0.86em;
+  margin-left: 0.22em;
+  vertical-align: -0.08em;
+  background: currentColor !important;
+  mask: url("/images/JT_signature_1_vector_smooth.svg") center / contain no-repeat;
+  -webkit-mask: url("/images/JT_signature_1_vector_smooth.svg") center / contain no-repeat;
 }
 
 .links {
@@ -444,15 +464,22 @@ main.page-home > *:nth-child(5) { margin-left: calc(4 * var(--home-step)); }
 }
 
 .logo {
-  width: 45px;
-  height: auto;
+  width: 64px;
+  height: 113px;
   display: block;
-  filter: brightness(0) invert(1);
+  background-color: var(--text-muted) !important;
+  mask: url("/images/logo.png") center / contain no-repeat;
+  -webkit-mask: url("/images/logo.png") center / contain no-repeat;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.7));
   cursor: pointer;
   transform-origin: center center;
   transform: rotate(0deg) scale(1);
-  transition: transform 180ms cubic-bezier(.22, .8, .2, 1);
+  transition: transform 180ms cubic-bezier(.22, .8, .2, 1), background-color 60ms linear;
   will-change: transform;
+}
+
+body.nav-over-hero .logo {
+  background-color: #fff !important;
 }
 
 .logo-sidebar:hover .logo {
@@ -475,11 +502,13 @@ main.page-home > *:nth-child(5) { margin-left: calc(4 * var(--home-step)); }
   gap: 18px;
   padding: 92px 22px 26px;
   background: transparent;
+  filter: none;
+  backdrop-filter: none;
   visibility: hidden;
   opacity: 0;
   transform: none;
   pointer-events: none;
-  transition: opacity 120ms linear, visibility 120ms linear;
+  transition: opacity 80ms ease-out, visibility 0s linear 80ms;
   will-change: opacity;
   z-index: 1000;
 }
@@ -515,6 +544,8 @@ body.nav-open .page-shell {
   position: relative;
   z-index: 1;
   transform-origin: center;
+  filter: none;
+  backdrop-filter: none;
 }
 
 .sidebar a:hover {
@@ -529,6 +560,7 @@ body.nav-open .page-shell {
   visibility: visible;
   opacity: 1;
   pointer-events: auto;
+  transition: opacity 80ms ease-out, visibility 0s linear 0s;
 }
 
 .logo-dropdown {
@@ -622,7 +654,7 @@ body.nav-open .page-shell {
   position: absolute;
   inset: 0;
   padding-top: calc(var(--nav-h) + 24px);
-  padding-left: max(24px, calc(18px + 45px + 24px));
+  padding-left: max(24px, calc(18px + 64px + 24px));
   padding-right: 24px;
   display: flex;
   flex-direction: column;
@@ -655,9 +687,8 @@ body.nav-open .page-shell {
 .hero-content h1.hero-subtitle {
   font-family: "JTDisplay", system-ui, sans-serif !important;
   font-weight: 400;
-  margin-top: -1rem !important;
   font-size: clamp(1.2rem, 3.2vw, 2.4rem) !important;
-  margin: 0 !important;
+  margin: -2rem 0 0 !important;
 }
 
 .hero-title-row > h1:first-child {
@@ -777,8 +808,7 @@ body.nav-open .page-shell {
 
 .news-item {
   display: grid;
-  grid-template-columns: 72px 1fr;
-  gap: 0.75rem;
+  grid-template-columns: 1fr;
   align-items: center;
 }
 
