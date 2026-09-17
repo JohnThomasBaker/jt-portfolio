@@ -9,7 +9,7 @@ export function getStaticPaths() {
 const { piece } = Astro.props;
 ---
 
-<BaseLayout title={`JT | ${piece.name}`} description={`${piece.name} by JT`} mainClass="page-music-piece">
+<BaseLayout title={`${piece.name} | JT Baker`} description={`${piece.name} by composer JT Baker. Instrumentation: ${piece.instrumentation}.`} mainClass="page-music-piece">
   <article class="music-piece-page">
     <a class="back-link" href="/music">← All music</a>
 
@@ -43,9 +43,9 @@ const { piece } = Astro.props;
     <section class="piece-section purchase-section" aria-labelledby="purchase-heading">
       <h2 id="purchase-heading">Score</h2>
       {piece.gumroadUrl ? (
-        <a class="gumroad-link" href={piece.gumroadUrl} target="_blank" rel="noreferrer">Buy on Gumroad ↗</a>
+        <a class="gumroad-link" href={piece.gumroadUrl} target="_blank" rel="noopener noreferrer">Buy score on Gumroad ↗</a>
       ) : (
-        <p class="purchase-note">The Gumroad link for this piece is coming soon.</p>
+        <p class="purchase-note">This score is not currently available for purchase.</p>
       )}
     </section>
   </article>

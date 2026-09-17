@@ -6,7 +6,7 @@ import { pieces } from "../data/music";
 const musicHeroImage = "/images/JT and Maddie.png";
 
 ---
-<BaseLayout title="JT | Music" description="Works and recordings" mainClass="page-music">
+<BaseLayout title="Music | JT Baker" description="Percussion, chamber, and ensemble works by composer JT Baker." mainClass="page-music">
   <section class="music-hero" aria-labelledby="music-title">
     <img class="music-hero-image" src={musicHeroImage} alt="" fetchpriority="high" />
     <div class="music-hero-copy">
@@ -16,19 +16,21 @@ const musicHeroImage = "/images/JT and Maddie.png";
   </section>
   <section class="music-library" aria-label="Browse music">
     <div class="music-library-intro">
-      <h1>My Scores</h1>
-      <p>Original compositions, arrangements, and experiments along the way. All original pieces and scores are available for purchase in pdf format or bound score. All arrangements, Exercises, and miscellaneous materials are available 100% free in PDF format. </p>
+      <h2>My Scores</h2>
+      <p>Browse original percussion, chamber, and ensemble works. Select a piece for instrumentation, program information, media, and score availability.</p>
     </div>
-  <div class="music-tabs" role="tablist" aria-label="Music categories">
-    <button class="music-tab is-active" type="button" role="tab" aria-selected="true" data-filter="all">All</button>
-    <button class="music-tab" type="button" role="tab" aria-selected="false" data-filter="compositions">Compositions</button>
-    <button class="music-tab" type="button" role="tab" aria-selected="false" data-filter="arrangements">Arrangements</button>
-    <button class="music-tab" type="button" role="tab" aria-selected="false" data-filter="misc">Misc</button>
+  <div class="music-tabs" aria-label="Filter music by category">
+    <button class="music-tab is-active" type="button" aria-pressed="true" data-filter="all">All</button>
+    {[...new Set(pieces.map((piece) => piece.category))].map((category) => (
+      <button class="music-tab" type="button" aria-pressed="false" data-filter={category}>
+        {category.charAt(0).toUpperCase() + category.slice(1)}
+      </button>
+    ))}
   </div>
   <div class="music-catalog">
     {pieces.map((piece) => (
-      <a class="music-piece-link" href={`/music/${piece.slug}`}>
-        <article class="music-piece card" data-category={piece.category}>
+      <a class="music-piece-link" href={`/music/${piece.slug}`} data-category={piece.category}>
+        <article class="music-piece card">
           <div class="piece-meta">
             <h3>{piece.name}</h3>
             <p class="piece-year">{piece.year}</p>
@@ -283,20 +285,20 @@ const musicHeroImage = "/images/JT and Maddie.png";
   <script is:inline>
     const initMusicTabs = () => {
       const tabs = Array.from(document.querySelectorAll(".music-tab"));
-      const cards = Array.from(document.querySelectorAll(".music-piece"));
-      if (!tabs.length || !cards.length) return;
+      const links = Array.from(document.querySelectorAll(".music-piece-link"));
+      if (!tabs.length || !links.length) return;
 
       const applyFilter = (filter) => {
-        cards.forEach((card) => {
-          const category = card.dataset.category || "";
+        links.forEach((link) => {
+          const category = link.dataset.category || "";
           const show = filter === "all" || category === filter;
-          card.style.display = show ? "" : "none";
+          link.hidden = !show;
         });
 
         tabs.forEach((tab) => {
           const active = tab.dataset.filter === filter;
           tab.classList.toggle("is-active", active);
-          tab.setAttribute("aria-selected", active ? "true" : "false");
+          tab.setAttribute("aria-pressed", active ? "true" : "false");
         });
       };
 

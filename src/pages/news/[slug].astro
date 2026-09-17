@@ -9,11 +9,11 @@ export function getStaticPaths() {
 const { post } = Astro.props;
 ---
 
-<BaseLayout title={`JT | ${post.title}`} description={post.excerpt} mainClass="page-news-post">
+<BaseLayout title={`${post.title} | JT Baker`} description={post.excerpt} mainClass="page-news-post">
   <article class="blog-post">
     <a class="back-link" href="/news">← All posts</a>
     <header>
-      <time>{post.date}</time>
+      <time datetime={post.dateISO}>{post.date}</time>
       <h1>{post.title}</h1>
       <p class="post-excerpt">{post.excerpt}</p>
     </header>

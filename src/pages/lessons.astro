@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
-<BaseLayout title="JT | Lessons" description="Lesson info" mainClass="page-default page-lessons">
+<BaseLayout title="Percussion Lessons | JT Baker" description="Private snare drum and percussion lessons with JT Baker." mainClass="page-default page-lessons">
   <section class="lessons-page">
     <header class="lessons-header">
       <div class="lessons-header-copy">
@@ -337,10 +337,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     min-height: 8rem;
   }
 
-  .lesson-form input:focus,
-  .lesson-form select:focus,
-  .lesson-form textarea:focus {
-    outline: none;
+  .lesson-form input:focus-visible,
+  .lesson-form select:focus-visible,
+  .lesson-form textarea:focus-visible {
+    outline: 3px solid var(--tone-plum);
+    outline-offset: 2px;
     border-color: rgba(74, 93, 131, 0.7);
     background: rgba(255, 255, 255, 0.9);
   }

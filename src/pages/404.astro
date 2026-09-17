@@ -1,0 +1,23 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Page Not Found | JT Baker" description="The requested page could not be found." mainClass="page-default page-not-found">
+  <section class="not-found" aria-labelledby="not-found-title">
+    <p class="error-code">404</p>
+    <h1 id="not-found-title">That page is missing.</h1>
+    <p>The music may have moved, but you can return to the catalogue or the home page.</p>
+    <nav aria-label="404 recovery links">
+      <a href="/music">Browse music</a>
+      <a href="/">Go home</a>
+    </nav>
+  </section>
+
+  <style>
+    .not-found { width: min(100%, 720px); min-height: 70vh; margin: 0 auto; padding: calc(var(--nav-h) + 56px) 24px 80px; }
+    .error-code { margin: 0; color: var(--tone-bronze) !important; font: 400 clamp(5rem, 18vw, 10rem)/.8 "Jacquard24", serif; }
+    h1 { margin-top: 1.5rem; text-align: left; }
+    nav { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
+    nav a { padding: .65rem .9rem; color: var(--tone-slate) !important; border: 1px solid currentColor !important; font-family: "JTDisplay", system-ui, sans-serif; }
+  </style>
+</BaseLayout>

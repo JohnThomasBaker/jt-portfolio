@@ -4,9 +4,6 @@ import FadeIn from "../components/FadeIn.astro";
 import { pieces } from "../data/music";
 import { posts } from "../data/news";
 
-const youtubeChannelId = "UCmXK2sDFnmXQu1MqqG7zrGA";
-const uploadsPlaylistId = `UU${youtubeChannelId.slice(2)}`;
-const youtubeChannelUrl = "https://www.youtube.com/@JohnThomasBaker";
 const instagramProfileUrl = "https://www.instagram.com/jt_baker_/";
 const instagramReelIds = [
   "DZRGUrNAVMz",
@@ -20,58 +17,38 @@ const instagramReelIds = [
   "DbstTxSBt9C",
 ];
 const tiktokProfileUrl = "https://www.tiktok.com/@jtmusicks";
-// Set to true to restore the "listen to this" audio card in the hero.
-const showFeaturedAudio = false;
 ---
 
-<BaseLayout title="JT | Home" description="JT portfolio" mainClass="page-home">
+<BaseLayout title="JT Baker | Composer and Percussionist" description="Music, scores, projects, and news from composer and percussionist JT Baker." mainClass="page-home">
   <!-- HERO (full width) -->
   <FadeIn blur={60} y={0} duration={1200} bg="#C0C2D1">
     <section class="hero">
       <div class="hero-content">
         <div class="hero-title-row">
           <h1 class="hero-main-heading" style="color: #B8860B !important;">Welcome</h1>
-          <h1 class="hero-subtitle">JT's Music</h1>
+          <p class="hero-subtitle">JT's Music</p>
         </div>
       </div>
-      {showFeaturedAudio && (
-        <div class="hero-lately-wrap" aria-label="Featured audio">
-        <div class="hero-audio-card" aria-label="Featured audio placeholder">
-          <span class="hero-audio-play" aria-hidden="true">▶</span>
-          <div class="hero-audio-copy">
-            <div class="hero-audio-meta">
-              <p>listen to this</p>
-              <span>00:38</span>
-            </div>
-            <div class="hero-audio-waveform" aria-hidden="true">
-              <svg viewBox="0 0 300 30" preserveAspectRatio="none" focusable="false">
-                <path d="M0 15 C8 15 9 10 15 10 S24 20 31 19 S40 5 49 6 S58 24 67 22 S76 11 84 12 S93 18 101 17 S110 3 119 5 S128 26 138 24 S147 8 156 10 S165 20 174 19 S183 6 192 7 S201 22 210 20 S219 12 228 13 S237 17 246 16 S255 4 264 6 S273 21 282 19 S291 11 300 15" />
-              </svg>
-            </div>
-          </div>
-        </div>
-        </div>
-      )}
     </section>
   </FadeIn>
   <!-- ABOUT -->
   <FadeIn>
     <section class="wrap about-wrap">
       <div class="card about">
-        <div class="avatar-stack" role="button" tabindex="0" aria-label="Show next portrait of JT">
+        <button class="avatar-stack" type="button" aria-label="Show next portrait of JT">
           <img class="avatar" data-position="0" src="/images/avatar.jpg" alt="JT portrait" />
           <img class="avatar" data-position="1" src="/images/Avatar2.jpg" alt="" />
           <img class="avatar" data-position="2" src="/images/stick%20in%20mouth.JPG" alt="JT with a drumstick in his mouth" loading="lazy" />
-        </div>
+        </button>
         <div class="about-copy">
           <h2 class="section-title st-red">About JT</h2>
           <p class="muted about-role">
             Composer, percussionist, snare drummer
           </p>
           <p style="margin-bottom: 0;">
-            How's it going. I'm JT. I'm a percussionist turned composer currently working in Toledo Ohio. I primarily write percussion and chamber works, often towing the line between the classical/marching percussion worlds and the world of contemporary experimental music. This practice is shared by a lifelong passion for rudimental snare drumming and the marching arts, of which I've spent time as a performer, writer and teacher. 
+            How's it going. I'm JT. I'm a percussionist turned composer currently working in Toledo, Ohio. I primarily write percussion and chamber works, often toeing the line between the classical and marching percussion worlds and contemporary experimental music. This practice is shared by a lifelong passion for rudimental snare drumming and the marching arts, where I've spent time as a performer, writer, and teacher.
 
-Here you can access my work, buy music, and get in contact with me. Thanks for coming
+Here you can access my work, buy music, and get in contact with me. Thanks for coming.
           </p>
           <figure class="about-scrapbook">
             <img
@@ -215,13 +192,9 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
       };
     };
     const next = () => { pending++; advance(); };
-    const onKey = (event) => {
-      if (event.key === "Enter" || event.key === " ") { event.preventDefault(); next(); }
-    };
     stack.addEventListener("mouseenter", next);
     stack.addEventListener("mouseleave", next);
     stack.addEventListener("click", next);
-    stack.addEventListener("keydown", onKey);
     window.__jtPortraitCleanup = () => {
       disposed = true;
       animation?.cancel();
@@ -229,7 +202,6 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
       stack.removeEventListener("mouseenter", next);
       stack.removeEventListener("mouseleave", next);
       stack.removeEventListener("click", next);
-      stack.removeEventListener("keydown", onKey);
     };
   };
   document.addEventListener("astro:page-load", initPortraitStack);
@@ -711,7 +683,7 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
       gap: 0.85rem;
     }
 
-    .hero-content h1.hero-subtitle {
+    .hero-content .hero-subtitle {
       font-size: clamp(1.6rem, 2.24vw, 2rem) !important;
       line-height: 1.15;
     }
@@ -841,7 +813,7 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
       line-height: 0.94;
     }
 
-    .hero-content h1.hero-subtitle {
+    .hero-content .hero-subtitle {
       margin-top: -0.75rem !important;
       font-size: clamp(1.25rem, 6vw, 1.7rem) !important;
       white-space: normal;

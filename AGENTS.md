@@ -17,8 +17,8 @@ The site should prioritize:
 ## Tech
 
 - Astro
-- [add whatever CSS system you're using]
-- [add any JS libraries]
+- Plain CSS (no CSS framework)
+- Browser JavaScript (no client-side framework)
 - Static site unless there is a specific reason otherwise
 
 ## General Rules
