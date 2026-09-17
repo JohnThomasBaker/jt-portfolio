@@ -312,6 +312,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     color: var(--text) !important;
   }
 
+  .choice-item input[type="radio"] {
+    flex: 0 0 auto;
+    width: 1rem;
+    height: 1rem;
+    margin: 0;
+    padding: 0;
+  }
+
   .lesson-form input,
   .lesson-form select,
   .lesson-form textarea {
@@ -387,8 +395,25 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       padding: 0.95rem;
     }
 
+    .lessons-form-wrap .section-title {
+      font-size: clamp(1.75rem, 7.5vw, 2.35rem);
+      line-height: 1;
+    }
+
+    .contact-choice {
+      gap: 0.45rem 0.8rem;
+      padding: 0.5rem 0.6rem;
+    }
+
+    .contact-choice legend,
+    .choice-item {
+      font-size: 0.9rem;
+      line-height: 1.2;
+    }
+
     .lessons-photo-box {
       height: 15rem;
+      margin-top: 3.5rem;
       --collage-x: 0px;
       --collage-y: 0px;
     }

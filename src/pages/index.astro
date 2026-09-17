@@ -20,6 +20,8 @@ const instagramReelIds = [
   "DbstTxSBt9C",
 ];
 const tiktokProfileUrl = "https://www.tiktok.com/@jtmusicks";
+// Set to true to restore the "listen to this" audio card in the hero.
+const showFeaturedAudio = false;
 ---
 
 <BaseLayout title="JT | Home" description="JT portfolio" mainClass="page-home">
@@ -32,7 +34,8 @@ const tiktokProfileUrl = "https://www.tiktok.com/@jtmusicks";
           <h1 class="hero-subtitle">JT's Music</h1>
         </div>
       </div>
-      <div class="hero-lately-wrap" aria-label="Featured audio">
+      {showFeaturedAudio && (
+        <div class="hero-lately-wrap" aria-label="Featured audio">
         <div class="hero-audio-card" aria-label="Featured audio placeholder">
           <span class="hero-audio-play" aria-hidden="true">▶</span>
           <div class="hero-audio-copy">
@@ -47,7 +50,8 @@ const tiktokProfileUrl = "https://www.tiktok.com/@jtmusicks";
             </div>
           </div>
         </div>
-      </div>
+        </div>
+      )}
     </section>
   </FadeIn>
   <!-- ABOUT -->
@@ -507,11 +511,11 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
 
   .media-stack-head {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     gap: 1rem;
-    margin-bottom: 0.2rem;
-    width: 100%;
+    margin: 0 0 0.2rem auto;
+    width: min(100%, 760px);
   }
 
   .media-stack-head h2 {
@@ -676,6 +680,26 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
     transform: none;
   }
 
+  /* Keep the signature in normal flow beneath the biography on non-mobile layouts. */
+  @media (min-width: 841px) {
+    .about-copy > p:not(.about-role) {
+      grid-column: 1 / -1;
+    }
+
+    .about-scrapbook {
+      grid-column: 1 / -1;
+      justify-self: end;
+      width: 136px;
+      margin: 18px 0 0;
+      transform: none;
+    }
+  }
+
+  @media (min-width: 841px) and (max-width: 1023px) {
+    .about-wrap { padding-bottom: 10px; }
+    .featured-wrap { padding-top: 10px; }
+  }
+
   /* Desktop proportions: keep the display type, with a clearer size hierarchy. */
   @media (min-width: 1024px) {
     .hero-content h1:not(.hero-subtitle) {
@@ -775,14 +799,168 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
   }
 
   @media (max-width: 640px) {
-    .media-pyramid { grid-template-columns: 1fr; }
+    /* Keep the desktop staircase from pushing homepage sections off-screen. */
+    :global(.page-home > .fadein) {
+      margin-left: 0 !important;
+    }
+
+    /* Homepage-only mobile gutters; shared and desktop .wrap rules stay intact. */
+    .wrap {
+      width: auto;
+      max-width: none;
+      margin-left: 0;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    .hero {
+      min-height: 500px;
+      height: 82svh;
+      max-height: 760px;
+    }
+
+    .hero::before,
+    .hero::after {
+      background-color: rgba(0, 0, 0, 0.28);
+      background-blend-mode: multiply;
+    }
+
+    .hero::after {
+      background-position: 46% center;
+    }
+
+    .hero-content {
+      justify-content: flex-end;
+      padding-left: 20px;
+      padding-right: 18px;
+      padding-bottom: 52px;
+    }
+
+    .hero-title-row > h1:first-child {
+      font-size: clamp(4.5rem, 22vw, 6.2rem) !important;
+      line-height: 0.94;
+    }
+
+    .hero-content h1.hero-subtitle {
+      margin-top: -0.75rem !important;
+      font-size: clamp(1.25rem, 6vw, 1.7rem) !important;
+      white-space: normal;
+    }
+
+    .hero-lately-wrap {
+      width: min(270px, calc(100vw - 40px));
+      right: 20px;
+      top: 100%;
+    }
+
+    .hero-audio-card {
+      min-height: 4.4rem;
+      padding: 0.5rem 0.65rem;
+    }
+
+    .hero-audio-play {
+      width: 2.55rem;
+      height: 2.55rem;
+    }
+
+    .about-wrap {
+      padding-top: 24px;
+      padding-bottom: 28px;
+    }
+
+    .about {
+      grid-template-columns: 76px minmax(0, 1fr);
+      grid-template-rows: auto auto auto auto;
+      column-gap: 1rem;
+      row-gap: 0.2rem;
+      align-items: center;
+    }
+
+    .avatar-stack {
+      left: 0;
+      width: 64px;
+      height: 64px;
+      margin: 0;
+      grid-column: 1;
+      grid-row: 1 / span 2;
+      align-self: center;
+    }
+
+    .avatar {
+      width: 64px;
+      height: 64px;
+    }
+
+    .avatar[data-position="1"] {
+      transform: translate3d(-8px, 6px, 0) rotate(-6deg);
+    }
+
+    .avatar[data-position="2"] {
+      transform: translate3d(7px, 10px, 0) rotate(9deg);
+    }
+
+    .about-copy {
+      display: contents;
+    }
+
+    .about-copy > .section-title {
+      grid-column: 2;
+      grid-row: 1;
+      align-self: start;
+      min-width: 0;
+      position: relative;
+      z-index: 1;
+      margin: 0 !important;
+      font-size: clamp(1.3rem, 6vw, 1.6rem);
+      line-height: 1;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    .about-copy > .about-role {
+      grid-column: 2;
+      grid-row: 2;
+      align-self: start;
+      min-width: 0;
+      position: relative;
+      z-index: 1;
+      margin: 0 0 0.08rem !important;
+      font-size: clamp(0.72rem, 3.4vw, 0.9rem) !important;
+      line-height: 1 !important;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    .about-copy > p:not(.about-role) {
+      grid-column: 1 / -1;
+      grid-row: 3;
+      margin-top: 0.85rem;
+    }
+
+    .about-scrapbook {
+      grid-column: 1 / -1;
+      grid-row: 4;
+      justify-self: end;
+      width: 82px;
+      margin: 0;
+      transform: translateY(18px);
+    }
+
+    .media-pyramid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
 
     .media-stack-head {
+      justify-content: center;
       gap: 0.5rem;
+      margin-bottom: 0.65rem;
     }
 
     .media-stack-head h2 {
-      font-size: 1.15rem;
+      font-size: clamp(2rem, 10vw, 2.8rem);
+      white-space: normal;
+      text-align: center;
     }
 
     .media-all-link {
@@ -790,11 +968,24 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
       font-size: 0.9rem;
     }
 
-    .hero-lately-wrap {
-      width: min(260px, 70vw);
-      right: 20px;
-      top: 100%;
+    .media-scroll {
+      padding: 0.75rem;
     }
 
+    .media-scroll-social iframe,
+    .media-scroll-tiktok iframe {
+      width: min(100%, 315px);
+      height: min(540px, 145vw);
+    }
+
+    .section-title {
+      font-size: clamp(2.4rem, 12vw, 3.25rem);
+      line-height: 1;
+    }
+
+    .home-news-section {
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+    }
   }
 </style>

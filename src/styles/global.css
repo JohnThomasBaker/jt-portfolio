@@ -862,3 +862,18 @@ body.nav-open .page-shell {
     grid-template-columns: repeat(4, 1fr);
   }
 }
+
+@media (max-width: 640px) {
+  html,
+  body {
+    overflow-x: clip;
+  }
+
+  .page-shell > footer.wrap {
+    width: auto;
+    max-width: none;
+    margin-left: 0;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
