@@ -3,12 +3,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { pieces } from "../data/music";
 
 // Replace this path with your chosen hero photo in public/images.
-const musicHeroImage = "/images/JT and Maddie.png";
+const musicHeroImage = "/images/music-hero.webp";
 
 ---
 <BaseLayout title="Music | JT Baker" description="Percussion, chamber, and ensemble works by composer JT Baker." mainClass="page-music">
   <section class="music-hero" aria-labelledby="music-title">
-    <img class="music-hero-image" src={musicHeroImage} alt="" fetchpriority="high" />
+    <img class="music-hero-image" src={musicHeroImage} width="1920" height="976" alt="" fetchpriority="high" />
     <div class="music-hero-copy">
       <h1 id="music-title">Music</h1>
    

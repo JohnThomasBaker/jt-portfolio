@@ -6,6 +6,9 @@
 - [x] Use `/music` as the catalogue and score-purchasing path.
 - [x] Link purchasable scores directly to their Gumroad product pages.
 - [x] Do not invent missing content or claim unavailable formats are available.
+- [x] Use **JT Baker** as the public professional identity; conversational copy may use **JT**.
+- [x] Publish `johnthomasbaker19@gmail.com` as the general contact address.
+- [x] Keep draft news articles unpublished and show a coming-soon state until real articles are ready.
 
 ## 1. Establish a Safe Baseline
 
@@ -35,23 +38,23 @@
 - [x] Correct the home-page heading hierarchy.
 - [x] Strengthen form focus treatment.
 - [x] Remove global horizontal-wheel interception unless testing justifies it.
-- [ ] Add image dimensions or aspect ratios to reduce layout movement.
+- [x] Add image dimensions or aspect ratios to reduce layout movement.
 - [ ] Preserve and test reduced-motion behavior.
 
 ## 4. Improve Performance and Clean Assets
 
-- [ ] Resize oversized photographs and create modern image variants.
-- [ ] Retain only webfonts used by the deployed site in `public/`.
-- [ ] Preserve required font licences.
-- [ ] Remove confirmed-unused public ZIPs, font sources, and starter assets.
-- [ ] Remove dead YouTube and dormant featured-audio code.
-- [ ] Rebuild and compare the final site size with the baseline.
+- [x] Resize oversized photographs and create modern image variants.
+- [x] Retain only webfonts used by the deployed site in `public/`.
+- [x] Preserve required font licences.
+- [x] Move confirmed-unused public ZIPs, font sources, and starter assets out of the deployed tree.
+- [x] Preserve the active YouTube section and remove dormant featured-audio code.
+- [x] Rebuild and compare the final site size with the baseline.
 
 ## 5. Complete the Professional Site Shell
 
 - [x] Add a branded 404 page.
 - [ ] Improve the footer structure for professional and contact links.
-- [ ] Add a contact path after a public address is supplied.
+- [x] Publish the confirmed email in the footer and as the lesson-form fallback.
 - [ ] Distinguish listening, score purchase, licensing, and lesson actions.
 
 ## 6. Add Metadata and Discovery Support
@@ -90,12 +93,13 @@
 
 ## Owner Inputs and External Verification
 
-- [ ] Confirm the public professional name and production domain.
-- [ ] Supply the public contact address.
+- [x] Confirm the public professional name.
+- [ ] Confirm the production domain and hosting provider.
+- [x] Supply the public contact address.
 - [ ] Supply program notes, biography, recordings, artwork, news, and missing
   Gumroad links.
 - [ ] Verify Gumroad products, pricing, rights, and mobile checkout.
-- [ ] Confirm publication rights for all media and fonts.
+- [x] Confirm publication rights for all media and fonts.
 - [ ] Test physical iOS/Android devices and the deployed lesson form.
 - [ ] Approve committing, pushing, and production deployment.
 
@@ -108,3 +112,10 @@
 - 2026-09-17: Verification passed: production build (16 routes),
   `git diff --check`, and an internal-link scan across all 17 generated HTML
   files. Generated size remains 52 MB; asset optimization is still pending.
+- 2026-10-02: Confirmed JT Baker as the public identity and the Gmail address
+  as the public contact. Draft news detail routes were unpublished and replaced
+  with a coming-soon state; a form fallback and footer email were added.
+- 2026-10-02: Converted active photography to sized WebP assets, added intrinsic
+  image dimensions, and moved source-only fonts, originals, ZIPs, and starter
+  files outside `public/`. The production build fell from 52 MB to 1.7 MB while
+  all original assets remain preserved in `source-assets/`.

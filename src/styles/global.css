@@ -38,10 +38,7 @@
 }
 @font-face {
   font-family: "GoudyBookletter1911";
-  src:
-    url("/fonts/goudy-bookletter-1911/goudy_bookletter_1911-webfont.woff") format("woff"),
-    url("/fonts/goudy-bookletter-1911/goudy_bookletter_1911-webfont.ttf") format("truetype"),
-    url("/fonts/goudy-bookletter-1911/GoudyBookletter1911.otf") format("opentype");
+  src: url("/fonts/goudy-bookletter-1911/goudy_bookletter_1911-webfont.woff") format("woff");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -632,7 +629,7 @@ body.nav-open .page-shell {
   inset: 0;
   background-image:
     linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)),
-    url("/images/hero.jpg");
+    url("/images/hero-primary.webp");
   background-size: cover;
   background-position: center;
   transform: scaleX(-1);
@@ -645,7 +642,7 @@ body.nav-open .page-shell {
   inset: 0;
   background-image:
     linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)),
-    url("/images/hero2.jpg");
+    url("/images/hero-secondary.webp");
   background-size: cover;
   background-position: 40% 40%;
   opacity: var(--hero-progress);
@@ -692,7 +689,7 @@ body.nav-open .page-shell {
   font-family: "JTDisplay", system-ui, sans-serif;
   font-weight: 400;
   font-size: clamp(1.2rem, 3.2vw, 2.4rem);
-  color: #c7951f !important;
+  color: #B8860B !important;
   line-height: 1;
   white-space: nowrap;
 }
@@ -767,7 +764,7 @@ body.nav-open .page-shell {
 
 .avatar-stack { display: block; padding: 0; border: 0; background: transparent; cursor: pointer; }
 .avatar-stack .avatar { pointer-events: none; }
-.avatar-stack .avatar[src*="stick%20in%20mouth"] { object-position: center 75%; }
+.avatar-stack .avatar[src*="portrait-3"] { object-position: center 75%; }
 .avatar-stack:focus-visible { outline: 2px solid #c7951f; outline-offset: 8px; }
 .avatar[data-position="0"] {
   z-index: 3;

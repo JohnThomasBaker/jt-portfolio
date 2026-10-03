@@ -12,10 +12,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         </p>
       </div>
       <figure class="lessons-photo-box" aria-label="Lesson photo area">
-        <img class="lessons-photo-main" src="/images/Teaching.jpeg" alt="JT teaching" loading="lazy" />
-        <img class="lessons-photo lessons-photo-two" src="/images/Teaching2.jpeg" alt="JT teaching percussion" loading="lazy" />
-        <img class="lessons-photo lessons-photo-three" src="/images/Teaching3.jpeg" alt="JT teaching a lesson" loading="lazy" />
-        <img class="lessons-photo lessons-photo-four" src="/images/Teaching4.JPG" alt="JT teaching" loading="lazy" />
+        <img class="lessons-photo-main" src="/images/teaching-1.webp" width="828" height="542" alt="JT teaching" loading="lazy" />
+        <img class="lessons-photo lessons-photo-two" src="/images/teaching-2.webp" width="828" height="542" alt="JT teaching percussion" loading="lazy" />
+        <img class="lessons-photo lessons-photo-three" src="/images/teaching-3.webp" width="828" height="537" alt="JT teaching a lesson" loading="lazy" />
+        <img class="lessons-photo lessons-photo-four" src="/images/teaching-4.webp" width="1200" height="819" alt="JT teaching" loading="lazy" />
       </figure>
     </header>
 
@@ -26,16 +26,16 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         class="lesson-form"
         name="lesson-inquiry"
         method="POST"
-        data-netlify="true"
-        netlify-honeypot="company"
+        action="https://formsubmit.co/johnthomasbaker19@gmail.com"
         data-lesson-form
       >
-        <input type="hidden" name="form-name" value="lesson-inquiry" />
+        <input type="hidden" name="_subject" value="New private lesson request" />
+        <input type="hidden" name="_template" value="table" />
 
         <p class="sr-only">
           <label>
-            Company
-            <input name="company" />
+            Leave this field empty
+            <input name="_honey" tabindex="-1" autocomplete="off" />
           </label>
         </p>
 
@@ -84,6 +84,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
         <button type="submit">Submit Request</button>
         <p class="form-status muted" data-form-status aria-live="polite"></p>
+        <p class="form-fallback muted">
+          Having trouble with the form? Email me at
+          <a href="mailto:johnthomasbaker19@gmail.com">johnthomasbaker19@gmail.com</a>.
+        </p>
       </form>
     </div>
   </section>
@@ -93,37 +97,39 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   const initLessonForm = () => {
     const form = document.querySelector("[data-lesson-form]");
     if (!form) return;
+    if (form.dataset.lessonFormInitialized === "true") return;
+    form.dataset.lessonFormInitialized = "true";
 
     const status = form.querySelector("[data-form-status]");
     const button = form.querySelector('button[type="submit"]');
     const emailInput = form.querySelector('input[name="email"]');
     const phoneInput = form.querySelector('input[name="phone"]');
+    const contactInputs = form.querySelectorAll('input[name="preferred_contact"]');
 
     const validatePreferredContact = () => {
+      if (emailInput) emailInput.setCustomValidity("");
+      if (phoneInput) phoneInput.setCustomValidity("");
+
       const selected = form.querySelector('input[name="preferred_contact"]:checked');
       if (!selected) return true;
 
       if (selected.value === "email" && emailInput && !String(emailInput.value).trim()) {
         emailInput.setCustomValidity("Enter an email address or choose Phone.");
-        emailInput.reportValidity();
         return false;
       }
 
       if (selected.value === "phone" && phoneInput && !String(phoneInput.value).trim()) {
         phoneInput.setCustomValidity("Enter a phone number or choose Email.");
-        phoneInput.reportValidity();
         return false;
       }
 
-      if (emailInput) emailInput.setCustomValidity("");
-      if (phoneInput) phoneInput.setCustomValidity("");
       return true;
     };
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
+      validatePreferredContact();
       if (!form.reportValidity()) return;
-      if (!validatePreferredContact()) return;
 
       const formData = new FormData(form);
       const body = new URLSearchParams(formData).toString();
@@ -132,9 +138,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       if (button) button.disabled = true;
 
       try {
-        const res = await fetch("/", {
+        const res = await fetch("https://formsubmit.co/ajax/johnthomasbaker19@gmail.com", {
           method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Accept": "application/json",
+          },
           body,
         });
 
@@ -151,6 +160,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
     if (emailInput) emailInput.addEventListener("input", () => emailInput.setCustomValidity(""));
     if (phoneInput) phoneInput.addEventListener("input", () => phoneInput.setCustomValidity(""));
+    contactInputs.forEach((input) => input.addEventListener("change", validatePreferredContact));
   };
 
   document.addEventListener("DOMContentLoaded", initLessonForm);
@@ -362,6 +372,17 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     background: transparent;
     text-decoration: none;
     transform: scale(1.2);
+  }
+
+  .form-fallback {
+    margin: 0;
+    text-align: center;
+    font-size: 0.95rem;
+  }
+
+  .form-fallback a {
+    color: var(--tone-slate) !important;
+    text-decoration: underline;
   }
 
   .lesson-form button:disabled {

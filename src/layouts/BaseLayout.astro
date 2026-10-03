@@ -347,8 +347,9 @@ main.wrap > :first-child { margin-top: 0 !important; }
         <slot />
       </main>
 
-      <footer class="wrap muted" style="padding-top:0; padding-bottom:28px;">
-        <small>© {new Date().getFullYear()} <span class="footer-signature" role="img" aria-label="JT signature"></span></small>
+      <footer class="wrap muted" style="padding-top:0; padding-bottom:28px; display:flex; flex-wrap:wrap; align-items:center; gap:0.65rem 1.25rem;">
+        <small>© {new Date().getFullYear()} JT Baker <span class="footer-signature" role="img" aria-label="JT signature"></span></small>
+        <a href="mailto:johnthomasbaker19@gmail.com">Email</a>
       </footer>
     </div>
   </body>
