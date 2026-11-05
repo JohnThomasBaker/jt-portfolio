@@ -77,11 +77,19 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
 
         <div class="media-pyramid">
           <article class="media-scroll media-scroll-youtube">
-            <h3 class="media-title-youtube">YouTube</h3>
+            <div class="media-youtube-head">
+              <h3 class="media-title-youtube">YouTube</h3>
+              <a class="media-all-link" href={youtubeChannelUrl} target="_blank" rel="noopener noreferrer">
+                view all media
+                <span class="media-all-arrow" aria-hidden="true">↗</span>
+              </a>
+            </div>
             <div class="video">
               <iframe
-                src={`https://www.youtube-nocookie.com/embed/videoseries?list=${uploadsPlaylistId}&rel=0`}
-                title="Latest videos from JT Baker on YouTube"
+                data-random-youtube-video
+                data-playlist-id={uploadsPlaylistId}
+                src={`https://www.youtube-nocookie.com/embed/videoseries?list=${uploadsPlaylistId}&rel=0&enablejsapi=1`}
+                title="Random video from JT Baker on YouTube"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowfullscreen
                 loading="lazy"
@@ -240,6 +248,63 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
 
   document.addEventListener("DOMContentLoaded", initRandomInstagramReel);
   document.addEventListener("astro:page-load", initRandomInstagramReel);
+
+  const loadYouTubeIframeApi = () => {
+    if (window.YT?.Player) return Promise.resolve(window.YT);
+    if (window.__jtYouTubeApiPromise) return window.__jtYouTubeApiPromise;
+
+    window.__jtYouTubeApiPromise = new Promise((resolve) => {
+      const previousReadyHandler = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = () => {
+        previousReadyHandler?.();
+        resolve(window.YT);
+      };
+
+      if (!document.querySelector('script[src="https://www.youtube.com/iframe_api"]')) {
+        const script = document.createElement("script");
+        script.src = "https://www.youtube.com/iframe_api";
+        script.async = true;
+        document.head.append(script);
+      }
+    });
+
+    return window.__jtYouTubeApiPromise;
+  };
+
+  const initRandomYouTubeVideo = async () => {
+    const frame = document.querySelector("[data-random-youtube-video]");
+    if (!frame || frame.dataset.randomVideoReady === "true") return;
+
+    frame.dataset.randomVideoReady = "true";
+    const playlistId = frame.dataset.playlistId;
+    if (!playlistId) return;
+
+    const YT = await loadYouTubeIframeApi();
+    if (!frame.isConnected) return;
+
+    window.__jtYouTubePlayer = new YT.Player(frame, {
+      events: {
+        onReady: (event) => {
+          const videos = event.target.getPlaylist();
+          if (!videos?.length) return;
+
+          const randomIndex = Math.floor(Math.random() * videos.length);
+          event.target.cuePlaylist({
+            listType: "playlist",
+            list: playlistId,
+            index: randomIndex,
+          });
+        },
+      },
+    });
+  };
+
+  document.addEventListener("DOMContentLoaded", initRandomYouTubeVideo);
+  document.addEventListener("astro:page-load", initRandomYouTubeVideo);
+  document.addEventListener("astro:before-swap", () => {
+    window.__jtYouTubePlayer?.destroy?.();
+    window.__jtYouTubePlayer = null;
+  });
 
   const initSocialStackCycle = () => {
     const stack = document.querySelector("[data-social-stack]");
@@ -493,6 +558,24 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
 
   .media-scroll h3.media-title-tiktok {
     color: var(--tone-teal) !important;
+  }
+
+  .media-youtube-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.45rem;
+  }
+
+  .media-youtube-head h3,
+  .media-youtube-head .media-all-link {
+    margin: 0 !important;
+  }
+
+  .media-youtube-head .media-all-link:focus-visible {
+    outline: 2px solid var(--tone-slate);
+    outline-offset: 4px;
   }
 
   .media-scroll-youtube {
