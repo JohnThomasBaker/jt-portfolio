@@ -4,6 +4,14 @@ import { pieces } from "../data/music";
 
 // Replace this path with your chosen hero photo in public/images.
 const musicHeroImage = "/images/music-hero.webp";
+const musicCategories = [
+  "compositions",
+  "arrangements",
+  "misc",
+  ...[...new Set(pieces.map((piece) => piece.category))].filter(
+    (category) => category !== "compositions" && category !== "arrangements" && category !== "misc"
+  ),
+];
 
 ---
 <BaseLayout title="Music | JT Baker" description="Percussion, chamber, and ensemble works by composer JT Baker." mainClass="page-music">
@@ -17,13 +25,13 @@ const musicHeroImage = "/images/music-hero.webp";
   <section class="music-library" aria-label="Browse music">
     <div class="music-library-intro">
       <h2>My Scores</h2>
-      <p>Browse original percussion, chamber, and ensemble works. Select a piece for instrumentation, program information, media, and score availability.</p>
+      <p>Browse all of my available scores here. Original works and some arrangements are all available for purchase. Miscellaneous exercises, writeups and resources are available for free .</p>
     </div>
   <div class="music-tabs" aria-label="Filter music by category">
     <button class="music-tab is-active" type="button" aria-pressed="true" data-filter="all">All</button>
-    {[...new Set(pieces.map((piece) => piece.category))].map((category) => (
+    {musicCategories.map((category) => (
       <button class="music-tab" type="button" aria-pressed="false" data-filter={category}>
-        {category.charAt(0).toUpperCase() + category.slice(1)}
+        {category === "misc" ? "Misc/Free" : category.charAt(0).toUpperCase() + category.slice(1)}
       </button>
     ))}
   </div>
@@ -33,6 +41,7 @@ const musicHeroImage = "/images/music-hero.webp";
         <article class="music-piece card">
           <div class="piece-meta">
             <h3>{piece.name}</h3>
+            {piece.author && <p class="piece-author">by {piece.author}</p>}
             <p class="piece-year">{piece.year}</p>
             <p class="piece-instrumentation">{piece.instrumentation}</p>
           </div>
@@ -40,6 +49,7 @@ const musicHeroImage = "/images/music-hero.webp";
       </a>
     ))}
   </div>
+  <p class="music-empty" hidden>No works in this category yet.</p>
 
   </section>
 
@@ -68,7 +78,7 @@ const musicHeroImage = "/images/music-hero.webp";
 
     @media (min-width: 1024px) {
       .music-hero-image {
-        object-position: center 52%;
+        object-position: center 45%;
       }
     }
 
@@ -94,17 +104,21 @@ const musicHeroImage = "/images/music-hero.webp";
     }
 
     .music-hero-copy {
-      position: relative;
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      bottom: 10px;
       z-index: 3;
-      max-width: 760px;
+      max-width: none;
       text-align: center;
     }
 
     .music-hero-copy h1 {
       margin: 0;
       font-family: "Jacquard24", serif !important;
-      font-size: clamp(5.4rem, 14.4vw, 10.8rem);
+      font-size: clamp(4.86rem, 12.96vw, 9.72rem);
       font-weight: 400;
+      letter-spacing: normal;
       line-height: 1;
       color: #c7951f;
       text-shadow: 0 4px 24px rgba(0, 0, 0, 0.9), 0 2px 6px rgba(0, 0, 0, 0.8), 0 1px 1px rgba(0, 0, 0, 0.7);
@@ -112,7 +126,7 @@ const musicHeroImage = "/images/music-hero.webp";
 
     @media (min-width: 1024px) {
       .music-hero-copy h1 {
-        font-size: clamp(5.4rem, 14.4vw, 10.8rem) !important;
+        font-size: clamp(4.86rem, 12.96vw, 9.72rem) !important;
         line-height: 1.12;
       }
     }
@@ -138,9 +152,12 @@ const musicHeroImage = "/images/music-hero.webp";
       margin: 8px auto 28px;
       text-align: center;
     }
-    .music-library-intro h1 {
+    .music-library-intro h2 {
       margin: 0 0 12px;
-      font-size: clamp(1.976rem, 5.928vw, 2.964rem);
+      font-family: "Jacquard24", serif !important;
+      font-size: clamp(3.2844rem, 8.211vw, 4.3792rem);
+      font-weight: 400;
+      color: var(--tone-plum) !important;
       line-height: 1.2;
     }
     .music-library-intro p {
@@ -151,10 +168,14 @@ const musicHeroImage = "/images/music-hero.webp";
     }
     .music-library .music-tabs { margin-inline: auto; }
     .piece-meta { text-align: center; }
+    .piece-author { margin: 0; color: var(--tone-plum) !important; }
+    .music-empty { margin: 1.5rem 0 0; text-align: center; color: var(--tone-slate) !important; }
 
     @media (max-width: 640px) {
-      .music-hero { min-height: 360px; height: 60vh; padding: 0 24px; }
+      .music-hero { min-height: 500px; height: 82svh; max-height: 760px; padding: 0 24px; }
       .music-hero-image { object-position: 10% center; }
+      .music-hero-copy { left: 18px; right: 18px; bottom: 12px; }
+      .music-hero-copy h1 { font-size: clamp(2.52rem, 10.8vw, 3.15rem) !important; }
       .music-library { padding: 16px 20px 40px; }
     }
 
@@ -286,6 +307,7 @@ const musicHeroImage = "/images/music-hero.webp";
     const initMusicTabs = () => {
       const tabs = Array.from(document.querySelectorAll(".music-tab"));
       const links = Array.from(document.querySelectorAll(".music-piece-link"));
+      const emptyState = document.querySelector(".music-empty");
       if (!tabs.length || !links.length) return;
 
       const applyFilter = (filter) => {
@@ -293,7 +315,12 @@ const musicHeroImage = "/images/music-hero.webp";
           const category = link.dataset.category || "";
           const show = filter === "all" || category === filter;
           link.hidden = !show;
+          link.style.display = show ? "" : "none";
         });
+
+        if (emptyState) {
+          emptyState.hidden = !links.some((link) => !link.hidden);
+        }
 
         tabs.forEach((tab) => {
           const active = tab.dataset.filter === filter;
@@ -305,6 +332,8 @@ const musicHeroImage = "/images/music-hero.webp";
       tabs.forEach((tab) => {
         tab.addEventListener("click", () => applyFilter(tab.dataset.filter || "all"));
       });
+
+      applyFilter("all");
     };
 
     document.addEventListener("DOMContentLoaded", initMusicTabs);

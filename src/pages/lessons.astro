@@ -203,9 +203,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     position: relative;
     z-index: 1;
     margin: 0;
-    width: 100%;
-    max-width: 26rem;
-    height: 18rem;
+    width: 90%;
+    max-width: 23.4rem;
+    height: 16.2rem;
     justify-self: end;
     align-self: center;
     border: 1px solid rgba(72, 85, 110, 0.18);
@@ -409,7 +409,24 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
   @media (max-width: 720px) {
     .lessons-header {
-      grid-template-columns: 1fr;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .lessons-header-copy {
+      display: contents;
+    }
+
+    .lessons-header-copy h1 {
+      order: 1;
+    }
+
+    .lessons-header-copy p {
+      order: 3;
+    }
+
+    .lessons-photo-box {
+      order: 2;
     }
 
     .lessons-header,
@@ -434,8 +451,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     }
 
     .lessons-photo-box {
-      height: 15rem;
-      margin-top: 3.5rem;
+      height: 13.5rem;
+      margin-top: 1rem;
+      margin-bottom: 2rem;
       --collage-x: 0px;
       --collage-y: 0px;
     }

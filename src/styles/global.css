@@ -37,11 +37,25 @@
   font-display: swap;
 }
 @font-face {
+  font-family: "Jacquarda Bastarda 9";
+  src: url("/fonts/Jacquarda_Bastarda_9/JacquardaBastarda9-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
   font-family: "GoudyBookletter1911";
   src: url("/fonts/goudy-bookletter-1911/goudy_bookletter_1911-webfont.woff") format("woff");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
+}
+
+.jacquarda-bastarda-9-regular,
+.font-jacquarda-bastarda-9 {
+  font-family: "Jacquarda Bastarda 9", serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .wrap, main, header, footer {
@@ -55,6 +69,7 @@
 
 :root {
   color-scheme: light;
+  --font-jacquarda-bastarda-9: "Jacquarda Bastarda 9", serif;
   --page-bg: #C0C2D1;
   --page-bg-fade: #c9cad7;
   --text: #3d4556;
@@ -466,12 +481,12 @@ main.page-home > *:nth-child(5) { margin-left: calc(4 * var(--home-step)); }
 }
 
 .logo {
-  width: 64px;
-  height: 113px;
+  width: 116px;
+  height: 48px;
   display: block;
   background-color: var(--text-muted) !important;
-  mask: url("/images/logo.png") center / contain no-repeat;
-  -webkit-mask: url("/images/logo.png") center / contain no-repeat;
+  mask: url("/images/JT_signature_1_vector_smooth.svg") center / contain no-repeat;
+  -webkit-mask: url("/images/JT_signature_1_vector_smooth.svg") center / contain no-repeat;
   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.7));
   cursor: pointer;
   transform-origin: center center;
@@ -483,7 +498,7 @@ main.page-home > *:nth-child(5) { margin-left: calc(4 * var(--home-step)); }
 }
 
 body.nav-over-hero .logo {
-  background-color: #fff !important;
+  background-color: #B8860B !important;
 }
 
 .logo-sidebar:hover .logo {
@@ -702,9 +717,10 @@ body.nav-open .page-shell {
 }
 
 .hero-title-row > h1:first-child {
-  font-size: clamp(5.4rem, 14.4vw, 10.8rem) !important;
+  font-size: clamp(4.86rem, 12.96vw, 9.72rem) !important;
   font-family: "Jacquard24", serif !important;
   font-weight: 400;
+  letter-spacing: normal;
   margin: 0 !important;
   text-shadow: 0 4px 24px rgba(0, 0, 0, 0.9), 0 2px 6px rgba(0, 0, 0, 0.8), 0 1px 1px rgba(0, 0, 0, 0.7);
   -webkit-text-stroke: 0.2px rgba(30, 24, 10, 0.35);
@@ -764,7 +780,7 @@ body.nav-open .page-shell {
 
 .avatar-stack { display: block; padding: 0; border: 0; background: transparent; cursor: pointer; }
 .avatar-stack .avatar { pointer-events: none; }
-.avatar-stack .avatar[src*="portrait-3"] { object-position: center 75%; }
+.avatar-stack .avatar[src*="portrait-3"] { object-position: center 75%; scale: 1.15; }
 .avatar-stack:focus-visible { outline: 2px solid #c7951f; outline-offset: 8px; }
 .avatar[data-position="0"] {
   z-index: 3;

@@ -28,7 +28,6 @@ const tiktokProfileUrl = "https://www.tiktok.com/@jtmusicks";
       <div class="hero-content">
         <div class="hero-title-row">
           <h1 class="hero-main-heading" style="color: #B8860B !important;">Welcome</h1>
-          <p class="hero-subtitle" style="color: #B8860B !important; -webkit-text-fill-color: #B8860B !important;">JT's Music</p>
         </div>
       </div>
     </section>
@@ -43,7 +42,7 @@ const tiktokProfileUrl = "https://www.tiktok.com/@jtmusicks";
           <img class="avatar" data-position="2" src="/images/portrait-3.webp" width="798" height="1200" alt="JT with a drumstick in his mouth" loading="lazy" />
         </button>
         <div class="about-copy">
-          <h2 class="section-title st-red">About JT</h2>
+          <h2 class="section-title st-red">jt baker</h2>
           <p class="muted about-role">
             Composer, percussionist, snare drummer
           </p>
@@ -52,15 +51,9 @@ const tiktokProfileUrl = "https://www.tiktok.com/@jtmusicks";
 
 Here you can access my work, buy music, and get in contact with me. Thanks for coming.
           </p>
-          <figure class="about-scrapbook">
-            <img
-              class="about-signature"
-              src="/images/signature-drum.webp"
-              width="800"
-              height="650"
-              alt="JT signature with a drum"
-              loading="lazy"
-            />
+          <a class="about-more-link" href="/me">More about me →</a>
+          <figure class="about-scrapbook" aria-label="JT signature with a drum">
+            <span class="about-signature" aria-hidden="true"></span>
           </figure>
         </div>
       </div>
@@ -220,14 +213,12 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
     };
     const next = () => { pending++; advance(); };
     stack.addEventListener("mouseenter", next);
-    stack.addEventListener("mouseleave", next);
     stack.addEventListener("click", next);
     window.__jtPortraitCleanup = () => {
       disposed = true;
       animation?.cancel();
       wipe?.remove();
       stack.removeEventListener("mouseenter", next);
-      stack.removeEventListener("mouseleave", next);
       stack.removeEventListener("click", next);
     };
   };
@@ -395,8 +386,10 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
   .about-signature {
     display: block;
     width: 100%;
-    height: auto;
-    filter: grayscale(1) sepia(0.2) saturate(0.9) brightness(0.65);
+    aspect-ratio: 800 / 650;
+    background-color: var(--text-muted) !important;
+    mask: url("/images/signature-drum.webp") center / contain no-repeat;
+    -webkit-mask: url("/images/signature-drum.webp") center / contain no-repeat;
   }
 
   @media (max-width: 900px) {
@@ -414,9 +407,20 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
   }
 
   .hero-content {
+    top: auto;
+    bottom: 0;
     padding-top: 0;
-    padding-bottom: 0;
-    justify-content: center;
+    padding-left: 12px;
+    padding-right: 24px;
+    padding-bottom: 10px;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .hero-title-row {
+    width: 100%;
+    align-items: flex-start;
+    text-align: left;
   }
 
   .featured-wrap {
@@ -437,11 +441,48 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
     margin: -0.22rem 0 0.3rem !important;
     font-size: clamp(1.56rem, 1.98vw, 2.04rem) !important;
     line-height: 0.98 !important;
-    font-family: "JTDisplay", system-ui, sans-serif;
+    font-family: "GoudyBookletter1911", serif;
+    font-weight: 400;
   }
 
   .about .section-title.st-red {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.22em;
     margin-bottom: 0 !important;
+  }
+
+  .about-copy > h2 {
+    font-size: 2.916rem;
+    font-family: var(--font-jacquarda-bastarda-9) !important;
+    font-weight: 700;
+    -webkit-text-stroke: 0.35px currentColor;
+  }
+
+  .about .section-title.st-red::after {
+    content: "";
+    flex: 0 0 auto;
+    width: 0.612em;
+    height: 1.054em;
+    background-color: currentColor;
+    mask: url("/images/logo-thick.png") center / contain no-repeat;
+    -webkit-mask: url("/images/logo-thick.png") center / contain no-repeat;
+  }
+
+  .about-more-link {
+    display: inline-flex;
+    width: fit-content;
+    margin-top: 0.35rem;
+    color: var(--tone-plum) !important;
+    font-family: "JTDisplay", system-ui, sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.2;
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+
+  .about-more-link:hover {
+    color: var(--tone-clay) !important;
   }
 
   .media-stack-head {
@@ -449,7 +490,7 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
     justify-content: center;
     align-items: center;
     gap: 1rem;
-    margin: 0 0 0.2rem auto;
+    margin: 0 auto 0.2rem;
     width: min(100%, 760px);
   }
 
@@ -784,9 +825,9 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
 
     .hero-content {
       justify-content: flex-end;
-      padding-left: 20px;
+      padding-left: 10px;
       padding-right: 18px;
-      padding-bottom: 52px;
+      padding-bottom: 12px;
     }
 
     .hero-title-row > h1:first-child {
@@ -848,7 +889,7 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
       position: relative;
       z-index: 1;
       margin: 0 !important;
-      font-size: clamp(1.3rem, 6vw, 1.6rem);
+      font-size: clamp(1.26rem, 5.83vw, 1.56rem);
       line-height: 1;
       text-align: left;
       white-space: nowrap;
@@ -874,9 +915,14 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
       margin-top: 0.85rem;
     }
 
-    .about-scrapbook {
+    .about-more-link {
       grid-column: 1 / -1;
       grid-row: 4;
+    }
+
+    .about-scrapbook {
+      grid-column: 1 / -1;
+      grid-row: 5;
       justify-self: end;
       width: 82px;
       margin: 0;
