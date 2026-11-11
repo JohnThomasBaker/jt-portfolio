@@ -82,6 +82,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           ></textarea>
         </label>
 
+        <label class="form-consent">
+          <input type="checkbox" name="data_consent" value="yes" required />
+          <span>I understand that the information I submit will be sent through FormSubmit to JT Baker so he can respond to this lesson inquiry.</span>
+        </label>
+
         <button type="submit">Submit Request</button>
         <p class="form-status muted" data-form-status aria-live="polite"></p>
         <p class="form-fallback muted">
@@ -340,6 +345,20 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     border: 1px solid rgba(72, 85, 110, 0.2);
     padding: 0.65rem 0.7rem;
     border-radius: 0;
+  }
+
+  .form-consent {
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.65rem;
+    align-items: start;
+    font-size: 0.95rem;
+  }
+
+  .form-consent input {
+    width: 1.15rem;
+    height: 1.15rem;
+    margin-top: 0.25rem;
   }
 
   .lesson-form textarea {

@@ -193,8 +193,8 @@ a:hover {
 
 .wrap {
   /* allow pages to stretch full width but offset from left edge */
-  width: 100%;
-  max-width: 100%;
+  width: auto;
+  max-width: none;
   margin: 0 0 0 24px; /* extra gap on left */
   /* more breathing room from the screen edges */
   padding: 0 48px;
@@ -824,6 +824,14 @@ body.nav-open .page-shell {
   height: 140px;
   border-radius: 0;
   background: rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+
+.thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* NEWS */

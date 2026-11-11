@@ -2,7 +2,8 @@
 
 ## Overview
 
-JT Portfolio is a statically generated Astro site. Content is rendered from
+JT Portfolio is a statically generated Astro 7 site running on Node.js 24.
+Content is rendered from
 Astro pages and small TypeScript data modules; there is no CMS, database, or
 server-side application layer.
 
@@ -33,7 +34,8 @@ There is currently no Astro content collection (`src/content/`).
 | `/me` | `src/pages/me.astro` | About/contact page |
 
 Dynamic music and news routes use Astro `getStaticPaths()` and are generated
-at build time from their corresponding data modules.
+at build time from records whose `published` flag is `true`. Draft records stay
+editable in the data modules without creating public routes.
 
 ## Shared Layout and Components
 
@@ -44,9 +46,9 @@ client-side behavior such as reveal animations and hero/nav interaction.
 `src/components/FadeIn.astro` supplies declarative data attributes used by the
 layout reveal-animation script.
 
-`src/layouts/Layout.astro` and `src/components/Welcome.astro` are unused Astro
-starter files. Do not build new site features on them; prefer `BaseLayout` and
-the current page patterns.
+Legacy Astro starter files are retained only under `source-assets/unused-starter/`
+and are not part of the application or deployed output. Build new features from
+`BaseLayout` and the current page patterns.
 
 ## Content and Data Flow
 
@@ -88,9 +90,21 @@ client-side JavaScript framework. Scripts that need to survive Astro view
 transitions should initialize on `astro:page-load` and clean up listeners on
 `astro:before-swap` when appropriate.
 
-The lessons form uses Netlify Forms markup and submits URL-encoded data to `/`.
-It depends on deployment to Netlify (or compatible handling) for successful
-production submissions.
+The lessons form submits URL-encoded data to FormSubmit and includes a required
+acknowledgement of that third-party delivery path. It must be activated and
+verified from the staging deployment before production launch. Newsletter data
+collection is disabled until a dedicated mailing-list provider is selected.
+
+## Verification and Automation
+
+- `npm run check` runs Astro and TypeScript diagnostics.
+- `npm run build` writes the static site to `dist/`.
+- `npm run check:links` verifies root-relative links and assets in generated
+  HTML.
+- `npm run verify` runs all three checks in sequence.
+- `.github/workflows/ci.yml` runs verification and the production dependency
+  audit for pushes and pull requests.
+- `.nvmrc` and the `engines` field record the supported Node.js runtime.
 
 ## Architectural Conventions
 

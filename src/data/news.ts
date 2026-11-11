@@ -5,6 +5,7 @@ export type NewsPost = {
   title: string;
   excerpt: string;
   body: string[];
+  published?: boolean;
 };
 
 export const posts: NewsPost[] = [

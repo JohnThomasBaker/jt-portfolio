@@ -2,13 +2,24 @@
   "name": "jt-portfolio",
   "type": "module",
   "version": "0.0.1",
+  "engines": {
+    "node": ">=24.0.0"
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "check": "astro check",
+    "check:links": "node scripts/check-links.mjs",
+    "audit": "npm audit --omit=dev",
+    "verify": "npm run check && npm run build && npm run check:links",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.17.1"
+    "astro": "^7.4.10"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "typescript": "^6.0.3"
   }
 }

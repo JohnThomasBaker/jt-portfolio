@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import FadeIn from "../components/FadeIn.astro";
-import { pieces } from "../data/music";
+import { publishedPieces } from "../data/music";
 
 const youtubeChannelId = "UCmXK2sDFnmXQu1MqqG7zrGA";
 const uploadsPlaylistId = `UU${youtubeChannelId.slice(2)}`;
@@ -47,7 +47,7 @@ const tiktokProfileUrl = "https://www.tiktok.com/@jtmusicks";
             Composer, percussionist, snare drummer
           </p>
           <p style="margin-bottom: 0;">
-            How's it going. I'm JT. I'm a percussionist turned composer currently working in Toledo, Ohio. I primarily write percussion and chamber works, often toeing the line between the classical and marching percussion worlds and contemporary experimental music. This practice is shared by a lifelong passion for rudimental snare drumming and the marching arts, where I've spent time as a performer, writer, and teacher.
+            How's it going? I'm JT. I'm a percussionist turned composer currently working in Toledo, Ohio. I primarily write percussion and chamber works, often toeing the line between the classical and marching percussion worlds and contemporary experimental music. This practice is shaped by a lifelong passion for rudimental snare drumming and the marching arts, where I've spent time as a performer, writer, and teacher.
 
 Here you can access my work, buy music, and get in contact with me. Thanks for coming.
           </p>
@@ -130,9 +130,11 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
       <h2 class="section-title st-red" style="margin-bottom: 0.75rem;">Featured Projects</h2>
 
       <div class="music-grid">
-        {pieces.slice(0, 4).map((piece) => (
+        {publishedPieces.slice(0, 4).map((piece) => (
           <a class="card card-link" href={`/music/${piece.slug}`}>
-            <div class="thumb"></div>
+            <div class="thumb">
+              <img src={piece.image} alt="" loading="lazy" />
+            </div>
             <div class="card-body">
               <h3 class="card-title">{piece.name}</h3>
               <p class="muted">{piece.instrumentation} · {piece.year}</p>

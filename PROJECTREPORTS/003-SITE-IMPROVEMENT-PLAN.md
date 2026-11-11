@@ -1,5 +1,110 @@
 # Site Improvement Plan
 
+## Pre-Publication Checklist — 2026-11-11
+
+Current release status: **staging preparation in progress; not ready for a
+production launch**. The security, build, type-checking, draft-publication,
+asset-size, and baseline automation blockers are resolved on the
+`prelaunch-staging` branch. Production still depends on JT's content/rights,
+domain/hosting, form, device-testing, and final approval decisions.
+
+### JT's Checklist
+
+- [ ] Choose the production domain and static hosting provider, and provide the
+  domain/host details needed for canonical URLs, DNS, and deployment.
+- [ ] Decide which of the 12 music entries are genuinely ready to be public.
+  Supply final program notes for **Chrysalis**, **Denton Halftime**, and the four
+  arrangements, or approve hiding those entries until they are finished.
+- [ ] Supply or select representative artwork for the published works. All 12
+  entries currently point to the same placeholder image, and the site's project
+  thumbnails are blank.
+- [ ] Supply recordings or performance videos for the works that should have
+  media. Every `media` array is currently empty.
+- [ ] Correct/confirm all score destinations and availability. In particular,
+  **Carceri d'Invenzione currently links to the Monolith Gumroad product**;
+  **The Sons and Daughters of Charles Edward Greene** and **Denton Halftime**
+  have no purchase link.
+- [ ] Confirm that the John Cage and Ichiko Aoba arrangements may be published,
+  promoted, streamed, and/or sold, and identify any required credits or licence
+  language. Do not publish those pages until rights and attribution are settled.
+- [ ] Review the biography and time-sensitive claims for accuracy, including the
+  2026 *Blast!* tour, SCV role, Bowling Green study plans, location, and band
+  description. Decide whether the casual opening lines on `/me` should remain.
+- [ ] Decide whether to launch News now, keep the current coming-soon page, or
+  remove it from navigation until real articles exist.
+- [ ] Choose a real mailing-list service or approve removing the newsletter form.
+  The current FormSubmit form emails each signup to Gmail; it is not a subscriber
+  database and provides no unsubscribe/list-management workflow.
+- [ ] Decide what privacy disclosure and retention policy should accompany the
+  newsletter and lesson forms, which collect email, phone, location, and message
+  data through a third party.
+- [ ] Confirm publication rights for every final photo, animated image, video,
+  recording, font, and logo used in the release.
+- [ ] After a staging deploy, activate and test FormSubmit if it is retained,
+  verify that lesson inquiries and signup messages arrive, and check spam/junk
+  handling.
+- [ ] Test the staging site on a physical iPhone/iPad and Android device,
+  especially the logo-triggered navigation, music filters, embeds, forms, and
+  long composition titles.
+- [ ] Approve the final staging site, then approve the production deployment and
+  DNS change.
+
+### Codex Checklist
+
+- [x] Upgrade to Astro 7 and Node 24 LTS. The production dependency audit now
+  reports zero vulnerabilities.
+- [x] Install `@astrojs/check` and TypeScript, add a check script, and resolve all
+  diagnostics.
+- [x] Add CI that runs the type check, production build, dependency audit policy,
+  and internal-link checks for every push/PR.
+- [x] Clean the music data and URLs: replace apostrophes and uppercase letters in
+  slugs with stable lowercase URL-safe slugs, add redirects if any old URL has
+  already been shared, normalize titles/credits/instrumentation, and prevent
+  draft records from generating public pages.
+- [ ] Render selected work artwork on catalogue, home, and detail pages; replace
+  the blank `.thumb` blocks; and make missing optional media disappear cleanly.
+- [x] Copyedit the biography and program notes for the currently published works;
+  retain owner review for time-sensitive and factual claims.
+- [x] Reduce the deploy from **60 MB to 1.9 MB**. Archive unreleased originals and
+  replace the published animated GIF with a lightweight still image.
+- [ ] Configure the production `site` URL in Astro and add canonical URLs, an
+  XML sitemap, `robots.txt`, complete Open Graph/Twitter metadata, a social-share
+  image, and appropriate Person/MusicComposition structured data.
+- [x] Remove the misleading newsletter capture until a real provider is selected;
+  add a clear third-party delivery acknowledgement to the lesson form.
+- [ ] Add checked-in deployment configuration for the selected host, document the
+  build (`npm run build`) and output (`dist`) settings, and replace the Astro
+  starter README with project-specific editing and deployment instructions.
+- [x] Populate `docs/CONTENT.md` and `docs/DESIGN.md` so future edits preserve the
+  intended content rules and visual system.
+- [x] Fix verified layout issues, including horizontal overflow visible in the
+  1440 px home-page review, then test representative mobile, tablet, laptop, and
+  wide desktop widths.
+- [ ] Perform final accessibility QA: keyboard-only navigation, visible focus,
+  reduced motion, heading/landmark structure, form errors, iframe titles,
+  contrast, and screen-reader smoke testing.
+- [ ] Perform final browser and production QA: Chrome, Firefox, Safari, mobile
+  browsers, all internal routes and outbound links, 404 behavior, embeds,
+  Gumroad destinations, form delivery, metadata previews, sitemap/robots, and
+  performance checks.
+- [ ] Produce a clean release commit/tag and staging deploy for JT's approval;
+  publish only after the owner checklist's blocking inputs are complete.
+
+### Audit Evidence
+
+- [x] `npm run build` passed on 2026-11-11 and generated 18 pages.
+- [x] Git worktree was clean; branch `main` matched `origin/main` at commit
+  `35060f0`.
+- [x] `git diff --check` passed.
+- [x] Desktop home and mobile music-page screenshots were reviewed.
+- [x] Generated output measured 60 MB; the largest file was the 32 MB MOV.
+- [x] `npm audit --omit=dev` identified the release-blocking dependency findings.
+- [x] `astro check` was attempted and confirmed the missing check dependencies.
+- [x] Astro 7 verification now passes with zero diagnostics, 11 intentionally
+  published pages, and no broken generated internal links.
+- [x] Production dependency audit now reports zero vulnerabilities.
+- [x] Generated output now measures 1.9 MB.
+
 ## Decisions
 
 - [x] Do not create a Store page or add Store to the main navigation.
@@ -61,30 +166,33 @@
 
 - [x] Add favicon links and improve page titles and descriptions.
 - [x] Add Open Graph and Twitter/X card metadata.
-- [ ] Add a reusable social-sharing image fallback.
-- [ ] Add `robots.txt` and sitemap generation.
-- [ ] Add suitable Person, MusicComposition, and Article structured data.
+- [x] Add a reusable social-sharing image fallback.
+- [ ] Add `robots.txt` and sitemap generation. (`robots.txt` is complete; sitemap
+  awaits the production domain.)
+- [x] Add suitable Person and MusicComposition structured data. Article data will
+  be added when the first article is approved.
 - [ ] Configure canonical URLs after the production domain is confirmed.
 
 ## 7. Improve Content Handling
 
 - [x] Store machine-readable ISO news dates.
 - [ ] Render descriptions, media, images, and purchase links consistently.
-- [ ] Hide absent optional content instead of showing placeholders.
+- [x] Hide absent optional content and prevent draft records from generating
+  public routes.
 - [x] Keep the TypeScript data files as the editable sources of truth.
 
 ## 8. Finish Repository Hygiene
 
-- [ ] Replace the Astro starter README with project-specific instructions.
+- [x] Replace the Astro starter README with project-specific instructions.
 - [x] Document plain CSS and browser JavaScript in `AGENTS.md`.
-- [ ] Populate the design and content documentation.
-- [ ] Add an Astro type/check command.
-- [ ] Add lightweight CI for checks and the production build.
+- [x] Populate the design and content documentation.
+- [x] Add an Astro type/check command.
+- [x] Add lightweight CI for checks and the production build.
 - [x] Run dependency, link, route, and markup checks where practical.
 
 ## 9. Verify the Result
 
-- [ ] Run Astro checking, the production build, and `git diff --check`.
+- [x] Run Astro checking, the production build, and `git diff --check`.
 - [x] Smoke-test every generated route and internal link.
 - [ ] Review keyboard navigation, focus visibility, and reduced motion.
 - [ ] Test representative mobile and desktop widths.
@@ -119,3 +227,14 @@
   image dimensions, and moved source-only fonts, originals, ZIPs, and starter
   files outside `public/`. The production build fell from 52 MB to 1.7 MB while
   all original assets remain preserved in `source-assets/`.
+- 2026-11-11: Started the autonomous prelaunch pass on `prelaunch-staging`.
+  Upgraded Astro 5 to Astro 7 and Node 20 to Node 24 LTS; added type checking,
+  CI, generated-link validation, runtime documentation, and a zero-vulnerability
+  production audit. Draft and rights-pending music routes are no longer
+  generated, the incorrect Carceri Gumroad link is disabled, and unsafe slugs
+  are normalized.
+- 2026-11-11: Removed the misleading newsletter form pending selection of a real
+  mailing-list provider, added a FormSubmit disclosure to the lesson form,
+  implemented conditional canonical/social/structured metadata, added
+  `robots.txt`, populated design/content documentation, fixed desktop horizontal
+  overflow, and reduced the generated release from 60 MB to 1.9 MB.
