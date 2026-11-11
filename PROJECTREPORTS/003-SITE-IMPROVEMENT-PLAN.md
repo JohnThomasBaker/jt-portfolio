@@ -2,11 +2,12 @@
 
 ## Pre-Publication Checklist — 2026-11-11
 
-Current release status: **staging preparation in progress; not ready for a
+Current release status: **the local build is staging-ready; not approved for a
 production launch**. The security, build, type-checking, draft-publication,
-asset-size, and baseline automation blockers are resolved on the
-`prelaunch-staging` branch. Production still depends on JT's content/rights,
-domain/hosting, form, device-testing, and final approval decisions.
+asset-size, metadata, accessibility-baseline, and automation blockers are
+resolved on the `prelaunch-staging` branch. A staging deployment still depends
+on JT choosing the domain and host. Production also depends on JT's content and
+rights decisions, deployed-form/device testing, and final approval.
 
 ### JT's Checklist
 
@@ -15,9 +16,10 @@ domain/hosting, form, device-testing, and final approval decisions.
 - [ ] Decide which of the 12 music entries are genuinely ready to be public.
   Supply final program notes for **Chrysalis**, **Denton Halftime**, and the four
   arrangements, or approve hiding those entries until they are finished.
-- [ ] Supply or select representative artwork for the published works. All 12
-  entries currently point to the same placeholder image, and the site's project
-  thumbnails are blank.
+- [ ] Supply or select representative artwork for four published works. The site
+  now renders each work's configured image consistently; **Declaration of
+  Two-Handed Independence** has a real image while the other four public works
+  intentionally show the branded placeholder.
 - [ ] Supply recordings or performance videos for the works that should have
   media. Every `media` array is currently empty.
 - [ ] Correct/confirm all score destinations and availability. In particular,
@@ -61,20 +63,22 @@ domain/hosting, form, device-testing, and final approval decisions.
   slugs with stable lowercase URL-safe slugs, add redirects if any old URL has
   already been shared, normalize titles/credits/instrumentation, and prevent
   draft records from generating public pages.
-- [ ] Render selected work artwork on catalogue, home, and detail pages; replace
+- [x] Render selected work artwork on catalogue, home, and detail pages; replace
   the blank `.thumb` blocks; and make missing optional media disappear cleanly.
 - [x] Copyedit the biography and program notes for the currently published works;
   retain owner review for time-sensitive and factual claims.
 - [x] Reduce the deploy from **60 MB to 1.9 MB**. Archive unreleased originals and
   replace the published animated GIF with a lightweight still image.
-- [ ] Configure the production `site` URL in Astro and add canonical URLs, an
+- [x] Configure the production `site` URL in Astro and add canonical URLs, an
   XML sitemap, `robots.txt`, complete Open Graph/Twitter metadata, a social-share
-  image, and appropriate Person/MusicComposition structured data.
+  image, and appropriate Person/MusicComposition structured data. These activate
+  from the host's `SITE_URL`; JT still needs to supply the final URL.
 - [x] Remove the misleading newsletter capture until a real provider is selected;
   add a clear third-party delivery acknowledgement to the lesson form.
 - [ ] Add checked-in deployment configuration for the selected host, document the
   build (`npm run build`) and output (`dist`) settings, and replace the Astro
   starter README with project-specific editing and deployment instructions.
+  Documentation is complete; host-specific configuration awaits JT's host choice.
 - [x] Populate `docs/CONTENT.md` and `docs/DESIGN.md` so future edits preserve the
   intended content rules and visual system.
 - [x] Fix verified layout issues, including horizontal overflow visible in the
@@ -82,7 +86,9 @@ domain/hosting, form, device-testing, and final approval decisions.
   wide desktop widths.
 - [ ] Perform final accessibility QA: keyboard-only navigation, visible focus,
   reduced motion, heading/landmark structure, form errors, iframe titles,
-  contrast, and screen-reader smoke testing.
+  contrast, and screen-reader smoke testing. Automated Lighthouse accessibility
+  is 100 and reduced-motion rendering passed; physical screen-reader and complete
+  keyboard testing remain external checks.
 - [ ] Perform final browser and production QA: Chrome, Firefox, Safari, mobile
   browsers, all internal routes and outbound links, 404 behavior, embeds,
   Gumroad destinations, form delivery, metadata previews, sitemap/robots, and
@@ -104,6 +110,10 @@ domain/hosting, form, device-testing, and final approval decisions.
   published pages, and no broken generated internal links.
 - [x] Production dependency audit now reports zero vulnerabilities.
 - [x] Generated output now measures 1.9 MB.
+- [x] A domain-configured build generated correct canonical, Open Graph,
+  `robots.txt`, sitemap-index, and sitemap page URLs.
+- [x] Lighthouse on the local production preview scored Performance 82,
+  Accessibility 100, Best Practices 100, and SEO 100, with CLS 0 and TBT 0 ms.
 
 ## Decisions
 
@@ -129,7 +139,7 @@ domain/hosting, form, device-testing, and final approval decisions.
 - [x] Clearly handle works that do not yet have a purchase URL.
 - [x] Remove unsupported catalogue and format claims.
 - [x] Hide empty catalogue categories until they contain records.
-- [ ] Render work images on detail pages and use them for project thumbnails.
+- [x] Render work images on detail pages and use them for project thumbnails.
 - [x] Make filtering hide complete work links from keyboard navigation.
 - [x] Normalize instrumentation formatting and terminology.
 - [x] Do not add a cart, checkout, Store route, or separate storefront.
@@ -144,7 +154,7 @@ domain/hosting, form, device-testing, and final approval decisions.
 - [x] Strengthen form focus treatment.
 - [x] Remove global horizontal-wheel interception unless testing justifies it.
 - [x] Add image dimensions or aspect ratios to reduce layout movement.
-- [ ] Preserve and test reduced-motion behavior.
+- [x] Preserve and test reduced-motion behavior.
 
 ## 4. Improve Performance and Clean Assets
 
@@ -167,16 +177,17 @@ domain/hosting, form, device-testing, and final approval decisions.
 - [x] Add favicon links and improve page titles and descriptions.
 - [x] Add Open Graph and Twitter/X card metadata.
 - [x] Add a reusable social-sharing image fallback.
-- [ ] Add `robots.txt` and sitemap generation. (`robots.txt` is complete; sitemap
-  awaits the production domain.)
+- [x] Add `robots.txt` and sitemap generation. Sitemap output activates when the
+  deployment provides `SITE_URL`.
 - [x] Add suitable Person and MusicComposition structured data. Article data will
   be added when the first article is approved.
-- [ ] Configure canonical URLs after the production domain is confirmed.
+- [x] Configure canonical URL generation from the deployment's `SITE_URL`. The
+  final domain value still awaits JT's decision.
 
 ## 7. Improve Content Handling
 
 - [x] Store machine-readable ISO news dates.
-- [ ] Render descriptions, media, images, and purchase links consistently.
+- [x] Render descriptions, media, images, and purchase links consistently.
 - [x] Hide absent optional content and prevent draft records from generating
   public routes.
 - [x] Keep the TypeScript data files as the editable sources of truth.
@@ -194,9 +205,11 @@ domain/hosting, form, device-testing, and final approval decisions.
 
 - [x] Run Astro checking, the production build, and `git diff --check`.
 - [x] Smoke-test every generated route and internal link.
-- [ ] Review keyboard navigation, focus visibility, and reduced motion.
+- [ ] Review keyboard navigation, focus visibility, and reduced motion. Focus and
+  reduced-motion implementations passed code/visual review; a complete manual
+  keyboard route remains for deployed staging.
 - [x] Test representative mobile, tablet, laptop, and desktop widths.
-- [ ] Compare generated-site size before and after optimization.
+- [x] Compare generated-site size before and after optimization (60 MB to 1.9 MB).
 - [x] Review every changed file for unintended effects.
 
 ## Owner Inputs and External Verification
@@ -249,3 +262,7 @@ domain/hosting, form, device-testing, and final approval decisions.
   best practices, and 100 SEO, with zero layout shift and zero total blocking
   time in the final run. Converted CSS hero backgrounds to preloadable HTML
   images and shortened non-essential reveal transitions.
+- 2026-11-11: Completed the local staging build. Astro 7/Node 24 checks, internal
+  links, production audit, conditional canonical/sitemap output, reduced-motion
+  rendering, responsive visual QA, and Lighthouse all passed. Remaining launch
+  work requires the final domain/host and owner/external approvals listed above.

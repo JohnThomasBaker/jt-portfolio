@@ -42,9 +42,13 @@ See `docs/CONTENT.md` for the publication checklist.
 ## Deployment
 
 The production build command is `npm run build`; the publish directory is
-`dist/`. Before deploying, configure the final public URL as Astro's `site`
-value in `astro.config.mjs`, add the selected host's checked-in configuration,
-and run:
+`dist/`. Set `SITE_URL` to the final public origin (for example,
+`https://www.example.com`) in the hosting provider's environment. Production
+builds with `SITE_URL` automatically include canonical URLs, absolute social
+metadata, `robots.txt` sitemap discovery, and an XML sitemap. Builds without it
+remain safe for local previews and do not publish false canonical URLs.
+
+After configuring the selected host, run:
 
 ```sh
 npm ci

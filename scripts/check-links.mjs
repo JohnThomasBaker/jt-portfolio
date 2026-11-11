@@ -37,6 +37,29 @@ for (const file of htmlFiles) {
   }
 }
 
+const siteURL = process.env.SITE_URL?.replace(/\/$/, "");
+if (siteURL) {
+  try {
+    const [robots, sitemapIndex, sitemap] = await Promise.all([
+      readFile(join(distDir, "robots.txt"), "utf8"),
+      readFile(join(distDir, "sitemap-index.xml"), "utf8"),
+      readFile(join(distDir, "sitemap-0.xml"), "utf8"),
+    ]);
+
+    if (!robots.includes(`Sitemap: ${siteURL}/sitemap-index.xml`)) {
+      failures.push("robots.txt: missing the configured sitemap URL");
+    }
+    if (!sitemapIndex.includes(`${siteURL}/sitemap-0.xml`)) {
+      failures.push("sitemap-index.xml: missing the configured sitemap file URL");
+    }
+    if (!sitemap.includes(`<loc>${siteURL}/</loc>`)) {
+      failures.push("sitemap-0.xml: missing the configured home-page URL");
+    }
+  } catch (error) {
+    failures.push(`Sitemap output: ${error.message}`);
+  }
+}
+
 if (failures.length) {
   console.error("Broken internal links or assets:\n" + failures.join("\n"));
   process.exit(1);
