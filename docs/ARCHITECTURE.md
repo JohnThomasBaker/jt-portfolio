@@ -46,6 +46,10 @@ client-side behavior such as reveal animations and hero/nav interaction.
 `src/components/FadeIn.astro` supplies declarative data attributes used by the
 layout reveal-animation script.
 
+Home-page YouTube, Instagram, and TikTok media use local preview buttons.
+Third-party iframes are created only after a visitor explicitly chooses to load
+the corresponding media.
+
 Legacy Astro starter files are retained only under `source-assets/unused-starter/`
 and are not part of the application or deployed output. Build new features from
 `BaseLayout` and the current page patterns.

@@ -80,7 +80,7 @@
   --tone-clay: #6b4d4b;
   --tone-slate: #4b5b76;
   --tone-bronze: #746349;
-  --tone-plum: #66556f;
+  --tone-plum: #57465f;
   --tone-teal: #4f6a67;
   --tone-heading: var(--tone-bronze);
   --tone-jacquard: var(--tone-slate);
@@ -270,6 +270,24 @@ main.page-home > *:nth-child(5) { margin-left: calc(4 * var(--home-step)); }
   -webkit-mask: url("/images/JT_signature_1_vector_smooth.svg") center / contain no-repeat;
 }
 
+.site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem 1.25rem;
+  padding-top: 0;
+  padding-bottom: 28px;
+}
+
+.site-footer nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem 1rem;
+}
+
+.site-footer a { text-decoration: underline; }
+
 .links {
   display: flex;
   flex-wrap: wrap;
@@ -389,7 +407,7 @@ main.page-home > *:nth-child(5) { margin-left: calc(4 * var(--home-step)); }
 
 .muted {
   color: var(--text-muted);
-  opacity: 0.82;
+  opacity: 1;
 }
 
 .fadein {
@@ -399,10 +417,10 @@ main.page-home > *:nth-child(5) { margin-left: calc(4 * var(--home-step)); }
   filter: blur(var(--fade-blur, 0px));
   background-color: var(--fade-bg, var(--page-bg));
   transition:
-    opacity var(--fade-dur, 2400ms) cubic-bezier(.2,.8,.2,1),
-    transform var(--fade-dur, 2400ms) cubic-bezier(.2,.8,.2,1),
-    filter var(--fade-blur-dur, var(--fade-dur, 2400ms)) ease,
-    background-color var(--fade-dur, 2400ms) ease;
+    opacity var(--fade-dur, 900ms) cubic-bezier(.2,.8,.2,1),
+    transform var(--fade-dur, 900ms) cubic-bezier(.2,.8,.2,1),
+    filter var(--fade-blur-dur, var(--fade-dur, 900ms)) ease,
+    background-color var(--fade-dur, 900ms) ease;
   will-change: opacity, transform, filter, background-color;
 }
 
@@ -438,9 +456,9 @@ main.page-home > *:nth-child(5) { margin-left: calc(4 * var(--home-step)); }
     background-color: transparent;
     transition: none;
   }
-  .hero::before {
+  .hero-image-secondary {
     filter: none;
-    transform: none;
+    transform: scaleX(-1);
   }
 }
 
@@ -638,28 +656,23 @@ body.nav-open .page-shell {
   overflow: hidden;
 }
 
-.hero::after {
-  content: "";
+.hero-image {
   position: absolute;
   inset: 0;
-  background-image:
-    linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)),
-    url("/images/hero-primary.webp");
-  background-size: cover;
-  background-position: center;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-image-primary {
+  object-position: center;
   transform: scaleX(-1);
   z-index: 0;
 }
 
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)),
-    url("/images/hero-secondary.webp");
-  background-size: cover;
-  background-position: 40% 40%;
+.hero-image-secondary {
+  object-position: 40% 40%;
   opacity: var(--hero-progress);
   filter:
     blur(calc((1 - var(--hero-progress)) * 9px))
@@ -667,6 +680,14 @@ body.nav-open .page-shell {
     saturate(calc(0.9 + var(--hero-progress) * 0.2));
   transform: scaleX(-1) scale(calc(1.03 - (var(--hero-progress) * 0.03)));
   z-index: 1;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.2);
+  pointer-events: none;
 }
 
 .hero-inner {
@@ -684,7 +705,7 @@ body.nav-open .page-shell {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  z-index: 2;
+  z-index: 3;
 }
 
 .hero-content > :first-child {
@@ -739,7 +760,8 @@ body.nav-open .page-shell {
 
 .hero img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   display: block;
 }
 

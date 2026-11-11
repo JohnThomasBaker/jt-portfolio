@@ -45,5 +45,5 @@ accents. Text must remain readable against the paper texture and photography.
 - Prefer WebP for photographs and efficient web video for motion.
 - Do not ship source media, editing files, or multi-megabyte originals from
   `public/`.
-- Third-party embeds should be lazy-loaded and included only when they add
-  meaningful portfolio value.
+- Third-party embeds must retain the existing click-to-load pattern so their
+  scripts, cookies, and network requests do not run before a visitor opts in.

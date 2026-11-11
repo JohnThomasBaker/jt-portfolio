@@ -158,9 +158,9 @@ domain/hosting, form, device-testing, and final approval decisions.
 ## 5. Complete the Professional Site Shell
 
 - [x] Add a branded 404 page.
-- [ ] Improve the footer structure for professional and contact links.
+- [x] Improve the footer structure for professional and contact links.
 - [x] Publish the confirmed email in the footer and as the lesson-form fallback.
-- [ ] Distinguish listening, score purchase, licensing, and lesson actions.
+- [x] Distinguish listening, score purchase, contact, and lesson actions.
 
 ## 6. Add Metadata and Discovery Support
 
@@ -195,7 +195,7 @@ domain/hosting, form, device-testing, and final approval decisions.
 - [x] Run Astro checking, the production build, and `git diff --check`.
 - [x] Smoke-test every generated route and internal link.
 - [ ] Review keyboard navigation, focus visibility, and reduced motion.
-- [ ] Test representative mobile and desktop widths.
+- [x] Test representative mobile, tablet, laptop, and desktop widths.
 - [ ] Compare generated-site size before and after optimization.
 - [x] Review every changed file for unintended effects.
 
@@ -238,3 +238,14 @@ domain/hosting, form, device-testing, and final approval decisions.
   implemented conditional canonical/social/structured metadata, added
   `robots.txt`, populated design/content documentation, fixed desktop horizontal
   overflow, and reduced the generated release from 60 MB to 1.9 MB.
+- 2026-11-11: Replaced eager YouTube, Instagram, and TikTok embeds with
+  click-to-load local previews. Lighthouse improved from 96 to 100 for
+  accessibility and from 77 to 100 for best practices; the toolbar-free local
+  audit also scored 100 for SEO. All four published Gumroad products and the
+  three public social destinations returned HTTP 200.
+- 2026-11-11: Completed responsive visual review of Home, Music, Lessons, About,
+  a long-title work page, and the image-heavy Declaration page. The local
+  production Lighthouse audit scored 82 performance, 100 accessibility, 100
+  best practices, and 100 SEO, with zero layout shift and zero total blocking
+  time in the final run. Converted CSS hero backgrounds to preloadable HTML
+  images and shortened non-essential reveal transitions.
