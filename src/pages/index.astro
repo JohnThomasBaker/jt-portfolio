@@ -18,6 +18,7 @@ const instagramReelIds = [
   "DYy07E5BGY0",
   "DbstTxSBt9C",
 ];
+const featuredInstagramReelId = instagramReelIds[0];
 const tiktokProfileUrl = "https://www.tiktok.com/@jtmusicks";
 ---
 
@@ -86,17 +87,14 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
               </a>
             </div>
             <div class="video">
-              <button
-                class="media-embed-load media-embed-youtube"
-                type="button"
-                data-embed-load
-                data-src={`https://www.youtube-nocookie.com/embed/videoseries?list=${uploadsPlaylistId}&rel=0`}
-                data-title="Featured videos from JT Baker on YouTube"
-                data-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              >
-                <span>Load featured YouTube videos</span>
-                <small>Loads content from YouTube</small>
-              </button>
+              <iframe
+                src={`https://www.youtube-nocookie.com/embed/videoseries?list=${uploadsPlaylistId}&rel=0`}
+                title="Featured videos from JT Baker on YouTube"
+                loading="lazy"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+              ></iframe>
             </div>
             <a href={youtubeChannelUrl} target="_blank" rel="noopener noreferrer">YouTube · JohnThomasBaker</a>
           </article>
@@ -104,32 +102,26 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
           <div class="media-social-grid">
             <article class="media-scroll media-scroll-social media-scroll-instagram">
               <h3 class="media-title-instagram">Instagram</h3>
-              <button
-                class="media-embed-load media-embed-instagram"
-                type="button"
-                data-embed-load
-                data-reel-ids={JSON.stringify(instagramReelIds)}
-                data-title="Featured Instagram reel by @jt_baker_"
-              >
-                <span>Load a featured Instagram reel</span>
-                <small>Loads content from Instagram</small>
-              </button>
+              <iframe
+                src={`https://www.instagram.com/reel/${featuredInstagramReelId}/embed/`}
+                title="Featured Instagram reel by @jt_baker_"
+                loading="lazy"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen
+              ></iframe>
               <a href={instagramProfileUrl} target="_blank" rel="noopener noreferrer">@jt_baker_</a>
             </article>
 
             <article class="media-scroll media-scroll-social media-scroll-tiktok">
               <h3 class="media-title-tiktok">TikTok</h3>
-              <button
-                class="media-embed-load media-embed-tiktok"
-                type="button"
-                data-embed-load
-                data-src="https://www.tiktok.com/player/v1/7669427958070758670?autoplay=0&controls=1&description=1"
-                data-title="Featured TikTok video by @jtmusicks"
-                data-allow="fullscreen"
-              >
-                <span>Load featured TikTok video</span>
-                <small>Loads content from TikTok</small>
-              </button>
+              <iframe
+                src="https://www.tiktok.com/player/v1/7669427958070758670?autoplay=0&controls=1&description=1"
+                title="Featured TikTok video by @jtmusicks"
+                loading="lazy"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allow="fullscreen"
+                allowfullscreen
+              ></iframe>
               <a href={tiktokProfileUrl} target="_blank" rel="noopener noreferrer">@jtmusicks</a>
             </article>
           </div>
@@ -242,34 +234,6 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
   document.addEventListener("DOMContentLoaded", initPortraitStack);
   document.addEventListener("astro:before-swap", () => window.__jtPortraitCleanup?.());
 
-  const initMediaEmbeds = () => {
-    document.querySelectorAll("[data-embed-load]").forEach((button) => {
-      if (button.dataset.embedInitialized === "true") return;
-      button.dataset.embedInitialized = "true";
-
-      button.addEventListener("click", () => {
-        let src = button.dataset.src;
-        const reelIds = JSON.parse(button.dataset.reelIds || "[]");
-        if (reelIds.length) {
-          const reelId = reelIds[Math.floor(Math.random() * reelIds.length)];
-          src = `https://www.instagram.com/reel/${reelId}/embed/`;
-        }
-        if (!src) return;
-
-        const frame = document.createElement("iframe");
-        frame.src = src;
-        frame.title = button.dataset.title || "Embedded media";
-        frame.loading = "lazy";
-        frame.referrerPolicy = "strict-origin-when-cross-origin";
-        if (button.dataset.allow) frame.allow = button.dataset.allow;
-        frame.setAttribute("allowfullscreen", "");
-        button.replaceWith(frame);
-      }, { once: true });
-    });
-  };
-
-  document.addEventListener("DOMContentLoaded", initMediaEmbeds);
-  document.addEventListener("astro:page-load", initMediaEmbeds);
 </script>
 
 <style>
@@ -550,43 +514,6 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
     border: 0;
   }
 
-  .media-embed-load {
-    position: relative;
-    isolation: isolate;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    width: 100%;
-    min-height: 300px;
-    margin-inline: auto;
-    padding: 1.5rem;
-    overflow: hidden;
-    border: 1px solid rgba(63, 70, 94, 0.3);
-    background: #343946 center / cover no-repeat;
-    color: #fff;
-    font-family: "JTDisplay", system-ui, sans-serif;
-    font-size: 1.2rem;
-    text-align: center;
-    cursor: pointer;
-  }
-
-  .media-embed-load::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: rgba(18, 21, 29, 0.58);
-  }
-
-  .media-embed-load:hover::before { background: rgba(18, 21, 29, 0.42); }
-  .media-embed-load span { color: #fff !important; font-size: 1.25rem; }
-  .media-embed-load small { color: #f1eadc !important; font: 0.9rem "GoudyBookletter1911", serif; }
-  .media-embed-youtube { min-height: 100%; background-image: url("/images/hero-secondary.webp"); }
-  .media-embed-instagram { background-image: url("/images/portrait-3.webp"); background-position: center 38%; }
-  .media-embed-tiktok { background-image: url("/images/signature-drum.webp"); }
-
   .media-scroll-social iframe {
     display: block;
     width: min(100%, 326px);
@@ -594,11 +521,6 @@ Here you can access my work, buy music, and get in contact with me. Thanks for c
     margin-inline: auto;
     border: 0;
     background: #fff;
-  }
-
-  .media-scroll-social .media-embed-load {
-    width: min(100%, 326px);
-    height: 420px;
   }
 
   .media-scroll-tiktok iframe {

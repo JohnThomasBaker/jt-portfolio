@@ -9,6 +9,32 @@ resolved on the `prelaunch-staging` branch. A staging deployment still depends
 on JT choosing the domain and host. Production also depends on JT's content and
 rights decisions, deployed-form/device testing, and final approval.
 
+### Current Assessment — 2026-11-11
+
+1. **Local implementation: substantially complete.** The planned dependency,
+   accessibility-baseline, metadata, asset, content-safety, documentation, and
+   automation work is implemented in three commits on `prelaunch-staging`.
+2. **Automated verification: passing.** A fresh `npm run verify` completed with
+   zero Astro/TypeScript diagnostics, a successful 11-page production build,
+   and no broken generated internal links. `npm audit --omit=dev` reports zero
+   vulnerabilities, and `dist/` is 1.9 MB.
+3. **Source-control release state: local only.** `prelaunch-staging` is three
+   commits ahead of `origin/main`; no remote branch contains its current head.
+   The worktree was clean before this report-only status update.
+4. **Staging deployment: not started.** Host-specific configuration cannot be
+   completed until JT chooses the production domain and hosting provider and
+   approves the push/deploy step.
+5. **Content readiness: partially blocked on owner decisions.** Program notes,
+   media, artwork, purchase destinations, arrangement rights, biography claims,
+   News strategy, and mailing-list/privacy choices still need review or input.
+6. **Launch QA: still outstanding.** Physical iOS/Android testing, complete
+   keyboard/screen-reader checks, deployed FormSubmit delivery, outbound product
+   checkout verification, and final browser/production QA require a staging URL.
+7. **Bottom line:** the codebase is ready to move to staging, but the website is
+   not yet ready for a public launch. The next critical path is domain/host
+   selection, push and staging deployment, owner content review, real-device and
+   form testing, then explicit production approval.
+
 ### JT's Checklist
 
 - [ ] Choose the production domain and static hosting provider, and provide the
@@ -266,3 +292,6 @@ rights decisions, deployed-form/device testing, and final approval.
   links, production audit, conditional canonical/sitemap output, reduced-motion
   rendering, responsive visual QA, and Lighthouse all passed. Remaining launch
   work requires the final domain/host and owner/external approvals listed above.
+- 2026-11-11: Reassessed the release state. Fresh verification and the production
+  dependency audit passed; the branch remains local, three commits ahead of
+  `origin/main`, with staging and owner/external launch checks still outstanding.

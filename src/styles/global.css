@@ -502,28 +502,41 @@ main.page-home > *:nth-child(5) { margin-left: calc(4 * var(--home-step)); }
   width: 116px;
   height: 48px;
   display: block;
-  background-color: var(--text-muted) !important;
-  mask: url("/images/JT_signature_1_vector_smooth.svg") center / contain no-repeat;
-  -webkit-mask: url("/images/JT_signature_1_vector_smooth.svg") center / contain no-repeat;
+  background: transparent !important;
   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.7));
   cursor: pointer;
   transform-origin: center center;
   padding: 0;
   border: 0;
   transform: rotate(0deg) scale(1);
-  transition: transform 180ms cubic-bezier(.22, .8, .2, 1), background-color 60ms linear;
+  transition: transform 180ms cubic-bezier(.22, .8, .2, 1);
   will-change: transform;
 }
 
-body.nav-over-hero .logo {
-  background-color: #B8860B !important;
+.logo-mark {
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: var(--text-muted) !important;
 }
 
-.logo-sidebar:hover .logo {
-  transform: rotate(-10deg) scale(1.04);
+.logo-mark svg {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
-.logo-sidebar:focus-within .logo {
+.logo-mark svg path {
+  fill: var(--text-muted) !important;
+}
+
+body.nav-over-hero .logo-mark svg path {
+  fill: #B8860B !important;
+}
+
+.logo:hover,
+.logo-sidebar:has(.sidebar:hover) .logo,
+body.nav-menu-open .logo {
   transform: rotate(-10deg) scale(1.04);
 }
 
@@ -560,7 +573,9 @@ body.nav-over-hero .logo {
   will-change: transform;
 }
 
-body.nav-open .page-shell {
+body:has(.logo:hover) .page-shell,
+body:has(.sidebar:hover) .page-shell,
+body.nav-menu-open .page-shell {
   transform: translate3d(var(--nav-shift-x), 0, 0);
   box-shadow: none !important;
   filter: none !important;
@@ -598,8 +613,9 @@ body.nav-open .page-shell {
   text-decoration-thickness: 0.08em;
 }
 
-.logo-sidebar:hover .sidebar,
-.logo-sidebar:focus-within .sidebar {
+.logo:hover + .sidebar,
+.sidebar:hover,
+body.nav-menu-open .sidebar {
   visibility: visible;
   opacity: 1;
   pointer-events: auto;

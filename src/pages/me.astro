@@ -2,7 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 <BaseLayout title="About JT Baker | Composer and Percussionist" description="Biography and background for composer, percussionist, and teacher JT Baker.">
-  <h1>About JT</h1>
+  <h1>about jt</h1>
   <div class="card me-content">
     <p>JT Baker is a composer, percussionist, and teacher dedicated to writing and premiering new works that expand the sonic and expressive possibilities of percussion instruments, particularly the snare drum. His compositional practice developed through his approach to learning and teaching marching snare drum. His ties to drum corps and the marching arts include the Santa Clara Vanguard Drum and Bugle Corps (snare drummer, 2022; snare technician, 2024–present), the University of North Texas PASIC Snare Ensemble (performer and composer, 2021 and 2022), and the national Japan tour of the original production of “Blast!” (2024 and 2026) as a snare soloist. His compositions move between the marching arts, contemporary chamber music, and improvised sound art. JT currently lives and works in Toledo, Ohio; plans to attend Bowling Green State University for a master's degree in music composition; runs a small online private-lesson studio; and plays drums for Diet Smiles, a leftist hardcore punk band based in Toledo.</p>
     <img src="/images/birthday.webp" width="1200" height="1200" alt="JT at a birthday celebration" />
@@ -14,9 +14,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       grid-template-columns: minmax(0, 1fr) minmax(220px, 36%);
       align-items: start;
       gap: 2rem;
+      background: transparent !important;
+      backdrop-filter: none;
     }
 
-    .me-content p { margin: 0; }
+    .me-content p {
+      margin: 0;
+      background: transparent !important;
+    }
 
     .me-content img {
       width: 100%;

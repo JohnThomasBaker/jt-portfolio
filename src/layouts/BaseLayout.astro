@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import { ClientRouter } from "astro:transitions";
+import signatureSvgSource from "../../public/images/JT_signature_1_vector_smooth.svg?raw";
 
 type Props = {
   title?: string;
@@ -37,6 +38,9 @@ const pageStructuredData = structuredData
   ? JSON.stringify(structuredData).replace(/</g, "\\u003c")
   : null;
 const currentYear = new Date().getFullYear();
+const signatureSvgMarkup = signatureSvgSource
+  .replace(/^<\?xml[^>]*>\s*/, "")
+  .replaceAll('fill="#000000"', 'fill="currentColor"');
 
 const nav = [
   { href: "/", label: "Home" },
@@ -150,50 +154,46 @@ main.wrap > :first-child { margin-top: 0 !important; }
         .fadein { opacity: 1; transform: none; transition: none; filter: none; background-color: none; }
       }
 
-      ::view-transition-old(root),
-      ::view-transition-new(root) {
-        animation-duration: 340ms;
-        animation-timing-function: cubic-bezier(.22, .8, .2, 1);
+      :root {
+        view-transition-name: none;
       }
 
-      ::view-transition-old(root) {
+      .page-shell {
+        view-transition-name: page-content;
+      }
+
+      ::view-transition-old(page-content),
+      ::view-transition-new(page-content) {
+        animation-duration: 400ms;
+        animation-timing-function: ease-in-out;
+        animation-fill-mode: both;
+        mix-blend-mode: normal;
+      }
+
+      ::view-transition-old(page-content) {
         animation-name: jt-page-fade-out;
       }
 
-      ::view-transition-new(root) {
+      ::view-transition-new(page-content) {
         animation-name: jt-page-fade-in;
       }
 
       @keyframes jt-page-fade-out {
-        from { opacity: 1; filter: blur(0); }
-        to { opacity: 0; filter: blur(2px); }
+        from { opacity: 1; }
+        to { opacity: 0; }
       }
 
       @keyframes jt-page-fade-in {
-        from { opacity: 0; filter: blur(2px); }
-        to { opacity: 1; filter: blur(0); }
-      }
-
-      .page-shell {
-        opacity: 0;
-        animation: jt-initial-load-fade 420ms ease forwards;
-      }
-
-      @keyframes jt-initial-load-fade {
         from { opacity: 0; }
         to { opacity: 1; }
       }
 
       @media (prefers-reduced-motion: reduce) {
-        ::view-transition-old(root),
-        ::view-transition-new(root) {
+        ::view-transition-old(page-content),
+        ::view-transition-new(page-content) {
           animation-duration: 1ms;
         }
 
-        .page-shell {
-          animation: none;
-          opacity: 1;
-        }
       }
     </style>
 
@@ -330,33 +330,46 @@ main.wrap > :first-child { margin-top: 0 !important; }
     });
   };
 
-  const initNavShift = () => {
-    if (window.__navShiftCleanup) window.__navShiftCleanup();
+  const syncCurrentNav = () => {
+    const pathname = window.location.pathname;
+    document.querySelectorAll(".sidebar a").forEach((link) => {
+      const href = link.getAttribute("href");
+      const isCurrent = href === "/"
+        ? pathname === "/"
+        : Boolean(href && (pathname === href || pathname.startsWith(`${href}/`)));
+      if (isCurrent) link.setAttribute("aria-current", "page");
+      else link.removeAttribute("aria-current");
+    });
+  };
 
-    const trigger = document.querySelector(".logo-sidebar");
-    if (!trigger) {
-      window.__navShiftCleanup = null;
-      return;
-    }
+  const initNavToggle = () => {
+    window.__navToggleCleanup?.();
+    const button = document.querySelector(".logo");
+    const links = document.querySelectorAll(".sidebar a");
+    if (!button) return;
 
-    const openNav = () => document.body.classList.add("nav-open");
-    const closeNav = () => document.body.classList.remove("nav-open");
-    const onFocusOut = (e) => {
-      if (trigger.contains(e.relatedTarget)) return;
-      closeNav();
+    const close = () => {
+      document.body.classList.remove("nav-menu-open");
+      button.setAttribute("aria-expanded", "false");
+    };
+    const toggle = () => {
+      const isOpen = document.body.classList.toggle("nav-menu-open");
+      button.setAttribute("aria-expanded", String(isOpen));
+    };
+    const onKeydown = (event) => {
+      if (event.key !== "Escape") return;
+      close();
+      button.focus();
     };
 
-    trigger.addEventListener("mouseenter", openNav);
-    trigger.addEventListener("mouseleave", closeNav);
-    trigger.addEventListener("focusin", openNav);
-    trigger.addEventListener("focusout", onFocusOut);
-
-    window.__navShiftCleanup = () => {
-      closeNav();
-      trigger.removeEventListener("mouseenter", openNav);
-      trigger.removeEventListener("mouseleave", closeNav);
-      trigger.removeEventListener("focusin", openNav);
-      trigger.removeEventListener("focusout", onFocusOut);
+    button.addEventListener("click", toggle);
+    links.forEach((link) => link.addEventListener("click", close));
+    document.addEventListener("keydown", onKeydown);
+    window.__navToggleCleanup = () => {
+      close();
+      button.removeEventListener("click", toggle);
+      links.forEach((link) => link.removeEventListener("click", close));
+      document.removeEventListener("keydown", onKeydown);
     };
   };
 
@@ -366,14 +379,27 @@ main.wrap > :first-child { margin-top: 0 !important; }
     initFade();
     initHeroScrollFade();
     initSectionTitlePalette();
-    initNavShift();
+    syncCurrentNav();
+    initNavToggle();
+  });
+  // The incoming page must be fully visible when the browser captures it for
+  // the crossfade. Its scroll-reveal effects can initialize afterward.
+  document.addEventListener("astro:before-swap", (event) => {
+    event.newDocument.querySelectorAll(".fadein").forEach((el) => {
+      el.classList.add("is-in");
+    });
+    const opensOnHero = Boolean(event.newDocument.querySelector(".hero, .music-hero, .news-hero"));
+    event.newDocument.body.classList.toggle("nav-over-hero", opensOnHero);
+    event.newDocument.body.classList.remove("nav-menu-open");
+    if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
   });
   // Astro client-side navigations / view transitions
   document.addEventListener("astro:page-load", () => {
     initFade();
     initHeroScrollFade();
     initSectionTitlePalette();
-    initNavShift();
+    syncCurrentNav();
+    initNavToggle();
   });
 </script>
   <body>
@@ -381,7 +407,9 @@ main.wrap > :first-child { margin-top: 0 !important; }
     <header class="nav">
       <div class="nav-inner">
         <div class="logo-sidebar">
-          <button class="logo" type="button" aria-label="Open site navigation"></button>
+          <button class="logo" type="button" aria-label="Open site navigation" aria-expanded="false">
+            <span class="logo-mark" aria-hidden="true" set:html={signatureSvgMarkup}></span>
+          </button>
 
           <nav class="sidebar" aria-label="Site navigation">
             {nav.map((item) => (

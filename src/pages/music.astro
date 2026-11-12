@@ -4,7 +4,7 @@ import { publishedPieces } from "../data/music";
 
 // Replace this path with your chosen hero photo in public/images.
 const musicHeroImage = "/images/music-hero.webp";
-const musicCategories = [...new Set(publishedPieces.map((piece) => piece.category))];
+const musicCategories = ["compositions", "arrangements", "misc"] as const;
 
 ---
 <BaseLayout title="Music | JT Baker" description="Percussion, chamber, and ensemble works by composer JT Baker." mainClass="page-music">
@@ -31,7 +31,7 @@ const musicCategories = [...new Set(publishedPieces.map((piece) => piece.categor
   <div class="music-catalog">
     {publishedPieces.map((piece) => (
       <a class="music-piece-link" href={`/music/${piece.slug}`} data-category={piece.category}>
-        <article class="music-piece card">
+        <article class="music-piece">
           <div class="piece-meta">
             <h3>{piece.name}</h3>
             {piece.author && <p class="piece-author">by {piece.author}</p>}
@@ -42,7 +42,7 @@ const musicCategories = [...new Set(publishedPieces.map((piece) => piece.categor
       </a>
     ))}
   </div>
-  <p class="music-empty" hidden>No works in this category yet.</p>
+  <p class="music-empty" hidden>No published works in this category yet.</p>
 
   </section>
 
@@ -312,7 +312,7 @@ const musicCategories = [...new Set(publishedPieces.map((piece) => piece.categor
         });
 
         if (emptyState) {
-          emptyState.hidden = !links.some((link) => !link.hidden);
+          emptyState.hidden = links.some((link) => !link.hidden);
         }
 
         tabs.forEach((tab) => {
