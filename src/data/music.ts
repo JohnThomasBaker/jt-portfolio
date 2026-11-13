@@ -65,7 +65,7 @@ export const pieces: MusicPiece[] = [
     category: "compositions",
     image: "/images/work-placeholder.svg",
     instrumentation: "Two vibraphones and piano",
-    description: ["Program note coming soon."],
+    description: ["Chrysalis is the first of several pieces by jt that explore player improvisation within certain structures and rules. Heavily inspired by the processes of Kory Reeder's \"Grids\" series, Chrysalis presents a similar vast grid of pitches"],
     media: [],
     gumroadUrl: "https://4340888381081.gumroad.com/l/tfwxi",
   },
